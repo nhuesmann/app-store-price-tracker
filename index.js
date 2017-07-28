@@ -64,39 +64,100 @@ const alphabet = [
   'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '*'
 ];
 
+// TODO: load the new Nightmare in the letter function, not each time the page changes
+// TODO: figure out where to use async (do reduce function for all pages in letter? push to array if hasmore)
+// TODO:
+
+const getPageData = async (page) => {
+  const nightmare = new Nightmare({ show: true });
+  return await nightmare
+    .viewport(1200, 950)
+    .useragent("Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.111 Safari/537.36")
+    .goto(page)
+    .inject('js', 'jquery.min.js')
+    .wait(500)
+    .evaluate(function () {
+      let links = [];
+      $('#selectedcontent').find('a').each(function() {
+        links.push($(this).attr('href'));
+      });
+      let hasMore = $('.paginate-more');
+      let nextPage;
+      if (hasMore.length === 0) {
+        hasMore = false;
+      } else {
+        nextPage = hasMore.attr('href');
+      }
+      return { links, hasMore, nextPage };
+    });
+    // TODO: do i need to end()? how do i call end after all pages have been scraped?
+};
+
 // try the first genre as an example
 const scrape = async (genre) => {
-  // keep track of the letter & page number
-  var alphaIterator = 0;
-  var pageNum = 1;
+  // placeholder for links
+  var links = [];
   // establish the base URL
   var baseUrl = genres[genre];
-  // create the first request URL
-  var page = `${baseUrl}&letter=${alphabet[alphaIterator]}&page=${pageNum}#page`;
-  const nightmare = new Nightmare({ show: true });
 
-  // TODO: loop through all pages of letter, then move to next letter if page gets no response
-  // shorten wait time if no response
+
+
+  // const nightmare = new Nightmare({ show: true });
+
+  // TODO: loop through all pages of letter
 
   try {
-    return await nightmare
-      .viewport(1200, 950)
-      .useragent("Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.111 Safari/537.36")
-      .goto(page)
-      .inject('js', 'jquery.min.js')
-      .wait(500)
-      .evaluate(function () {
-        let links = [];
-        $('#selectedcontent').find('a').each(function() {
-          links.push($(this).attr('href'));
-        });
-        return links;
-      })
-      .end();
+    // TODO: break this out into a function
+    // alphabet foreach, run below process
+    let letter = 'A'; // pretend we get this as function argument
+
+    // create the first request URL
+    var initialPage = `${baseUrl}&letter=${letter}&page=1#page`;
+
+    var genreLinks = [];
+
+    // run below while hasMore
+
+    // let getPageData = async (page) => {
+    //   return await nightmare
+    //     .viewport(1200, 950)
+    //     .useragent("Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.111 Safari/537.36")
+    //     .goto(page)
+    //     .inject('js', 'jquery.min.js')
+    //     .wait(500)
+    //     .evaluate(function () {
+    //       let links = [];
+    //       $('#selectedcontent').find('a').each(function() {
+    //         links.push($(this).attr('href'));
+    //       });
+    //       let hasMore = $('.paginate-more');
+    //       let nextPage;
+    //       if (hasMore.length === 0) {
+    //         hasMore = false;
+    //       } else {
+    //         nextPage = hasMore.attr('href');
+    //       }
+    //       return { links, hasMore, nextPage };
+    //     });
+    //     // .end();
+    // };
+
+    getPageData(initialPage).then((data) => {
+      // console.log('data', data);
+      genreLinks = genreLinks.concat(data.links);
+
+      if (data.hasMore) {
+        console.log(data.nextPage);
+        console.log(genreLinks);
+      } else {
+        console.log('no more data :(');
+      }
+
+    });
+
   } catch(e) {
     console.log(e);
   }
-
 };
 
 // get the app id
@@ -105,6 +166,8 @@ let id = applink.split('/id')[1].split('?')[0];
 console.log('id', id);
 
 // check db if saved already
+// TODO: on the data model in DB, clean the trackViewUrl property by calling trackViewUrl.split('&uo=')[0]; to get rid of the unique origin.
+
 
 // if not, query itunes by app id
 let itunesUrl = `https://itunes.apple.com/lookup?id=${id}&entity=software`;
@@ -115,8 +178,9 @@ let itunesUrl = `https://itunes.apple.com/lookup?id=${id}&entity=software`;
 // TODO: fix mediaTypes to be entity (or use media??). the entity types are different, there are more, esp music
 
 
-scrape('Books').then(async apps => {
-  console.log(`Found ${apps.length} links.`);
+scrape('Books').then(() => {//async apps => {
+  console.log('got links');
+  // console.log(`Found ${apps.length} links.`);
   //
   // try {
   //   await nightmare
