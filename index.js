@@ -1,4 +1,5 @@
 const Nightmare = require('nightmare');
+const {randomUserAgent} = require('./useragent');
 
 const getAppGenres = async () => {
   const homePage = 'https://itunes.apple.com/us/genre/ios/id36?mt=8';
@@ -26,6 +27,8 @@ const getAppGenres = async () => {
     console.error(e);
   }
 };
+
+// TODO: consider socket.io real time??? would have to watch the letter pages for new links. Then if new, scrape that page (but avoid doing it if all other pages were shifted? how to do that)
 
 // let genres = getAppGenres();
 //
@@ -66,31 +69,59 @@ const alphabet = [
 
 // TODO: load the new Nightmare in the letter function, not each time the page changes
 // TODO: figure out where to use async (do reduce function for all pages in letter? push to array if hasmore)
-// TODO:
+// TODO: add module for randomizing the useragent
+// TODO: how to delegate alpha into threads? set max threads in program and update that amount when a process gets called?
 
-const getPageData = async (page) => {
-  const nightmare = new Nightmare({ show: true });
-  return await nightmare
-    .viewport(1200, 950)
-    .useragent("Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.111 Safari/537.36")
-    .goto(page)
-    .inject('js', 'jquery.min.js')
-    .wait(500)
-    .evaluate(function () {
-      let links = [];
-      $('#selectedcontent').find('a').each(function() {
-        links.push($(this).attr('href'));
+const randWaitInterval = (min, max) => {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+};
+
+const getAppUrls = async (initialPage) => {
+  const nightmare = new Nightmare({ show: true }); // TODO: eventually make it headless
+  const userAgent = randomUserAgent();
+  // const userAgent = "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.111 Safari/537.36";
+
+  let allLinks = [];
+  let hasMore;
+  let page = initialPage;
+
+  do {
+    try {
+      let pageData = await nightmare
+      .viewport(1200, 950)
+      .useragent(userAgent)
+      .goto(page)
+      .inject('js', 'jquery.min.js')
+      .wait(500)
+      // .wait(randWaitInterval(500, 1500))
+      .evaluate(function () {
+        let links = [];
+        let nextPage;
+
+        $('#selectedcontent').find('a').each(function () {
+          links.push($(this).attr('href'));
+        });
+
+        let more = $('.paginate-more');
+        more.length > 0 ? nextPage = more.attr('href') : more = false;
+
+        return { links, more, nextPage };
       });
-      let hasMore = $('.paginate-more');
-      let nextPage;
-      if (hasMore.length === 0) {
-        hasMore = false;
-      } else {
-        nextPage = hasMore.attr('href');
-      }
-      return { links, hasMore, nextPage };
-    });
-    // TODO: do i need to end()? how do i call end after all pages have been scraped?
+
+      allLinks = allLinks.concat(pageData.links);
+      hasMore = pageData.more;
+      page = pageData.nextPage;
+
+    } catch(e) {
+      console.log(e);
+    }
+
+  }
+  while (hasMore);
+
+  await nightmare.end();
+
+  return allLinks;
 };
 
 // try the first genre as an example
@@ -112,7 +143,7 @@ const scrape = async (genre) => {
     let letter = 'A'; // pretend we get this as function argument
 
     // create the first request URL
-    var initialPage = `${baseUrl}&letter=${letter}&page=1#page`;
+    var initialPage = `${baseUrl}&letter=${letter}&page=24#page`;
 
     var genreLinks = [];
 
@@ -142,16 +173,17 @@ const scrape = async (genre) => {
     //     // .end();
     // };
 
-    getPageData(initialPage).then((data) => {
+    getAppUrls(initialPage).then((data) => {
+      console.log('data', data);
       // console.log('data', data);
-      genreLinks = genreLinks.concat(data.links);
-
-      if (data.hasMore) {
-        console.log(data.nextPage);
-        console.log(genreLinks);
-      } else {
-        console.log('no more data :(');
-      }
+      // genreLinks = genreLinks.concat(data.links);
+      //
+      // if (data.hasMore) {
+      //   // console.log(data.nextPage);
+      //   // console.log(genreLinks);
+      // } else {
+      //   console.log('no more data :(');
+      // }
 
     });
 
