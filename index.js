@@ -67,6 +67,10 @@ const alphabet = [
   'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '*'
 ];
 
+const testAlphabet = [
+  'A', 'B', 'C'
+];
+
 // TODO: load the new Nightmare in the letter function, not each time the page changes
 // TODO: figure out where to use async (do reduce function for all pages in letter? push to array if hasmore)
 // TODO: add module for randomizing the useragent
@@ -79,21 +83,22 @@ const randWaitInterval = (min, max) => {
 const getAppUrls = async (initialPage) => {
   const nightmare = new Nightmare({ show: true }); // TODO: eventually make it headless
   const userAgent = randomUserAgent();
+  console.log(`Page: ${initialPage}.\nUser Agent: ${userAgent}`);
   // const userAgent = "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.111 Safari/537.36";
 
   let allLinks = [];
   let hasMore;
   let page = initialPage;
 
-  do {
-    try {
+  try {
+    do {
       let pageData = await nightmare
       .viewport(1200, 950)
       .useragent(userAgent)
       .goto(page)
       .inject('js', 'jquery.min.js')
-      .wait(500)
-      // .wait(randWaitInterval(500, 1500))
+      // .wait(randWaitInterval(500, 1000))
+      .wait('#selectedcontent')
       .evaluate(function () {
         let links = [];
         let nextPage;
@@ -111,18 +116,68 @@ const getAppUrls = async (initialPage) => {
       allLinks = allLinks.concat(pageData.links);
       hasMore = pageData.more;
       page = pageData.nextPage;
-
-    } catch(e) {
-      console.log(e);
     }
+    while (hasMore);
 
+    await nightmare.end();
+
+    return allLinks;
+  } catch(e) {
+    console.log(e);
+    return e;
   }
-  while (hasMore);
 
-  await nightmare.end();
 
-  return allLinks;
 };
+
+// TODO: can't use Promise.all because it assumes each scraper is not going to encounter issues.
+// If a single one does, the entire Promise.all call fails.
+// Need to instead add the contents to an array when complete... or save to DB? Think about it.
+
+
+
+let genreToUse = 'Books';
+
+console.log(`Starting at ${new Date().toString()}...`)
+
+const alphabetLinks = testAlphabet.map(async char => {
+  let baseUrl = genres[genreToUse];
+  let page1 = `${baseUrl}&letter=${char}&page=1#page`;
+
+  return await getAppUrls(page1);
+});
+
+Promise.all(alphabetLinks).then(links => {
+  let genreLinks = [].concat(...links);
+  console.log('Got all links', genreLinks);
+
+  console.log(`Completed at ${new Date().toString()}`);
+});
+
+
+/*
+
+// get the app id
+let applink = 'https://itunes.apple.com/us/app/a-english-speak-read-audio-books/id338982960?mt=8';
+let id = applink.split('/id')[1].split('?')[0];
+console.log('id', id);
+
+// check db if saved already
+// TODO: on the data model in DB, clean the trackViewUrl property by calling trackViewUrl.split('&uo=')[0]; to get rid of the unique origin.
+
+
+// if not, query itunes by app id
+let itunesUrl = `https://itunes.apple.com/lookup?id=${id}&entity=software`;
+
+// TODO: change above - the media types should be in the script file, it should choose based on what it is scraping
+// i.e. software, movies, etc
+// const mediaTypes = [movie, podcast, music, musicVideo, audiobook, shortFilm, tvShow, software, ebook];
+// TODO: fix mediaTypes to be entity (or use media??). the entity types are different, there are more, esp music
+
+
+
+
+
 
 // try the first genre as an example
 const scrape = async (genre) => {
@@ -147,31 +202,8 @@ const scrape = async (genre) => {
 
     var genreLinks = [];
 
-    // run below while hasMore
+    // run getPageData while hasMore
 
-    // let getPageData = async (page) => {
-    //   return await nightmare
-    //     .viewport(1200, 950)
-    //     .useragent("Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.111 Safari/537.36")
-    //     .goto(page)
-    //     .inject('js', 'jquery.min.js')
-    //     .wait(500)
-    //     .evaluate(function () {
-    //       let links = [];
-    //       $('#selectedcontent').find('a').each(function() {
-    //         links.push($(this).attr('href'));
-    //       });
-    //       let hasMore = $('.paginate-more');
-    //       let nextPage;
-    //       if (hasMore.length === 0) {
-    //         hasMore = false;
-    //       } else {
-    //         nextPage = hasMore.attr('href');
-    //       }
-    //       return { links, hasMore, nextPage };
-    //     });
-    //     // .end();
-    // };
 
     getAppUrls(initialPage).then((data) => {
       console.log('data', data);
@@ -192,22 +224,6 @@ const scrape = async (genre) => {
   }
 };
 
-// get the app id
-let applink = 'https://itunes.apple.com/us/app/a-english-speak-read-audio-books/id338982960?mt=8';
-let id = applink.split('/id')[1].split('?')[0];
-console.log('id', id);
-
-// check db if saved already
-// TODO: on the data model in DB, clean the trackViewUrl property by calling trackViewUrl.split('&uo=')[0]; to get rid of the unique origin.
-
-
-// if not, query itunes by app id
-let itunesUrl = `https://itunes.apple.com/lookup?id=${id}&entity=software`;
-
-// TODO: change above - the media types should be in the script file, it should choose based on what it is scraping
-// i.e. software, movies, etc
-// const mediaTypes = [movie, podcast, music, musicVideo, audiobook, shortFilm, tvShow, software, ebook];
-// TODO: fix mediaTypes to be entity (or use media??). the entity types are different, there are more, esp music
 
 
 scrape('Books').then(() => {//async apps => {
@@ -223,7 +239,8 @@ scrape('Books').then(() => {//async apps => {
   //
   // }
 });
-// get all genres on the page (save this in the DB. only do this check once a week. check if links have changed)
+
+
 
 // start a scraper for each genre
 // create array of A through #, have two scrapers going per genre working outside in and saving to an array. have scrapr check if the currently observed name is in the array. if so, done.
@@ -233,3 +250,5 @@ scrape('Books').then(() => {//async apps => {
 // COMPONENTS:
 //
 // the scraper - scheduled job. checks against DB to see if exists.
+
+*/
