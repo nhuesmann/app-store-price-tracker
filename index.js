@@ -71,6 +71,14 @@ const testAlphabet = [
   'A', 'B', 'C'
 ];
 
+
+
+
+// TODO: FIGURE OUT HOW TO TEST USER AGENTS!!!
+
+
+
+
 // TODO: load the new Nightmare in the letter function, not each time the page changes
 // TODO: figure out where to use async (do reduce function for all pages in letter? push to array if hasmore)
 // TODO: add module for randomizing the useragent
@@ -80,13 +88,14 @@ const randWaitInterval = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
-const getAppUrls = async (initialPage) => {
+const getAppIds = async (initialPage) => {
   const nightmare = new Nightmare({ show: true }); // TODO: eventually make it headless
-  const userAgent = randomUserAgent();
+  // const userAgent = randomUserAgent(); // random
+  // const userAgent = 'Mozilla/5.0 (iPad; CPU OS 8_4_1 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) Version/8.0 Mobile/12H321 Safari/600.1.4'; // BAD
+  const userAgent = "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.111 Safari/537.36"; // ORIGINAL
   console.log(`Page: ${initialPage}.\nUser Agent: ${userAgent}`);
-  // const userAgent = "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.111 Safari/537.36";
 
-  let allLinks = [];
+  let allIds = [];
   let hasMore;
   let page = initialPage;
 
@@ -113,7 +122,8 @@ const getAppUrls = async (initialPage) => {
         return { links, more, nextPage };
       });
 
-      allLinks = allLinks.concat(pageData.links);
+      let pageIds = pageData.links.map(link => link.split('/id')[1].split('?')[0]);
+      allIds = allIds.concat(pageIds);
       hasMore = pageData.more;
       page = pageData.nextPage;
     }
@@ -121,7 +131,7 @@ const getAppUrls = async (initialPage) => {
 
     await nightmare.end();
 
-    return allLinks;
+    return allIds;
   } catch(e) {
     console.log(e);
     return e;
@@ -135,8 +145,12 @@ const getAppUrls = async (initialPage) => {
 // Need to instead add the contents to an array when complete... or save to DB? Think about it.
 
 
+// TODO: test sending 200 ids in the API request!
+// only run the scraper daily to check for new apps! otherwise it's not needed!
+// start writing the process for pinging API once an hour to check for updates
 
-let genreToUse = 'Books';
+
+let genreToUse = 'Finance';
 
 console.log(`Starting at ${new Date().toString()}...`)
 
@@ -144,12 +158,12 @@ const alphabetLinks = testAlphabet.map(async char => {
   let baseUrl = genres[genreToUse];
   let page1 = `${baseUrl}&letter=${char}&page=1#page`;
 
-  return await getAppUrls(page1);
+  return await getAppIds(page1);
 });
 
-Promise.all(alphabetLinks).then(links => {
-  let genreLinks = [].concat(...links);
-  console.log('Got all links', genreLinks);
+Promise.all(alphabetLinks).then(ids => {
+  let genreIds = [].concat(...ids);
+  console.log('Got all ids', genreIds);
 
   console.log(`Completed at ${new Date().toString()}`);
 });

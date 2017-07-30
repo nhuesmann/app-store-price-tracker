@@ -336,18 +336,6 @@
 	"osVersion": "10"
 }, {
 	"platform": "desktop browser",
-	"description": "iTunes 9.0.2 (Windows)",
-	"userAgent": "iTunes/9.0.2 (Windows; N)",
-	"browserName": "",
-	"browserMajor": "",
-	"browserVersion": "",
-	"deviceModel": "",
-	"deviceType": "",
-	"deviceVendor": "",
-	"osName": "",
-	"osVersion": ""
-}, {
-	"platform": "desktop browser",
 	"description": "Konqueror 4.5 (Win XP - KDE native)",
 	"userAgent": "Mozilla/5.0 (compatible; Konqueror/4.5; Windows) KHTML/4.5.4 (like Gecko)",
 	"browserName": "Konqueror",
@@ -1006,30 +994,6 @@
 	"deviceVendor": "",
 	"osName": "Mac OS",
 	"osVersion": "10.12"
-}, {
-	"platform": "desktop browser",
-	"description": "iTunes 4.2 (OS X 10.2 PPC)",
-	"userAgent": "iTunes/4.2 (Macintosh; U; PPC Mac OS X 10.2)",
-	"browserName": "",
-	"browserMajor": "",
-	"browserVersion": "",
-	"deviceModel": "",
-	"deviceType": "",
-	"deviceVendor": "",
-	"osName": "Mac OS",
-	"osVersion": "10.2"
-}, {
-	"platform": "desktop browser",
-	"description": "iTunes 9.0.3 (OS X 10_6_2)",
-	"userAgent": "iTunes/9.0.3 (Macintosh; U; Intel Mac OS X 10_6_2; en-ca)",
-	"browserName": "",
-	"browserMajor": "",
-	"browserVersion": "",
-	"deviceModel": "",
-	"deviceType": "",
-	"deviceVendor": "",
-	"osName": "Mac OS",
-	"osVersion": "10.6.2"
 }, {
 	"platform": "desktop browser",
 	"description": "Maxthon 4.5.2 (AppleWebKit 600.8) (OS X Intel)",
@@ -4680,18 +4644,6 @@
 	"osVersion": ""
 }, {
 	"platform": "mobile browser",
-	"description": "Opera 30.0 (Android)",
-	"userAgent": "Mozilla/5.0 (Linux; Android 5.1.1; Nexus 7 Build/LMY47V) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.78 Safari/537.36 OPR/30.0.1856.93524",
-	"browserName": "Opera",
-	"browserMajor": "30",
-	"browserVersion": "30.0.1856.93524",
-	"deviceModel": "Nexus 7",
-	"deviceType": "tablet",
-	"deviceVendor": "Asus",
-	"osName": "Android",
-	"osVersion": "5.1.1"
-}, {
-	"platform": "mobile browser",
 	"description": "Polaris 6.01",
 	"userAgent": "POLARIS/6.01 (BREW 3.1.5; U; en-us; LG; LX265; POLARIS/6.01/WAP) MMP/2.0 profile/MIDP-2.1 Configuration/CLDC-1.1",
 	"browserName": "POLARIS",
@@ -4786,42 +4738,6 @@
 	"deviceVendor": "Motorola",
 	"osName": "Android",
 	"osVersion": "2.0"
-}, {
-	"platform": "mobile browser",
-	"description": "Safari 533 - iPad - iOS 4_2_1)",
-	"userAgent": "Mozilla/5.0 (iPad; U; CPU OS 4_2_1 like Mac OS X; ja-jp) AppleWebKit/533.17.9 (KHTML, like Gecko) Version/5.0.2 Mobile/8C148 Safari/6533.18.5",
-	"browserName": "Mobile Safari",
-	"browserMajor": "5",
-	"browserVersion": "5.0.2",
-	"deviceModel": "iPad",
-	"deviceType": "tablet",
-	"deviceVendor": "Apple",
-	"osName": "iOS",
-	"osVersion": "4.2.1"
-}, {
-	"platform": "mobile browser",
-	"description": "Safari 533.17 - iPhone - iOS 4_2_1",
-	"userAgent": "Mozilla/5.0 (iPhone; U; CPU iPhone OS 4_2_1 like Mac OS X; da-dk) AppleWebKit/533.17.9 (KHTML, like Gecko) Version/5.0.2 Mobile/8C148 Safari/6533.18.5",
-	"browserName": "Mobile Safari",
-	"browserMajor": "5",
-	"browserVersion": "5.0.2",
-	"deviceModel": "iPhone",
-	"deviceType": "mobile",
-	"deviceVendor": "Apple",
-	"osName": "iOS",
-	"osVersion": "4.2.1"
-}, {
-	"platform": "mobile browser",
-	"description": "Safari 6 (8536.25) - Apple iPad 2 - iOS 6_0",
-	"userAgent": "Mozilla/5.0 (iPad; CPU OS 6_0 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10A5355d Safari/8536.25",
-	"browserName": "Mobile Safari",
-	"browserMajor": "6",
-	"browserVersion": "6.0",
-	"deviceModel": "iPad",
-	"deviceType": "tablet",
-	"deviceVendor": "Apple",
-	"osName": "iOS",
-	"osVersion": "6.0"
 }, {
 	"platform": "mobile browser",
 	"description": "UCBrowser 2.9.0 - Trident/MSIE 9.0 - WindowsPhone 7",
@@ -5340,30 +5256,6 @@
 	"osVersion": "8.0.2"
 }, {
 	"platform": "mobile device",
-	"description": "iPad - iOS 8_4 - Safari 8 (600.1)",
-	"userAgent": "Mozilla/5.0 (iPad; CPU OS 8_4_1 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) Version/8.0 Mobile/12H321 Safari/600.1.4",
-	"browserName": "Mobile Safari",
-	"browserMajor": "8",
-	"browserVersion": "8.0",
-	"deviceModel": "iPad",
-	"deviceType": "tablet",
-	"deviceVendor": "Apple",
-	"osName": "iOS",
-	"osVersion": "8.4.1"
-}, {
-	"platform": "mobile device",
-	"description": "iPad - iOS 9_3 - Safari 9 (601.1)",
-	"userAgent": "Mozilla/5.0 (iPad; CPU OS 9_3_2 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13F69 Safari/601.1",
-	"browserName": "Mobile Safari",
-	"browserMajor": "9",
-	"browserVersion": "9.0",
-	"deviceModel": "iPad",
-	"deviceType": "tablet",
-	"deviceVendor": "Apple",
-	"osName": "iOS",
-	"osVersion": "9.3.2"
-}, {
-	"platform": "mobile device",
 	"description": "iPad - Puffin 4.5.0IT - (says Linux) - (IT=iOS tablet)",
 	"userAgent": "Mozilla/5.0 (X11; U; Linux x86_64; en-US) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/30.0.1599.114 Safari/537.36 Puffin/4.5.0IT",
 	"browserName": "Chrome",
@@ -5484,54 +5376,6 @@
 	"osVersion": "7.1.2"
 }, {
 	"platform": "mobile device",
-	"description": "iPhone - iOS 8_3 - Safari 8.0",
-	"userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 8_3 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) Version/8.0 Mobile/12F70 Safari/600.1.4",
-	"browserName": "Mobile Safari",
-	"browserMajor": "8",
-	"browserVersion": "8.0",
-	"deviceModel": "iPhone",
-	"deviceType": "mobile",
-	"deviceVendor": "Apple",
-	"osName": "iOS",
-	"osVersion": "8.3"
-}, {
-	"platform": "mobile device",
-	"description": "iPhone - iOS 8_4 - Safari 8.0",
-	"userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 8_4_1 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) GSA/8.0.57838 Mobile/12H321 Safari/600.1.4",
-	"browserName": "Safari",
-	"browserMajor": "",
-	"browserVersion": "",
-	"deviceModel": "iPhone",
-	"deviceType": "mobile",
-	"deviceVendor": "Apple",
-	"osName": "iOS",
-	"osVersion": "8.4.1"
-}, {
-	"platform": "mobile device",
-	"description": "iPhone - iOS 9_2 - Safari 9.0",
-	"userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 9_2 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13C75 Safari/601.1",
-	"browserName": "Mobile Safari",
-	"browserMajor": "9",
-	"browserVersion": "9.0",
-	"deviceModel": "iPhone",
-	"deviceType": "mobile",
-	"deviceVendor": "Apple",
-	"osName": "iOS",
-	"osVersion": "9.2"
-}, {
-	"platform": "mobile device",
-	"description": "iPhone - iOS 10_0 - Safari 10.0",
-	"userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 10_0 like Mac OS X) AppleWebKit/602.1.50 (KHTML, like Gecko) Version/10.0 Mobile/14A346 Safari/602.1",
-	"browserName": "Mobile Safari",
-	"browserMajor": "10",
-	"browserVersion": "10.0",
-	"deviceModel": "iPhone",
-	"deviceType": "mobile",
-	"deviceVendor": "Apple",
-	"osName": "iOS",
-	"osVersion": "10.0"
-}, {
-	"platform": "mobile device",
 	"description": "iPhone - iOS 10_0 - GSA 18.0",
 	"userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 10_0 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) GSA/18.0.130791545 Mobile/14A5345a Safari/600.1.4",
 	"browserName": "Safari",
@@ -5542,54 +5386,6 @@
 	"deviceVendor": "Apple",
 	"osName": "iOS",
 	"osVersion": "10.0"
-}, {
-	"platform": "mobile device",
-	"description": "iPod Touch - iOS 2.2.1 - Safari 3.1",
-	"userAgent": "Mozilla/5.0 (iPod; U; CPU iPhone OS 2_2_1 like Mac OS X; en-us) AppleWebKit/525.18.1 (KHTML, like Gecko) Version/3.1.1 Mobile/5H11a Safari/525.20",
-	"browserName": "Mobile Safari",
-	"browserMajor": "3",
-	"browserVersion": "3.1.1",
-	"deviceModel": "iPod",
-	"deviceType": "mobile",
-	"deviceVendor": "Apple",
-	"osName": "iOS",
-	"osVersion": "2.2.1"
-}, {
-	"platform": "mobile device",
-	"description": "iPod Touch - iOS 3_1_1 - Safari 528.16",
-	"userAgent": "Mozilla/5.0 (iPod; U; CPU iPhone OS 3_1_1 like Mac OS X; en-us) AppleWebKit/528.18 (KHTML, like Gecko) Mobile/7C145",
-	"browserName": "WebKit",
-	"browserMajor": "528",
-	"browserVersion": "528.18",
-	"deviceModel": "iPod",
-	"deviceType": "mobile",
-	"deviceVendor": "Apple",
-	"osName": "iOS",
-	"osVersion": "3.1.1"
-}, {
-	"platform": "mobile device",
-	"description": "iPod Touch - iOS 7_1 - Safari 7.0/537.51",
-	"userAgent": "Mozilla/5.0 (iPod touch; CPU iPhone OS 7_1 like Mac OS X) AppleWebKit/537.51.2 (KHTML like Gecko) Version/7.0 Mobile/11D167 Safari/123E71C",
-	"browserName": "Mobile Safari",
-	"browserMajor": "7",
-	"browserVersion": "7.0",
-	"deviceModel": "iPod touch",
-	"deviceType": "mobile",
-	"deviceVendor": "Apple",
-	"osName": "iOS",
-	"osVersion": "7.1"
-}, {
-	"platform": "mobile device",
-	"description": "iPod Touch - iOS 8_4 - Safari 600.1",
-	"userAgent": "Mozilla/5.0 (iPod; CPU iPhone OS 8_4 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) CriOS/44.0.2403.67 Mobile/12H143 Safari/600.1.4",
-	"browserName": "Chrome",
-	"browserMajor": "44",
-	"browserVersion": "44.0.2403.67",
-	"deviceModel": "iPod",
-	"deviceType": "mobile",
-	"deviceVendor": "Apple",
-	"osName": "iOS",
-	"osVersion": "8.4"
 }, {
 	"platform": "mobile device",
 	"description": "Nook 2 (limited data)",
@@ -5724,150 +5520,6 @@
 	"osVersion": "5.0.0.351"
 }, {
 	"platform": "mobile device",
-	"description": "9800 Torch - Safari 534.1",
-	"userAgent": "Mozilla/5.0 (BlackBerry; U; BlackBerry 9800; en) AppleWebKit/534.1  (KHTML, Like Gecko) Version/6.0.0.141 Mobile Safari/534.1",
-	"browserName": "Mobile Safari",
-	"browserMajor": "6",
-	"browserVersion": "6.0.0.141",
-	"deviceModel": "9800",
-	"deviceType": "mobile",
-	"deviceVendor": "BlackBerry",
-	"osName": "BlackBerry",
-	"osVersion": ""
-}, {
-	"platform": "mobile device",
-	"description": "Playbook (tablet) - OS 2.1.0 - Safari 536.2+",
-	"userAgent": "Mozilla/5.0 (PlayBook; U; RIM Tablet OS 2.1.0; en-US) AppleWebKit/536.2+ (KHTML like Gecko) Version/7.2.1.0 Safari/536.2+",
-	"browserName": "Safari",
-	"browserMajor": "7",
-	"browserVersion": "7.2.1.0",
-	"deviceModel": "PlayBook",
-	"deviceType": "tablet",
-	"deviceVendor": "RIM",
-	"osName": "RIM Tablet OS",
-	"osVersion": "2.1.0"
-}, {
-	"platform": "mobile device",
-	"description": "Z10 - BB10 OS - Mobile Safari 537.10+",
-	"userAgent": "Mozilla/5.0 (BB10; Touch) AppleWebKit/537.10+ (KHTML, like Gecko) Version/10.1.0.2342 Mobile Safari/537.10+",
-	"browserName": "Mobile Safari",
-	"browserMajor": "10",
-	"browserVersion": "10.1.0.2342",
-	"deviceModel": "Touch",
-	"deviceType": "mobile",
-	"deviceVendor": "BlackBerry",
-	"osName": "BlackBerry",
-	"osVersion": "10"
-}, {
-	"platform": "mobile device",
-	"description": "Android SDK - Android 1.5 - Mobile Safari 525.20",
-	"userAgent": "Mozilla/5.0 (Linux; U; Android 1.5; en-us; sdk Build/CUPCAKE) AppleWebkit/528.5  (KHTML, like Gecko) Version/3.1.2 Mobile Safari/525.20.1",
-	"browserName": "Android Browser",
-	"browserMajor": "3",
-	"browserVersion": "3.1.2",
-	"deviceModel": "",
-	"deviceType": "mobile",
-	"deviceVendor": "",
-	"osName": "Android",
-	"osVersion": "1.5"
-}, {
-	"platform": "mobile device",
-	"description": "Nexus One - Android 2.1 - Mobile Safari 530.17",
-	"userAgent": "Mozilla/5.0 (Linux; U; Android 2.1; en-us; Nexus One Build/ERD62) AppleWebKit/530.17 (KHTML, like Gecko) Version/4.0 Mobile Safari/530.17",
-	"browserName": "Android Browser",
-	"browserMajor": "4",
-	"browserVersion": "4.0",
-	"deviceModel": "",
-	"deviceType": "mobile",
-	"deviceVendor": "",
-	"osName": "Android",
-	"osVersion": "2.1"
-}, {
-	"platform": "mobile device",
-	"description": "Nexus One - Android 2.2 - Mobile Safari 533.1",
-	"userAgent": "Mozilla/5.0 (Linux; U; Android 2.2; en-us; Nexus One Build/FRF91) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1",
-	"browserName": "Android Browser",
-	"browserMajor": "4",
-	"browserVersion": "4.0",
-	"deviceModel": "",
-	"deviceType": "mobile",
-	"deviceVendor": "",
-	"osName": "Android",
-	"osVersion": "2.2"
-}, {
-	"platform": "mobile device",
-	"description": "Nexus 5 - Android 4.4 - AppleWebKit/536.23",
-	"userAgent": "Mozilla/5.0 (Linux; Android 4.4; Nexus 5 Build/BuildID) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/30.0.0.0 Mobile Safari/537.36",
-	"browserName": "Chrome",
-	"browserMajor": "30",
-	"browserVersion": "30.0.0.0",
-	"deviceModel": "Nexus 5",
-	"deviceType": "mobile",
-	"deviceVendor": "LG",
-	"osName": "Android",
-	"osVersion": "4.4"
-}, {
-	"platform": "mobile device",
-	"description": "Nexus 5X - Android 6.0 - Chome 53.0",
-	"userAgent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5X Build/MDB08L) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.124 Mobile Safari/537.36",
-	"browserName": "Chrome",
-	"browserMajor": "53",
-	"browserVersion": "53.0.2785.124",
-	"deviceModel": "Nexus 5",
-	"deviceType": "mobile",
-	"deviceVendor": "LG",
-	"osName": "Android",
-	"osVersion": "6.0"
-}, {
-	"platform": "mobile device",
-	"description": "Nexus 7 - Android 4.4.4 - AppleWebKit/537.36",
-	"userAgent": "Mozilla/5.0 (Linux; Android 4.4.4; Nexus 7 Build/KTU84P) AppleWebKit/537.36 (KHTML like Gecko) Chrome/36.0.1985.135 Safari/537.36",
-	"browserName": "Chrome",
-	"browserMajor": "36",
-	"browserVersion": "36.0.1985.135",
-	"deviceModel": "Nexus 7",
-	"deviceType": "tablet",
-	"deviceVendor": "Asus",
-	"osName": "Android",
-	"osVersion": "4.4.4"
-}, {
-	"platform": "mobile device",
-	"description": "Nexus 7 - Android 5.1.1 - Opera 30.0",
-	"userAgent": "Mozilla/5.0 (Linux; Android 5.1.1; Nexus 7 Build/LMY47V) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.78 Safari/537.36 OPR/30.0.1856.93524",
-	"browserName": "Opera",
-	"browserMajor": "30",
-	"browserVersion": "30.0.1856.93524",
-	"deviceModel": "Nexus 7",
-	"deviceType": "tablet",
-	"deviceVendor": "Asus",
-	"osName": "Android",
-	"osVersion": "5.1.1"
-}, {
-	"platform": "mobile device",
-	"description": "Nexus 9 - Android 7.0 - Chrome 53.0",
-	"userAgent": "Mozilla/5.0 (Linux; Android 7.0; Nexus 9 Build/NRD90R) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.124 Safari/537.36",
-	"browserName": "Chrome",
-	"browserMajor": "53",
-	"browserVersion": "53.0.2785.124",
-	"deviceModel": "Nexus 9",
-	"deviceType": "tablet",
-	"deviceVendor": "HTC",
-	"osName": "Android",
-	"osVersion": "7.0"
-}, {
-	"platform": "mobile device",
-	"description": "Touchpad 1.0 - WebOS 3.0.2 - wOSBrowser 234.40.1",
-	"userAgent": "Mozilla/5.0 (hp-tablet; Linux; hpwOS/3.0.2; U; de-DE) AppleWebKit/534.6 (KHTML, like Gecko) wOSBrowser/234.40.1 Safari/534.6 TouchPad/1.0",
-	"browserName": "Safari",
-	"browserMajor": "",
-	"browserVersion": "",
-	"deviceModel": "TouchPad",
-	"deviceType": "tablet",
-	"deviceVendor": "hp",
-	"osName": "Linux",
-	"osVersion": ""
-}, {
-	"platform": "mobile device",
 	"description": "Pre3 - webOS 2.2.4 - wOSBrowser 221.56",
 	"userAgent": "Mozilla/5.0 (Linux; webOS/2.2.4; U; en-US) AppleWebKit/534.6 (KHTML, like Gecko) webOSBrowser/221.56 Safari/534.6 Pre/3.0",
 	"browserName": "Safari",
@@ -5938,78 +5590,6 @@
 	"deviceVendor": "HTC",
 	"osName": "Android",
 	"osVersion": "1.5"
-}, {
-	"platform": "mobile device",
-	"description": "Evo - Android 2.2 - Mobile Safari 533.1",
-	"userAgent": "Mozilla/5.0 (Linux; U; Android 2.2; en-us; Sprint APA9292KT Build/FRF91) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1",
-	"browserName": "Android Browser",
-	"browserMajor": "4",
-	"browserVersion": "4.0",
-	"deviceModel": "APA9292KT",
-	"deviceType": "mobile",
-	"deviceVendor": "HTC",
-	"osName": "Android",
-	"osVersion": "2.2"
-}, {
-	"platform": "mobile device",
-	"description": "Hero - Android 1.5 - Mobile Safari 525.20",
-	"userAgent": "Mozilla/5.0 (Linux; U; Android 1.5; de-ch; HTC Hero Build/CUPCAKE) AppleWebKit/528.5  (KHTML, like Gecko) Version/3.1.2 Mobile Safari/525.20.1",
-	"browserName": "Android Browser",
-	"browserMajor": "3",
-	"browserVersion": "3.1.2",
-	"deviceModel": "Hero",
-	"deviceType": "mobile",
-	"deviceVendor": "HTC",
-	"osName": "Android",
-	"osVersion": "1.5"
-}, {
-	"platform": "mobile device",
-	"description": "Incredible - Android 2.2 - Mobile Safari 533.1",
-	"userAgent": "Mozilla/5.0 (Linux; U; Android 2.2; en-us; ADR6300 Build/FRF91) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1",
-	"browserName": "Android Browser",
-	"browserMajor": "4",
-	"browserVersion": "4.0",
-	"deviceModel": "",
-	"deviceType": "mobile",
-	"deviceVendor": "",
-	"osName": "Android",
-	"osVersion": "2.2"
-}, {
-	"platform": "mobile device",
-	"description": "Legend - Android 2.1 - Mobile Safari 530.17",
-	"userAgent": "Mozilla/5.0 (Linux; U; Android 2.1; en-us; HTC Legend Build/cupcake) AppleWebKit/530.17 (KHTML, like Gecko) Version/4.0 Mobile Safari/530.17",
-	"browserName": "Android Browser",
-	"browserMajor": "4",
-	"browserVersion": "4.0",
-	"deviceModel": "Legend",
-	"deviceType": "mobile",
-	"deviceVendor": "HTC",
-	"osName": "Android",
-	"osVersion": "2.1"
-}, {
-	"platform": "mobile device",
-	"description": "Magic - Android 1.5 - Mobile Safari 525.20.1",
-	"userAgent": "Mozilla/5.0 (Linux; U; Android 1.5; de-de; HTC Magic Build/PLAT-RC33) AppleWebKit/528.5  (KHTML, like Gecko) Version/3.1.2 Mobile Safari/525.20.1 FirePHP/0.3",
-	"browserName": "Android Browser",
-	"browserMajor": "3",
-	"browserVersion": "3.1.2",
-	"deviceModel": "Magic",
-	"deviceType": "mobile",
-	"deviceVendor": "HTC",
-	"osName": "Android",
-	"osVersion": "1.5"
-}, {
-	"platform": "mobile device",
-	"description": "One M9 - Android 6.0 - Chrome 52.0",
-	"userAgent": "Mozilla/5.0 (Linux; Android 6.0; HTC One M9 Build/MRA58K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.98 Mobile Safari/537.36",
-	"browserName": "Chrome",
-	"browserMajor": "52",
-	"browserVersion": "52.0.2743.98",
-	"deviceModel": "One",
-	"deviceType": "mobile",
-	"deviceVendor": "HTC",
-	"osName": "Android",
-	"osVersion": "6.0"
 }, {
 	"platform": "mobile device",
 	"description": "Sensation - Android 4.0.3 - Mobile Safari 534.30",
@@ -7416,30 +6996,6 @@
 	"osVersion": "8.0.2"
 }, {
 	"platform": "mobile device",
-	"description": "Apple iPad - iOS 8_4 - Safari 8 (600.1)",
-	"userAgent": "Mozilla/5.0 (iPad; CPU OS 8_4_1 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) Version/8.0 Mobile/12H321 Safari/600.1.4",
-	"browserName": "Mobile Safari",
-	"browserMajor": "8",
-	"browserVersion": "8.0",
-	"deviceModel": "iPad",
-	"deviceType": "tablet",
-	"deviceVendor": "Apple",
-	"osName": "iOS",
-	"osVersion": "8.4.1"
-}, {
-	"platform": "mobile device",
-	"description": "Apple iPad - iOS 9_3 - Safari 9 (601.1)",
-	"userAgent": "Mozilla/5.0 (iPad; CPU OS 9_3_2 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13F69 Safari/601.1",
-	"browserName": "Mobile Safari",
-	"browserMajor": "9",
-	"browserVersion": "9.0",
-	"deviceModel": "iPad",
-	"deviceType": "tablet",
-	"deviceVendor": "Apple",
-	"osName": "iOS",
-	"osVersion": "9.3.2"
-}, {
-	"platform": "mobile device",
 	"description": "Apple iPad - iOS 10_0 - CriOS 49.0",
 	"userAgent": "Mozilla/5.0 (iPad; CPU OS 10_0 like Mac OS X) AppleWebKit/601.1 (KHTML, like Gecko) CriOS/49.0.2623.109 Mobile/14A5335b Safari/601.1.46",
 	"browserName": "Chrome",
@@ -7474,18 +7030,6 @@
 	"deviceVendor": "",
 	"osName": "Mac OS",
 	"osVersion": "10.5.7"
-}, {
-	"platform": "mobile device",
-	"description": "HP Touchpad 1.0 - WebOS 3.0.2 - wOSBrowser 234.40",
-	"userAgent": "Mozilla/5.0 (hp-tablet; Linux; hpwOS/3.0.2; U; de-DE) AppleWebKit/534.6 (KHTML, like Gecko) wOSBrowser/234.40.1 Safari/534.6 TouchPad/1.0",
-	"browserName": "Safari",
-	"browserMajor": "",
-	"browserVersion": "",
-	"deviceModel": "TouchPad",
-	"deviceType": "tablet",
-	"deviceVendor": "hp",
-	"osName": "Linux",
-	"osVersion": ""
 }, {
 	"platform": "mobile device",
 	"description": "Kindle Fire - Android 4.0.3 - Silk 2.1 (AppleWebKit 535.19)",
@@ -7536,18 +7080,6 @@
 	"osVersion": "4.0.4"
 }, {
 	"platform": "mobile device",
-	"description": "RIM (Blackberry) Playbook - OS 2.1.0 - Safari 536.2+",
-	"userAgent": "Mozilla/5.0 (PlayBook; U; RIM Tablet OS 2.1.0; en-US) AppleWebKit/536.2+ (KHTML like Gecko) Version/7.2.1.0 Safari/536.2+",
-	"browserName": "Safari",
-	"browserMajor": "7",
-	"browserVersion": "7.2.1.0",
-	"deviceModel": "PlayBook",
-	"deviceType": "tablet",
-	"deviceVendor": "RIM",
-	"osName": "RIM Tablet OS",
-	"osVersion": "2.1.0"
-}, {
-	"platform": "mobile device",
 	"description": "Samsung Galaxy - Android 1.5 - Mobile Safari 525.20.1",
 	"userAgent": "Mozilla/5.0 (Linux; U; Android 1.5; de-de; Galaxy Build/CUPCAKE) AppleWebKit/528.5  (KHTML, like Gecko) Version/3.1.2 Mobile Safari/525.20.1",
 	"browserName": "Android Browser",
@@ -7596,36 +7128,12 @@
 	"osVersion": "5.0.1"
 }, {
 	"platform": "mobile os",
-	"description": "Android 6.0 - Chrome 52.0 - HTC One M9",
-	"userAgent": "Mozilla/5.0 (Linux; Android 6.0; HTC One M9 Build/MRA58K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.98 Mobile Safari/537.36",
-	"browserName": "Chrome",
-	"browserMajor": "52",
-	"browserVersion": "52.0.2743.98",
-	"deviceModel": "One",
-	"deviceType": "mobile",
-	"deviceVendor": "HTC",
-	"osName": "Android",
-	"osVersion": "6.0"
-}, {
-	"platform": "mobile os",
 	"description": "Android 6.0 - Chome 53.0 - LG-D850",
 	"userAgent": "Mozilla/5.0 (Linux; Android 6.0; LG-D850 Build/MRA58K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.97 Mobile Safari/537.36",
 	"browserName": "Chrome",
 	"browserMajor": "53",
 	"browserVersion": "53.0.2785.97",
 	"deviceModel": "D850",
-	"deviceType": "mobile",
-	"deviceVendor": "LG",
-	"osName": "Android",
-	"osVersion": "6.0"
-}, {
-	"platform": "mobile os",
-	"description": "Android 6.0 - Chome 53.0 - Nexus 5X",
-	"userAgent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5X Build/MDB08L) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.124 Mobile Safari/537.36",
-	"browserName": "Chrome",
-	"browserMajor": "53",
-	"browserVersion": "53.0.2785.124",
-	"deviceModel": "Nexus 5",
 	"deviceType": "mobile",
 	"deviceVendor": "LG",
 	"osName": "Android",
@@ -7642,18 +7150,6 @@
 	"deviceVendor": "",
 	"osName": "Android",
 	"osVersion": "6.0.1"
-}, {
-	"platform": "mobile os",
-	"description": "Android 7.0 - Chrome 53.0 - Nexus 9",
-	"userAgent": "Mozilla/5.0 (Linux; Android 7.0; Nexus 9 Build/NRD90R) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.124 Safari/537.36",
-	"browserName": "Chrome",
-	"browserMajor": "53",
-	"browserVersion": "53.0.2785.124",
-	"deviceModel": "Nexus 9",
-	"deviceType": "tablet",
-	"deviceVendor": "HTC",
-	"osName": "Android",
-	"osVersion": "7.0"
 }, {
 	"platform": "mobile os",
 	"description": "iOS 1.0 - iPhone - Safari 419.3",
@@ -7678,18 +7174,6 @@
 	"deviceVendor": "Apple",
 	"osName": "iOS",
 	"osVersion": "2.0"
-}, {
-	"platform": "mobile os",
-	"description": "iOS 2.2.1 - iPod - Safari 525.20",
-	"userAgent": "Mozilla/5.0 (iPod; U; CPU iPhone OS 2_2_1 like Mac OS X; en-us) AppleWebKit/525.18.1 (KHTML, like Gecko) Version/3.1.1 Mobile/5H11a Safari/525.20",
-	"browserName": "Mobile Safari",
-	"browserMajor": "3",
-	"browserVersion": "3.1.1",
-	"deviceModel": "iPod",
-	"deviceType": "mobile",
-	"deviceVendor": "Apple",
-	"osName": "iOS",
-	"osVersion": "2.2.1"
 }, {
 	"platform": "mobile os",
 	"description": "iOS 3.0 - iPhone - Safari 528.16",
@@ -8028,18 +7512,6 @@
 	"osVersion": "8.0"
 }, {
 	"platform": "mobile os",
-	"description": "Android 5.1.1 - Nexus 7 - Opera 30.0",
-	"userAgent": "Mozilla/5.0 (Linux; Android 5.1.1; Nexus 7 Build/LMY47V) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.78 Safari/537.36 OPR/30.0.1856.93524",
-	"browserName": "Opera",
-	"browserMajor": "30",
-	"browserVersion": "30.0.1856.93524",
-	"deviceModel": "Nexus 7",
-	"deviceType": "tablet",
-	"deviceVendor": "Asus",
-	"osName": "Android",
-	"osVersion": "5.1.1"
-}, {
-	"platform": "mobile os",
 	"description": "NT 6.2 (odd id) - Lumia 635 ARM - IEMobile 11.0",
 	"userAgent": "Mozilla/5.0 (Windows NT 6.2; ARM; Trident/7.0; Touch; rv:11.0; WPDesktop; NOKIA; Lumia 635) like Gecko",
 	"browserName": "IE",
@@ -8122,18 +7594,6 @@
 	"deviceVendor": "Samsung",
 	"osName": "Android",
 	"osVersion": "4.4.2"
-}, {
-	"platform": "mobile os",
-	"description": "Android 4.4 - (Nexus 5) - AppleWebKit/536.23",
-	"userAgent": "Mozilla/5.0 (Linux; Android 4.4; Nexus 5 Build/BuildID) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/30.0.0.0 Mobile Safari/537.36",
-	"browserName": "Chrome",
-	"browserMajor": "30",
-	"browserVersion": "30.0.0.0",
-	"deviceModel": "Nexus 5",
-	"deviceType": "mobile",
-	"deviceVendor": "LG",
-	"osName": "Android",
-	"osVersion": "4.4"
 }, {
 	"platform": "mobile os",
 	"description": "Android 4.3 - AppleWebKit/536.23",
@@ -8280,18 +7740,6 @@
 	"osVersion": "2.0"
 }, {
 	"platform": "mobile os",
-	"description": "Android 2.1 - Nexus One - Safari 530.17",
-	"userAgent": "Mozilla/5.0 (Linux; U; Android 2.1; en-us; Nexus One Build/ERD62) AppleWebKit/530.17 (KHTML, like Gecko) Version/4.0 Mobile Safari/530.17",
-	"browserName": "Android Browser",
-	"browserMajor": "4",
-	"browserVersion": "4.0",
-	"deviceModel": "",
-	"deviceType": "mobile",
-	"deviceVendor": "",
-	"osName": "Android",
-	"osVersion": "2.1"
-}, {
-	"platform": "mobile os",
 	"description": "Android 5.0.2 - Chrome 38.0 - Samsung SM-T530NU",
 	"userAgent": "Mozilla/5.0 (Linux; Android 5.0.2; SAMSUNG SM-T530NU Build/LRX22G) AppleWebKit/537.36 (KHTML, like Gecko) SamsungBrowser/3.2 Chrome/38.0.2125.102 Safari/537.36",
 	"browserName": "Chrome",
@@ -8302,30 +7750,6 @@
 	"deviceVendor": "Samsung",
 	"osName": "Android",
 	"osVersion": "5.0.2"
-}, {
-	"platform": "mobile os",
-	"description": "Android 2.2 - HTC Evo - Mobile Safari 533.1",
-	"userAgent": "Mozilla/5.0 (Linux; U; Android 2.2; en-us; Sprint APA9292KT Build/FRF91) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1",
-	"browserName": "Android Browser",
-	"browserMajor": "4",
-	"browserVersion": "4.0",
-	"deviceModel": "APA9292KT",
-	"deviceType": "mobile",
-	"deviceVendor": "HTC",
-	"osName": "Android",
-	"osVersion": "2.2"
-}, {
-	"platform": "mobile os",
-	"description": "Android 2.2 - HTC Incredible - Safari 533.1",
-	"userAgent": "Mozilla/5.0 (Linux; U; Android 2.2; en-us; ADR6300 Build/FRF91) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1",
-	"browserName": "Android Browser",
-	"browserMajor": "4",
-	"browserVersion": "4.0",
-	"deviceModel": "",
-	"deviceType": "mobile",
-	"deviceVendor": "",
-	"osName": "Android",
-	"osVersion": "2.2"
 }, {
 	"platform": "mobile os",
 	"description": "Android 2.2 - Samsung Galaxy - Mobile Safari 533.1",
@@ -8518,18 +7942,6 @@
 	"deviceVendor": "",
 	"osName": "",
 	"osVersion": ""
-}, {
-	"platform": "other",
-	"description": "iTunes 4.2 (OS X 10.2 PPC)",
-	"userAgent": "iTunes/4.2 (Macintosh; U; PPC Mac OS X 10.2)",
-	"browserName": "",
-	"browserMajor": "",
-	"browserVersion": "",
-	"deviceModel": "",
-	"deviceType": "",
-	"deviceVendor": "",
-	"osName": "Mac OS",
-	"osVersion": "10.2"
 }, {
 	"platform": "other",
 	"description": "Grub-Client",
