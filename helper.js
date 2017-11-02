@@ -1,47 +1,47 @@
 // get all genres
 
-// for each genre, the following will occur     //// SYNCHRONOUS LOOP OVER GENRES ////
+// for each genre, the following will occur /// SYNCHRONOUS LOOP OVER GENRES ///
 
-  // iterate over each letter & the numbers of that genre ( 27 )      //// ASYNC 4 THREADS/LETTERS AT A TIME?? ////
+// iterate over each letter & the numbers of that genre ( 27 )
+//// ASYNC 4 THREADS/LETTERS AT A TIME?? ////
 
-  // for each letter, the following will occur
+// for each letter, the following will occur
 
-    // iterate each page of that letter ( 20-30 )
-
+// iterate each page of that letter (20-30)
 
 // TODO: rename this file!
 
 const Nightmare = require('nightmare');
 const { randomUserAgent } = require('./useragent');
 
-async function getAppGenres () {
+async function getAppGenres() {
   const homePage = 'https://itunes.apple.com/us/genre/ios/id36?mt=8';
   const nightmare = new Nightmare({ show: true });
+
   // Go to initial start page, get a list of all genres and their links
   try {
     return nightmare
       .goto(homePage)
       .wait('.top-level-genre')
-      .evaluate(() => {
-        return [...document.querySelectorAll('.top-level-genre')]
+      .evaluate(() => [...document.querySelectorAll('.top-level-genre')]
           .reduce((obj, el) => {
             if (el) {
               let genre = el.innerText;
               let link = el.href;
-              genre = genre.replace(/\W/g, " ").replace(/\s+/g, "_");
+              genre = genre.replace(/\W/g, ' ').replace(/\s+/g, '_');
               obj[genre] = link;
             }
+
             return obj;
-          }, {});
-      })
+          }, {}))
       .end();
-  } catch(e) {
+  } catch (e) {
     console.error(e);
     return e;
   }
 }
 
-async function getAppIds (baseUrl, alphaChar) {
+async function getAppIds(baseUrl, alphaChar) {
   let begin = new Date();
   console.log(`Starting ${alphaChar}: ${begin.toString()}...`);
   const nightmare = new Nightmare({ show: true }); // TODO: eventually make it headless
@@ -55,10 +55,11 @@ async function getAppIds (baseUrl, alphaChar) {
   try {
     do {
       let pageData = await nightmare
-      .viewport(1200, 950)
+      .viewport(1000, 800)
       .useragent(userAgent)
       .goto(page)
       .inject('js', 'jquery.min.js')
+
       // .wait(randWaitInterval(500, 1000))
       .wait('#selectedcontent')
       .evaluate(function () {
@@ -86,20 +87,20 @@ async function getAppIds (baseUrl, alphaChar) {
 
     let end = new Date();
     console.log(`Finished ${alphaChar}: ${end.toString()}...`);
-    console.log(`Total time for ${alphaChar}: ${(end - begin)/1000} seconds`);
+    console.log(`Total time for ${alphaChar}: ${(end - begin) / 1000} seconds`);
 
     return allIds;
-  } catch(e) {
+  } catch (e) {
     console.log(e);
     return e;
   }
 }
 
-function randWaitInterval (min, max) {
+function randWaitInterval(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 module.exports = {
   getAppGenres,
-  getAppIds
+  getAppIds,
 };

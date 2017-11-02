@@ -7,16 +7,16 @@ const { getAppGenres, getAppIds } = require('./helper');
 
 const Genres = {
   Finance: 'https://itunes.apple.com/us/genre/ios-finance/id6015?mt=8',
-  Productivity: 'https://itunes.apple.com/us/genre/ios-productivity/id6007?mt=8'
+  Productivity: 'https://itunes.apple.com/us/genre/ios-productivity/id6007?mt=8',
 };
 
 const genreKeys = Object.keys(Genres).filter(genre => Genres.hasOwnProperty(genre));
 
 const testAlphabet = [
-  'A', 'B', 'C'
+  'A', 'B', 'C',
 ];
 
-async function main () {
+async function main() {
   for (let genre of genreKeys) {
     // this will be executed for each genre. All genres are done SYNC
     let begin = new Date();
@@ -31,15 +31,15 @@ async function main () {
     ids = [].concat(...ids);
     let end = new Date();
     console.log(`Finished ${genre}: ${end.toString()}`);
-    console.log(`Total time for ${genre}: ${(end - begin)/1000} seconds`);
+    console.log(`Total time for ${genre}: ${(end - begin) / 1000} seconds`);
     console.log(`Total ids for ${genre}: ${ids.length}`);
+
     // console.log('Ids:', ids);
     // do some db operation?? Or add these to a big object and do DB once done with all genres???
   }
 }
 
 main();
-
 
 /*
 // below is the output of getAppGenres()
@@ -72,13 +72,16 @@ const genres = {
 };
 */
 
-// TODO: figure out where to use async (do reduce function for all pages in letter? push to array if hasmore)
-// TODO: how to delegate alpha into threads? set max threads in program and update that amount when a process gets called?
+/**
+ * TODO: figure out where to use async (do reduce function for all pages in letter?
+ * push to array if hasmore)
+ * TODO: how to delegate alpha into threads? set max threads in program and update
+ * that amount when a process gets called?
+ */
 
 // TODO: can't use Promise.all because it assumes each scraper is not going to encounter issues.
 // If a single one does, the entire Promise.all call fails.
 // Need to instead add the contents to an array when complete... or save to DB? Think about it.
-
 
 // only run the scraper daily to check for new apps! otherwise it's not needed!
 // start writing the process for pinging API once an hour to check for updates
@@ -91,33 +94,50 @@ const genres = {
 // HOURLY:
 // Check all apps in mongo and request 200 at a time for changes. Record last checked timestamp.
 
-// WEBHOOKS:
-// App update: app version has increased
-// Price increase/decrease: app price has changed (differentiate these bc ppl mainly want to know drops)
-// New app added: new document added to mongodb
+/**
+ * WEBHOOKS:
+ * App update: app version has increased
+ * Price increase/decrease: app price has changed (differentiate these bc ppl mainly want to know drops)
+ * New app added: new document added to mongodb
+ */
 
 //////////// TODO: THINK ABOUT / FIGURE OUT ////////////
 
-// Exclude some apps from being updated every hour? Maybe set a threshold for total app downloads
-// Related to above, find out how appshopper differentiates popular from all (the junk apps)
-// Don't show to option for price alert if app is free (set that up in the model?)
-// EXCLUDE FROM SEARCH IF APP IS FREE?
-  // separate price and update tasks? Doesn't make sense, should do all at once
-// How to give people option for tracking app updates or price drops
-// Developer alerts?
-// Similar apps?
-// Add RSS feed from Apple for all the featured ones!
+/**
+ * Exclude some apps from being updated every hour? Maybe set a threshold for total app downloads
+ * Related to above, find out how appshopper differentiates popular from all (the junk apps)
+ * Don't show to option for price alert if app is free (set that up in the model?)
+ * EXCLUDE FROM SEARCH IF APP IS FREE?
+ * separate price and update tasks? Doesn't make sense, should do all at once
+ * How to give people option for tracking app updates or price drops
+ * Developer alerts?
+ * Similar apps?
+ * Add RSS feed from Apple for all the featured ones!
+ */
 
+/**
+ * TODO: on the data model in DB, clean the trackViewUrl property by calling
+ * trackViewUrl.split('&uo=')[0]; to get rid of the unique origin.
+ */
 
-// TODO: on the data model in DB, clean the trackViewUrl property by calling trackViewUrl.split('&uo=')[0]; to get rid of the unique origin.
+/**
+ * TODO: change above - the media types should be in the script file,
+ * it should choose based on what it is scraping - i.e. software, movies, etc
+ */
 
+/**
+ * const mediaTypes = [movie, podcast, music, musicVideo, audiobook, shortFilm, tvShow, software, ebook]
+ * TODO: fix mediaTypes to be entity (or use media??). the entity types are different, there are more, esp music
+ */
 
-// TODO: change above - the media types should be in the script file, it should choose based on what it is scraping
-// i.e. software, movies, etc
-// const mediaTypes = [movie, podcast, music, musicVideo, audiobook, shortFilm, tvShow, software, ebook];
-// TODO: fix mediaTypes to be entity (or use media??). the entity types are different, there are more, esp music
+/**
+ * const mediaTypes = [movie, podcast, music, musicVideo, audiobook, shortFilm, tvShow, software, ebook];
+ * TODO: fix mediaTypes to be entity (or use media??). the entity types are different, there are more, esp music
+ */
 
-
-// start a scraper for each genre
-// create array of A through #, have two scrapers going per genre working outside in and saving to an array. have scrapr check if the currently observed name is in the array. if so, done.
-// UPDATE: above is very bad. Cannot check an array for the presence of an app... highly unoptomized
+/**
+ * start a scraper for each genre
+ * create array of A through #, have two scrapers going per genre working outside in and saving to an array.
+ * have scrapr check if the currently observed name is in the array. if so, done.
+ * UPDATE: above is very bad. Cannot check an array for the presence of an app... highly unoptomized
+ */
