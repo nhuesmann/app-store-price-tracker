@@ -1,5 +1,3 @@
-const Nightmare = require('nightmare');
-
 const { getAppGenres, getAppIds } = require('./helper');
 
 // let genres = getAppGenres();
@@ -15,6 +13,17 @@ const genreKeys = Object.keys(Genres).filter(genre => Genres.hasOwnProperty(genr
 const testAlphabet = [
   'A', 'B', 'C',
 ];
+
+main();
+
+async function getAppsFromIds(ids) {
+  /*
+   * sends 200 ids at a time to iTunes
+   *    how to chunk into 200??
+   * forwards the responses to the POST endpoint for creating new apps
+   * BATCH send function???? Or only one at a time?
+   */
+}
 
 async function main() {
   for (let genre of genreKeys) {
@@ -38,8 +47,6 @@ async function main() {
     // do some db operation?? Or add these to a big object and do DB once done with all genres???
   }
 }
-
-main();
 
 /*
 // below is the output of getAppGenres()

@@ -19,4 +19,8 @@ router.delete('/app/:id', appController.appDelete);
 /* GET request for all App TODO: decide how to limit this... can't reply with all */
 router.get('/apps', appController.appList);
 
+/* POST request for creating ids (from scraper) */
+
+// router.post('/scraper/ids', scraperController.)
+
 module.exports = router;
