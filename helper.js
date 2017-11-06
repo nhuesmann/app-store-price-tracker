@@ -76,7 +76,8 @@ async function getAppIds(baseUrl, alphaChar) {
         return { links, more, nextPage };
       });
 
-      let pageIds = pageData.links.map(link => link.split('/id')[1].split('?')[0]);
+      let pageIds = pageData.links.map(link => link.match(/\/id\d+\?/)[0].replace(/\D/g, ''));
+
       allIds = allIds.concat(pageIds);
       hasMore = pageData.more;
       page = pageData.nextPage;

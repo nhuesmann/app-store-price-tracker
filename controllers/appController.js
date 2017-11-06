@@ -1,8 +1,9 @@
-const App = require('../models/ios_app');
-const AppNew = require('../models/appNew');
+const App = require('../models/iosApp');
 const Developer = require('../models/developer');
 const Category = require('../models/category');
+const { ObjectId } = require('mongodb');
 
+/*
 exports.appCreate = function (req, res, next) {
   var app = new App({
     trackId: req.body.trackId,
@@ -68,8 +69,9 @@ exports.appCreate = function (req, res, next) {
 
   // res.send('function for creating an app');
 };
+*/
 
-exports.appCreateNew = async function (req, res, next) {
+exports.appCreate = async function (req, res, next) {
   // check if dev exists
   var dev = {
     id: req.body.artistId,
@@ -87,7 +89,7 @@ exports.appCreateNew = async function (req, res, next) {
   // use the async npm module??
 
   // create the app model
-  let appNew = new AppNew({
+  let app = new App({
     id: req.body.trackId,
     name: req.body.trackName,
     nameCensored: req.body.trackCensoredName,
@@ -110,8 +112,9 @@ exports.appCreateNew = async function (req, res, next) {
     fileSizeBytes: req.body.fileSizeBytes,
     fileSizeFormatted: req.body.fileSizeBytes,
     version: req.body.version,
-    releaseDateCurrentVersion: req.body.currentVersionReleaseDate,
-    releaseDateOriginal: req.body.releaseDate,
+    lastChecked: Date(),
+    releaseDateCurrentVersion: new Date(req.body.currentVersionReleaseDate),
+    releaseDateOriginal: new Date(req.body.releaseDate),
     releaseNotes: req.body.releaseNotes,
     description: req.body.description,
     userRatingAverageLifetime: req.body.averageUserRating,
@@ -133,17 +136,23 @@ exports.appCreateNew = async function (req, res, next) {
   });
 
   // save
-  var saved = await appNew.save();
+  var saved = await app.save();
 
   res.send(saved);
 
 };
 
-exports.appDetail = async function (req, res) {
-  let app = await AppNew.find({}).populate('categories');//.exec();
+exports.appDetail = async function (req, res, next) {
+  let id = req.params.id;
+
+  if (!ObjectId.isValid(id)) throw new Error('invalid object id!');
+
+  let app = await AppNew.find({ _id: id }).populate('categories');
 
   res.send(app);
-  // res.send('function for getting individual app detail');
+
+  // TODO: figure out what I really want to send
+  // TODO: is throwing a new error good enough? Need to specify where it came from!
 };
 
 exports.appUpdate = function (req, res) {

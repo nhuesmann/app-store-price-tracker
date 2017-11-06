@@ -9,9 +9,6 @@ var categoryController = require('../controllers/categoryController');
 /* POST request for creating an App */
 router.post('/app/create', asyncWrapper(appController.appCreate));
 
-/* POST request for creating an App */
-router.post('/app/createnew', asyncWrapper(appController.appCreateNew));
-
 /* GET request for one App */
 router.get('/app/:id', asyncWrapper(appController.appDetail));
 

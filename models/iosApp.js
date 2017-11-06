@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const AppNewSchema = new Schema({
+const AppSchema = new Schema({
   id: Number, // trackId
   name: String, // trackName
   nameCensored: String, // trackCensoredName
@@ -27,6 +27,7 @@ const AppNewSchema = new Schema({
     set: fileSizeFormatted,
   },
   version: String, // version
+  lastChecked: Date, // use this for keeping track of when the last query was run
   releaseDateCurrentVersion: Date, // currentVersionReleaseDate
   releaseDateOriginal: Date, // releaseDate
   releaseNotes: String, // releaseNotes
@@ -73,6 +74,6 @@ function fileSizeFormatted(bytes) {
   }
 }
 
-const AppNew = mongoose.model('appnew', AppNewSchema);
+const App = mongoose.model('app', AppSchema);
 
-module.exports = AppNew;
+module.exports = App;
