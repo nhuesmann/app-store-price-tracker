@@ -58,6 +58,8 @@ exports.appCreate = function (req, res) {
 
   app.save().then((err, data) => {
     if (err => next(err));
+
+    // TODO: double check that I'm doing the error handling correctly!
     res.send('created an app!');
   });
 

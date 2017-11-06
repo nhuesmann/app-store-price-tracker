@@ -37,9 +37,9 @@ const AppSchema = new Schema({
   bundleId: String,
   primaryGenreId: Number,
   primaryGenreName: String,
-  // genres: [{
+  // categories: [{
   //   type: Schema.Types.ObjectId,
-  //   ref: 'genre',
+  //   ref: 'category',
   // }],
   genres: Array,
   genreIds: Array,
