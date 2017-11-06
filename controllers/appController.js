@@ -1,6 +1,9 @@
 const App = require('../models/ios_app');
+const AppNew = require('../models/appNew');
+const Developer = require('../models/developer');
+const Category = require('../models/category');
 
-exports.appCreate = function (req, res) {
+exports.appCreate = function (req, res, next) {
   var app = new App({
     trackId: req.body.trackId,
     trackName: req.body.trackName,
@@ -66,8 +69,81 @@ exports.appCreate = function (req, res) {
   // res.send('function for creating an app');
 };
 
-exports.appDetail = function (req, res) {
-  res.send('function for getting individual app detail');
+exports.appCreateNew = async function (req, res, next) {
+  // check if dev exists
+  var dev = {
+    id: req.body.artistId,
+    name: req.body.artistName,
+    nameFull: req.body.sellerName,
+    urlApple: req.body.artistViewUrl,
+    urlDeveloper: req.body.sellerUrl,
+  };
+
+  // get categories
+  var genreIds = req.body.genreIds.map(id => +id);
+  var categories = await Category.find({});
+  categories = categories.filter(cat => genreIds.includes(cat.id)).map(cat => cat._id);
+
+  // use the async npm module??
+
+  // create the app model
+  let appNew = new AppNew({
+    id: req.body.trackId,
+    name: req.body.trackName,
+    nameCensored: req.body.trackCensoredName,
+    url: req.body.trackViewUrl,
+    // developer: {
+    //   type: Schema.Types.ObjectId,
+    //   ref: 'developer',
+    // },
+    images: {
+      iconUrl60: req.body.artworkUrl60,
+      iconUrl100: req.body.artworkUrl100,
+      iconUrl512: req.body.artworkUrl512,
+      iPhoneScreenshotUrls: req.body.screenshotUrls,
+      iPadScreenshotUrls: req.body.ipadScreenshotUrls,
+      appleTvSreenshotUrls: req.body.appletvScreenshotUrls,
+    },
+    price: req.body.price,
+    priceFormatted: req.body.formattedPrice,
+    currency: req.body.currency,
+    fileSizeBytes: req.body.fileSizeBytes,
+    fileSizeFormatted: req.body.fileSizeBytes,
+    version: req.body.version,
+    releaseDateCurrentVersion: req.body.currentVersionReleaseDate,
+    releaseDateOriginal: req.body.releaseDate,
+    releaseNotes: req.body.releaseNotes,
+    description: req.body.description,
+    userRatingAverageLifetime: req.body.averageUserRating,
+    userRatingCountLifetime: req.body.userRatingCount,
+    userRatingAverageCurrentVersion: req.body.averageUserRatingForCurrentVersion,
+    userRatingCountCurrentVersion: req.body.userRatingCountForCurrentVersion,
+    bundleId: req.body.bundleId,
+    categories: categories,
+    kind: req.body.kind,
+    minimumOsVersion: req.body.minimumOsVersion,
+    contentRating: req.body.trackContentRating,
+    contentAdvisoryRating: req.body.contentAdvisoryRating,
+    isGameCenterEnabled: req.body.isGameCenterEnabled,
+    isVppDeviceBasedLicensingEnabled: req.body.isVppDeviceBasedLicensingEnabled,
+    languageCodesISO2A: req.body.languageCodesISO2A,
+    advisories: req.body.advisories,
+    supportedDevices: req.body.supportedDevices,
+    features: req.body.features,
+  });
+
+  // save
+  var saved = await appNew.save();
+
+  res.send(saved);
+
+};
+
+exports.appDetail = async function (req, res) {
+  let app = await AppNew.find({}).populate('categories');//.exec();
+
+  res.send(app);
+  // res.send('function for getting individual app detail');
 };
 
 exports.appUpdate = function (req, res) {
