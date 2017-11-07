@@ -1,4 +1,5 @@
 const { ObjectId } = require('mongodb');
+const request = require('request-promise'); // TODO: prob wont need this for other than testing
 
 const App = require('../models/iosApp');
 const Developer = require('../models/developer');
@@ -104,6 +105,17 @@ exports.appDelete = function (req, res) {
 
 exports.appList = function (req, res) {
   res.send('function for getting a list of apps');
+};
+
+exports.appGetMetadataById = async function (req, res, next) {
+  let id = req.params.id;
+
+  let response = await request({
+    uri: `https://itunes.apple.com/lookup?id=${id}`,
+    json: true,
+  });
+
+  res.json(response.results[0]);
 };
 
 /* TODO: look into the following tools:
