@@ -1,127 +1,39 @@
-const async = require('async');
 const { ObjectId } = require('mongodb');
 
 const App = require('../models/iosApp');
 const Developer = require('../models/developer');
 const Category = require('../models/category');
 
-/*
-exports.appCreate = function (req, res, next) {
-  var app = new App({
-    trackId: req.body.trackId,
-    trackName: req.body.trackName,
-    trackCensoredName: req.body.trackCensoredName,
-    trackViewUrl: req.body.trackViewUrl,
-    // developer: {
-    //   type: Schema.Types.ObjectId,
-    //   ref: 'developer',
-    // },
-    artistId: req.body.artistId,
-    artistName: req.body.artistName,
-    artistViewUrl: req.body.artistViewUrl,
-    sellerName: req.body.sellerName,
-    sellerUrl: req.body.sellerUrl,
-    artworkUrl60: req.body.artworkUrl60,
-    artworkUrl100: req.body.artworkUrl100,
-    artworkUrl512: req.body.artworkUrl512,
-    screenshotUrls: req.body.screenshotUrls,
-    ipadScreenshotUrls: req.body.ipadScreenshotUrls,
-    appletvScreenshotUrls: req.body.appletvScreenshotUrls,
-    price: req.body.price,
-    formattedPrice: req.body.formattedPrice,
-    currency: req.body.currency,
-    fileSizeBytes: req.body.fileSizeBytes,
-    version: req.body.version,
-    currentVersionReleaseDate: req.body.currentVersionReleaseDate,
-    releaseDate: req.body.releaseDate,
-    releaseNotes: req.body.releaseNotes,
-    description: req.body.description,
-    averageUserRating: req.body.averageUserRating,
-    userRatingCount: req.body.userRatingCount,
-    averageUserRatingForCurrentVersion: req.body.averageUserRatingForCurrentVersion,
-    userRatingCountForCurrentVersion: req.body.userRatingCountForCurrentVersion,
-    bundleId: req.body.bundleId,
-    primaryGenreId: req.body.primaryGenreId,
-    primaryGenreName: req.body.primaryGenreName,
-    // genres: [{
-    //   type: Schema.Types.ObjectId,
-    //   ref: 'genre',
-    // }],
-    genreIds: req.body.genreIds,
-    genres: req.body.genres,
-    kind: req.body.kind,
-    wrapperType: req.body.wrapperType,
-    minimumOsVersion: req.body.minimumOsVersion,
-    trackContentRating: req.body.trackContentRating,
-    contentAdvisoryRating: req.body.contentAdvisoryRating,
-    isGameCenterEnabled: req.body.isGameCenterEnabled,
-    isVppDeviceBasedLicensingEnabled: req.body.isVppDeviceBasedLicensingEnabled,
-    features: req.body.features,
-    supportedDevices: req.body.supportedDevices,
-    advisories: req.body.advisories,
-    languageCodesISO2A: req.body.languageCodesISO2A,
-  });
-
-  app.save().then((err, data) => {
-    if (err => next(err));
-
-    // TODO: double check that I'm doing the error handling correctly!
-    res.send('created an app!');
-  });
-
-  // res.send('function for creating an app');
-};
-*/
-
 exports.appCreate = async function (req, res, next) {
-  // create dev (unique is being forced)
-  let dev = new Developer({
-    id: req.body.artistId,
-    name: req.body.artistName,
-    nameFull: req.body.sellerName,
-    urlApple: req.body.artistViewUrl,
-    urlDeveloper: req.body.sellerUrl,
-  });
+  // Check if developer already exists and load all categories
+  let developerQuery = Developer.findOne({ id: req.body.artistId });
+  let categoriesQuery = Category.find({});
+  let [developer, categories] = await Promise.all([developerQuery.exec(), categoriesQuery.exec()]);
 
-  // let results = await Promise.all(dev.save(), Category.find({}));
+  // If developer doesn't exist, create document
+  if (!developer) {
+    developer = new Developer({
+      id: req.body.artistId,
+      name: req.body.artistName,
+      nameFull: req.body.sellerName,
+      urlApple: req.body.artistViewUrl,
+      urlDeveloper: req.body.sellerUrl,
+    });
 
-  // get categories
-  var genreIds = req.body.genreIds.map(id => +id);
-  var categories = await Category.find({});
+    developer = await developer.save();
+  }
+
+  // Retrieve the ObjectIds of the current app's categories
+  let genreIds = req.body.genreIds.map(id => +id);
   categories = categories.filter(cat => genreIds.includes(cat.id)).map(cat => cat._id);
 
-  // TODO: use the async npm module and dont inclde callback
-  // check if dev was saved, if it was get the id
-  // NOPE - write a .pre method to the save on the Dev Schema i.e.:
-  // if found, return the _id. if not found, save!
-
-  /*
-  mySchema.pre("save",function(next, done) {
-      var self = this;
-      mongoose.models["User"].findOne({email : self.email},function(err, results) {
-          if(err) {
-              done(err);
-          } else if(results) { //there was a result found, so the email address exists
-              self.invalidate("email","email must be unique");
-              done(new Error("email must be unique"));
-          } else {
-              done();
-          }
-      });
-      next();
-  });
-   */
-
-  // create the app model
+  // Create the App instance
   let app = new App({
     id: req.body.trackId,
     name: req.body.trackName,
     nameCensored: req.body.trackCensoredName,
     url: req.body.trackViewUrl,
-    // developer: {
-    //   type: Schema.Types.ObjectId,
-    //   ref: 'developer',
-    // },
+    developer: developer._id,
     images: {
       iconUrl60: req.body.artworkUrl60,
       iconUrl100: req.body.artworkUrl100,
@@ -136,7 +48,7 @@ exports.appCreate = async function (req, res, next) {
     fileSizeBytes: req.body.fileSizeBytes,
     fileSizeFormatted: req.body.fileSizeBytes,
     version: req.body.version,
-    lastChecked: Date(),
+    lastUpdated: Date(),
     releaseDateCurrentVersion: new Date(req.body.currentVersionReleaseDate),
     releaseDateOriginal: new Date(req.body.releaseDate),
     releaseNotes: req.body.releaseNotes,
@@ -152,18 +64,15 @@ exports.appCreate = async function (req, res, next) {
     contentRating: req.body.trackContentRating,
     contentAdvisoryRating: req.body.contentAdvisoryRating,
     isGameCenterEnabled: req.body.isGameCenterEnabled,
-    isVppDeviceBasedLicensingEnabled: req.body.isVppDeviceBasedLicensingEnabled,
     languageCodesISO2A: req.body.languageCodesISO2A,
     advisories: req.body.advisories,
     supportedDevices: req.body.supportedDevices,
     features: req.body.features,
   });
 
-  // save
-  var saved = await app.save();
+  let appSaved = await app.save();
 
-  res.send(saved);
-
+  res.send(appSaved);
 };
 
 exports.appDetail = async function (req, res, next) {

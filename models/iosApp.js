@@ -27,7 +27,7 @@ const AppSchema = new Schema({
     set: fileSizeFormatted,
   },
   version: String, // version
-  lastChecked: Date, // use this for keeping track of when the last query was run
+  lastUpdated: Date, // use this for keeping track of when the last query was run
   releaseDateCurrentVersion: Date, // currentVersionReleaseDate
   releaseDateOriginal: Date, // releaseDate
   releaseNotes: String, // releaseNotes
@@ -46,7 +46,6 @@ const AppSchema = new Schema({
   contentRating: String, // trackContentRating
   contentAdvisoryRating: String, // contentAdvisoryRating
   isGameCenterEnabled: Boolean, // isGameCenterEnabled
-  isVppDeviceBasedLicensingEnabled: Boolean, // isVppDeviceBasedLicensingEnabled
   languageCodesISO2A: Array, // languageCodesISO2A
   advisories: Array, // advisories
   supportedDevices: Array, // supportedDevices
