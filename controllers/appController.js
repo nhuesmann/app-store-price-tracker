@@ -1,7 +1,9 @@
+const async = require('async');
+const { ObjectId } = require('mongodb');
+
 const App = require('../models/iosApp');
 const Developer = require('../models/developer');
 const Category = require('../models/category');
-const { ObjectId } = require('mongodb');
 
 /*
 exports.appCreate = function (req, res, next) {
@@ -72,21 +74,43 @@ exports.appCreate = function (req, res, next) {
 */
 
 exports.appCreate = async function (req, res, next) {
-  // check if dev exists
-  var dev = {
+  // create dev (unique is being forced)
+  let dev = new Developer({
     id: req.body.artistId,
     name: req.body.artistName,
     nameFull: req.body.sellerName,
     urlApple: req.body.artistViewUrl,
     urlDeveloper: req.body.sellerUrl,
-  };
+  });
+
+  // let results = await Promise.all(dev.save(), Category.find({}));
 
   // get categories
   var genreIds = req.body.genreIds.map(id => +id);
   var categories = await Category.find({});
   categories = categories.filter(cat => genreIds.includes(cat.id)).map(cat => cat._id);
 
-  // use the async npm module??
+  // TODO: use the async npm module and dont inclde callback
+  // check if dev was saved, if it was get the id
+  // NOPE - write a .pre method to the save on the Dev Schema i.e.:
+  // if found, return the _id. if not found, save!
+
+  /*
+  mySchema.pre("save",function(next, done) {
+      var self = this;
+      mongoose.models["User"].findOne({email : self.email},function(err, results) {
+          if(err) {
+              done(err);
+          } else if(results) { //there was a result found, so the email address exists
+              self.invalidate("email","email must be unique");
+              done(new Error("email must be unique"));
+          } else {
+              done();
+          }
+      });
+      next();
+  });
+   */
 
   // create the app model
   let app = new App({
@@ -147,7 +171,7 @@ exports.appDetail = async function (req, res, next) {
 
   if (!ObjectId.isValid(id)) throw new Error('invalid object id!');
 
-  let app = await AppNew.find({ _id: id }).populate('categories');
+  let app = await App.find({ _id: id }).populate('categories');
 
   res.send(app);
 
