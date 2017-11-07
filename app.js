@@ -40,7 +40,9 @@ app.use(function (err, req, res, next) {
   console.error(err.stack);
   res
     .status(err.status || 422)
-    .send({ error: err.message });
+    // .send({ error: err.message });
+    .send(err);
+      // TODO: decide which format to use! just message? full error is prob better
 });
 
 module.exports = app;

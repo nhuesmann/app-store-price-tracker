@@ -1,55 +1,57 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const uniqueValidator = require('mongoose-unique-validator');
 
 const AppSchema = new Schema({
-  id: Number, // trackId
-  name: String, // trackName
-  nameCensored: String, // trackCensoredName
-  url: String, // trackViewUrl
+  // id: Number,
+  id: { type: Number, index: { unique: true }, },
+  name: String,
+  nameCensored: String,
+  url: String,
   developer: {
     type: Schema.Types.ObjectId,
     ref: 'developer',
   },
   images: {
-    iconUrl60: String, // artworkUrl60
-    iconUrl100: String, // artworkUrl100
-    iconUrl512: String, // artworkUrl512
-    iPhoneScreenshotUrls: Array, // screenshotUrls
-    iPadScreenshotUrls: Array, // ipadScreenshotUrls
-    appleTvSreenshotUrls: Array, // appletvScreenshotUrls
+    iconUrl60: String,
+    iconUrl100: String,
+    iconUrl512: String,
+    iPhoneScreenshotUrls: Array,
+    iPadScreenshotUrls: Array,
+    appleTvSreenshotUrls: Array,
   },
-  price: Number, // price
-  priceFormatted: String, // formattedPrice
-  currency: String, // currency
-  fileSizeBytes: String, // fileSizeBytes
-  fileSizeFormatted: { // fileSizeBytes (gets fed to this)
+  price: Number,
+  priceFormatted: String,
+  currency: String,
+  fileSizeBytes: String,
+  fileSizeFormatted: {
     type: String,
     set: fileSizeFormatted,
   },
-  version: String, // version
-  lastUpdated: Date, // use this for keeping track of when the last query was run
-  releaseDateCurrentVersion: Date, // currentVersionReleaseDate
-  releaseDateOriginal: Date, // releaseDate
-  releaseNotes: String, // releaseNotes
-  description: String, // description
-  userRatingAverageLifetime: Number, // averageUserRating
-  userRatingCountLifetime: Number, // userRatingCount
-  userRatingAverageCurrentVersion: Number, // averageUserRatingForCurrentVersion
-  userRatingCountCurrentVersion: Number, // userRatingCountForCurrentVersion
-  bundleId: String, // bundleId
+  version: String,
+  lastUpdated: Date, // TODO: dbl check... use this for keeping track of when the last query was run
+  releaseDateCurrentVersion: Date,
+  releaseDateOriginal: Date,
+  releaseNotes: String,
+  description: String,
+  userRatingAverageLifetime: Number,
+  userRatingCountLifetime: Number,
+  userRatingAverageCurrentVersion: Number,
+  userRatingCountCurrentVersion: Number,
+  bundleId: String,
   categories: [{
     type: Schema.Types.ObjectId,
     ref: 'category',
   }],
-  kind: String, // kind
-  minimumOsVersion: String, // minimumOsVersion
-  contentRating: String, // trackContentRating
-  contentAdvisoryRating: String, // contentAdvisoryRating
-  isGameCenterEnabled: Boolean, // isGameCenterEnabled
-  languageCodesISO2A: Array, // languageCodesISO2A
-  advisories: Array, // advisories
-  supportedDevices: Array, // supportedDevices
-  features: Array, // features
+  kind: String,
+  minimumOsVersion: String,
+  contentRating: String,
+  contentAdvisoryRating: String,
+  isGameCenterEnabled: Boolean,
+  languageCodesISO2A: Array,
+  advisories: Array,
+  supportedDevices: Array,
+  features: Array,
 });
 
 function fileSizeFormatted(bytes) {
@@ -73,6 +75,7 @@ function fileSizeFormatted(bytes) {
   }
 }
 
+AppSchema.plugin(uniqueValidator);
 const App = mongoose.model('app', AppSchema);
 
 module.exports = App;

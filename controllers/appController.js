@@ -80,7 +80,7 @@ exports.appDetail = async function (req, res, next) {
 
   if (!ObjectId.isValid(id)) throw new Error('invalid object id!');
 
-  let app = await App.find({ _id: id }).populate('categories');
+  let app = await App.find({ _id: id }).populate('developer').populate('categories');
 
   res.send(app);
 
