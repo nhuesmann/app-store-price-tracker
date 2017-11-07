@@ -12,7 +12,7 @@
 // TODO: rename this file!
 
 const Nightmare = require('nightmare');
-const { randomUserAgent } = require('./useragent');
+const randomUserAgent = require('./useragent');
 
 async function getAppGenres() {
   const homePage = 'https://itunes.apple.com/us/genre/ios/id36?mt=8';

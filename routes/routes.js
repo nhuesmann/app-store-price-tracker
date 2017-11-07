@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var asyncWrapper = require('../utils/asyncWrapper');
+var asyncWrapper = require('../middlewares/asyncWrapper');
 
 // Require controller modules
 var appController = require('../controllers/appController');
@@ -20,6 +20,12 @@ router.delete('/app/:id', appController.appDelete);
 
 /* GET request for all App TODO: decide how to limit this... can't reply with all */
 router.get('/apps', appController.appList);
+
+/* POST request to create multiple Apps */
+router.post('/apps', asyncWrapper(appController.appBatchCreate));
+
+/* PATCH request to batch update multiple Apps */
+router.patch('/apps', asyncWrapper(appController.appBatchUpdate));
 
 /* GET request for getting app metadata (for testing - add to test suite?) */
 router.get('/app/itunes/:id', asyncWrapper(appController.appGetMetadataById));

@@ -103,8 +103,12 @@ exports.appDelete = function (req, res) {
   res.send('function for deleteing an individual app');
 };
 
-exports.appList = function (req, res) {
+exports.appList = async function (req, res, next) {
   res.send('function for getting a list of apps');
+};
+
+exports.appBatchCreate = async function (req, res, next) {
+  res.send('function for batch creating');
 };
 
 exports.appGetMetadataById = async function (req, res, next) {

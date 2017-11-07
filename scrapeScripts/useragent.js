@@ -17,4 +17,4 @@ const randomUserAgent = (options = defaultOptions) => {
   return filteredData[randomIterator(0, filteredData.length - 1)].userAgent;
 };
 
-module.exports = { randomUserAgent };
+module.exports = randomUserAgent;

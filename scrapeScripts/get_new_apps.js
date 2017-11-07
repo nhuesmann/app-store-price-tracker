@@ -5,13 +5,13 @@ const { getAppGenres, getAppIds } = require('./helper');
 
 const Genres = {
   Finance: 'https://itunes.apple.com/us/genre/ios-finance/id6015?mt=8',
-  Productivity: 'https://itunes.apple.com/us/genre/ios-productivity/id6007?mt=8',
+  // Productivity: 'https://itunes.apple.com/us/genre/ios-productivity/id6007?mt=8',
 };
 
 const genreKeys = Object.keys(Genres).filter(genre => Genres.hasOwnProperty(genre));
 
 const testAlphabet = [
-  'A', 'B', 'C',
+  'A', //'B', 'C',
 ];
 
 main();
