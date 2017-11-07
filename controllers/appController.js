@@ -53,10 +53,16 @@ exports.appCreate = async function (req, res, next) {
     releaseDateOriginal: new Date(req.body.releaseDate),
     releaseNotes: req.body.releaseNotes,
     description: req.body.description,
-    userRatingAverageLifetime: req.body.averageUserRating,
-    userRatingCountLifetime: req.body.userRatingCount,
-    userRatingAverageCurrentVersion: req.body.averageUserRatingForCurrentVersion,
-    userRatingCountCurrentVersion: req.body.userRatingCountForCurrentVersion,
+    rating: {
+      current: {
+        averageUserRating: req.body.averageUserRatingForCurrentVersion,
+        userRatingCount: req.body.userRatingCountForCurrentVersion,
+      },
+      lifetime: {
+        averageUserRating: req.body.averageUserRating,
+        userRatingCount: req.body.userRatingCount,
+      },
+    },
     bundleId: req.body.bundleId,
     categories: categories,
     kind: req.body.kind,

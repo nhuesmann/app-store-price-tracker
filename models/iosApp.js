@@ -34,10 +34,16 @@ const AppSchema = new Schema({
   releaseDateOriginal: Date,
   releaseNotes: String,
   description: String,
-  userRatingAverageLifetime: Number,
-  userRatingCountLifetime: Number,
-  userRatingAverageCurrentVersion: Number,
-  userRatingCountCurrentVersion: Number,
+  rating: {
+    current: {
+      averageUserRating: Number,
+      userRatingCount: Number,
+    },
+    lifetime: {
+      averageUserRating: Number,
+      userRatingCount: Number,
+    },
+  },
   bundleId: String,
   categories: [{
     type: Schema.Types.ObjectId,
