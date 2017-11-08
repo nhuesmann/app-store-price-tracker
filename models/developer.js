@@ -8,6 +8,8 @@ const DeveloperSchema = new Schema({
   nameFull: String,
   urlApple: String,
   urlDeveloper: String,
+}, {
+  timestamps: true,
 });
 
 DeveloperSchema.plugin(uniqueValidator);

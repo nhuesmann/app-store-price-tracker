@@ -6,6 +6,8 @@ const CategorySchema = new Schema({
   id: { type: Number, index: { unique: true }, },
   name: String,
   url: String,
+}, {
+  timestamps: true,
 });
 
 CategorySchema.plugin(uniqueValidator);

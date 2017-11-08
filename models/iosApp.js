@@ -3,7 +3,6 @@ const Schema = mongoose.Schema;
 const uniqueValidator = require('mongoose-unique-validator');
 
 const AppSchema = new Schema({
-  // id: Number,
   id: { type: Number, index: { unique: true }, },
   name: String,
   nameCensored: String,
@@ -45,10 +44,12 @@ const AppSchema = new Schema({
     },
   },
   bundleId: String,
-  categories: [{
-    type: Schema.Types.ObjectId,
-    ref: 'category',
-  }],
+  categories: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'category',
+    },
+  ],
   kind: String,
   minimumOsVersion: String,
   contentRating: String,
@@ -58,6 +59,8 @@ const AppSchema = new Schema({
   advisories: Array,
   supportedDevices: Array,
   features: Array,
+}, {
+  timestamps: true,
 });
 
 function fileSizeFormatted(bytes) {

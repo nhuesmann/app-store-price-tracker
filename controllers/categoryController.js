@@ -16,8 +16,10 @@ exports.categoryCreate = async function (req, res, next) {
 exports.categoriesSync = async function (req, res, next) {
   const homePage = 'https://itunes.apple.com/us/genre/ios/id36';
   const nightmare = new Nightmare();
+  const userAgent = randomUserAgent();
 
   let categories = await nightmare
+    .useragent(userAgent)
     .goto(homePage)
     .inject('js', `${__dirname}/../scrapeScripts/jquery.min.js`)
     .wait('#genre-nav')
@@ -50,14 +52,13 @@ exports.categoriesSync = async function (req, res, next) {
     })
     .end();
 
-  categories = categories.map(category =>
-    new Category({
-      id: category.id,
-      name: category.name,
-      url: category.url,
-    }));
-
-  let categoriesSaved = await Promise.all(categories.map(cat => cat.save()));
+  let categoriesSaved = await Promise.all(categories.map(cat =>
+    Category.findOneAndUpdate(
+      { id: cat.id },
+      { id: cat.id, name: cat.name, url: cat.url },
+      { new: true, upsert: true },
+    )
+  ));
 
   res.send(categoriesSaved);
 };
