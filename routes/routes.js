@@ -37,4 +37,7 @@ router.get('/app/itunes/:id', asyncWrapper(appController.appGetMetadataById));
 /* POST request for creating a Category */
 router.post('/category/create', asyncWrapper(categoryController.categoryCreate));
 
+/* GET request for syncing all Categories from iTunes */
+router.get('/categories/sync', asyncWrapper(categoryController.categoriesSync));
+
 module.exports = router;

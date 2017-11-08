@@ -14,8 +14,10 @@
 const Nightmare = require('nightmare');
 const randomUserAgent = require('./useragent');
 
+getAppCategories().then(console.log);
+
 async function getAppGenres() {
-  const homePage = 'https://itunes.apple.com/us/genre/ios/id36?mt=8';
+  const homePage = 'https://itunes.apple.com/us/genre/ios/id36';
   const nightmare = new Nightmare({ show: true });
 
   // Go to initial start page, get a list of all genres and their links
@@ -41,6 +43,49 @@ async function getAppGenres() {
   }
 }
 
+async function getAppCategories() {
+  const homePage = 'https://itunes.apple.com/us/genre/ios/id36';
+  const nightmare = new Nightmare({ show: true });
+
+  try {
+    return nightmare
+      .goto(homePage)
+      .inject('js', `${__dirname}/jquery.min.js`)
+      .wait('#genre-nav')
+      .evaluate(() => {
+        let categories = [];
+
+        $('#genre-nav a').each(function () {
+          let name = $(this).text();
+          let url = $(this).attr('href');
+
+          if ($(this).parents('ul.top-level-subgenres').length) {
+            let parent = $(this)
+              .parents('ul.top-level-subgenres')
+              .siblings('a.top-level-genre')
+              .text();
+            name = `${parent} - ${name}`;
+          }
+
+          let id = url.match(/\/id\d+\?/)[0].replace(/\D/g, '');
+          url = url.replace(/\?(.*)/g, '');
+
+          categories.push({
+            id,
+            name,
+            url,
+          });
+        });
+
+        return categories;
+      })
+      .end();
+  } catch (e) {
+    console.error(e);
+    return e;
+  }
+}
+
 async function getAppIds(baseUrl, alphaChar) {
   let begin = new Date();
   console.log(`Starting ${alphaChar}: ${begin.toString()}...`);
@@ -58,7 +103,7 @@ async function getAppIds(baseUrl, alphaChar) {
       .viewport(1000, 800)
       .useragent(userAgent)
       .goto(page)
-      .inject('js', 'jquery.min.js')
+      .inject('js', `${__dirname}/jquery.min.js`)
 
       // .wait(randWaitInterval(500, 1000))
       .wait('#selectedcontent')

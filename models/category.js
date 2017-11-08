@@ -3,8 +3,9 @@ const Schema = mongoose.Schema;
 const uniqueValidator = require('mongoose-unique-validator');
 
 const CategorySchema = new Schema({
-  id: Number,
+  id: { type: Number, index: { unique: true }, },
   name: String,
+  url: String,
 });
 
 CategorySchema.plugin(uniqueValidator);
