@@ -19,7 +19,10 @@ router.put('/app/:id', appController.appUpdate);
 router.delete('/app/:id', appController.appDelete);
 
 /* GET request for all App TODO: decide how to limit this... can't reply with all */
-router.get('/apps', appController.appList);
+router.get('/apps', appController.appsList);
+
+/* GET request for new Apps from iTunes RSS feed */
+router.get('/apps/new', asyncWrapper(appController.appsNew));
 
 /* POST request to create multiple Apps */
 router.post('/apps', asyncWrapper(appController.appBatchCreate));
@@ -29,10 +32,6 @@ router.patch('/apps', asyncWrapper(appController.appBatchUpdate));
 
 /* GET request for getting app metadata (for testing - add to test suite?) */
 router.get('/app/itunes/:id', asyncWrapper(appController.appGetMetadataById));
-
-/* POST request for creating ids (from scraper) */
-
-// router.post('/scraper/ids', scraperController.)
 
 /* POST request for creating a Category */
 router.post('/category/create', asyncWrapper(categoryController.categoryCreate));

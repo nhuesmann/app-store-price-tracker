@@ -103,7 +103,7 @@ exports.appDelete = function (req, res) {
   res.send('function for deleteing an individual app');
 };
 
-exports.appList = async function (req, res, next) {
+exports.appsList = async function (req, res, next) {
   res.send('function for getting a list of apps');
 };
 
@@ -120,6 +120,18 @@ exports.appGetMetadataById = async function (req, res, next) {
   });
 
   res.json(response.results[0]);
+};
+
+exports.appsNew = async function (req, res, next) {
+  const homePage = 'https://itunes.apple.com/us/rss/newapplications/json';
+
+  let newApps = await request(homePage);
+
+  let ids = JSON.parse(newApps).feed.entry.map(entry => entry.id.attributes['im:id']);
+
+  // call the endpoint that takes a list of ids as input to call iTunes then create or update apps
+
+  res.send(ids);
 };
 
 /* TODO: look into the following tools:
