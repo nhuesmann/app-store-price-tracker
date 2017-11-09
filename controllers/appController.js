@@ -11,6 +11,10 @@ exports.appCreate = async function (req, res, next) {
   let categoriesQuery = Category.find({});
   let [developer, categories] = await Promise.all([developerQuery.exec(), categoriesQuery.exec()]);
 
+  // TODO: add regex to urls in dev to cleanse them! Same with categories
+  // find out why no sellerurl... where was i getting it? Clash royale?
+  // should i implement find one and update here too???
+
   // If developer doesn't exist, create document
   if (!developer) {
     developer = new Developer({
@@ -87,7 +91,10 @@ exports.appDetail = async function (req, res, next) {
 
   if (!ObjectId.isValid(id)) throw new Error('invalid object id!');
 
-  let app = await App.find({ _id: id }).populate('developer').populate('categories');
+  // TODO: check if another way to do this - not wanting the timestamp fields...
+  let app = await App.find({ _id: id })
+    .populate('developer', ['id', 'name', 'nameFull', 'urlApple', 'urlDeveloper'])
+    .populate('categories', ['id', 'name', 'url']);
 
   res.send(app);
 
