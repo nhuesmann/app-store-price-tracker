@@ -3,10 +3,16 @@ const Schema = mongoose.Schema;
 const uniqueValidator = require('mongoose-unique-validator');
 
 const AppSchema = new Schema({
-  id: { type: Number, index: { unique: true }, },
+  id: {
+    type: Number,
+    index: { unique: true },
+  },
   name: String,
   nameCensored: String,
-  url: String,
+  url: {
+    type: String,
+    set: cleanUrl,
+  },
   developer: {
     type: Schema.Types.ObjectId,
     ref: 'developer',
@@ -61,7 +67,12 @@ const AppSchema = new Schema({
   features: Array,
 }, {
   timestamps: true,
+  runSettersOnQuery: true,
 });
+
+function cleanUrl(url) {
+  return url.replace(/\?(.*)/g, '');
+}
 
 function fileSizeFormatted(bytes) {
   const toMegabytes = function (byte) {

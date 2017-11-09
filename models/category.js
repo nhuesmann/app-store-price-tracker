@@ -3,12 +3,23 @@ const Schema = mongoose.Schema;
 const uniqueValidator = require('mongoose-unique-validator');
 
 const CategorySchema = new Schema({
-  id: { type: Number, index: { unique: true }, },
+  id: {
+    type: Number,
+    index: { unique: true },
+  },
   name: String,
-  url: String,
+  url: {
+    type: String,
+    set: cleanUrl,
+  },
 }, {
   timestamps: true,
+  runSettersOnQuery: true,
 });
+
+function cleanUrl(url) {
+  return url.replace(/\?(.*)/g, '');
+}
 
 CategorySchema.plugin(uniqueValidator);
 const Category = mongoose.model('category', CategorySchema);

@@ -6,27 +6,21 @@ const Developer = require('../models/developer');
 const Category = require('../models/category');
 
 exports.appCreate = async function (req, res, next) {
-  // Check if developer already exists and load all categories
-  let developerQuery = Developer.findOne({ id: req.body.artistId });
+  // Load all categories and find or create the developer
   let categoriesQuery = Category.find({});
-  let [developer, categories] = await Promise.all([developerQuery.exec(), categoriesQuery.exec()]);
-
-  // TODO: add regex to urls in dev to cleanse them! Same with categories
-  // find out why no sellerurl... where was i getting it? Clash royale?
-  // should i implement find one and update here too???
-
-  // If developer doesn't exist, create document
-  if (!developer) {
-    developer = new Developer({
+  let developerQuery = Developer.findOneAndUpdate(
+    {
+      id: req.body.artistId,
+    }, {
       id: req.body.artistId,
       name: req.body.artistName,
       nameFull: req.body.sellerName,
-      urlApple: req.body.artistViewUrl,
-      urlDeveloper: req.body.sellerUrl,
-    });
-
-    developer = await developer.save();
-  }
+      url: req.body.artistViewUrl,
+    }, {
+      new: true, upsert: true,
+    },
+  );
+  let [developer, categories] = await Promise.all([developerQuery.exec(), categoriesQuery.exec()]);
 
   // Retrieve the ObjectIds of the current app's categories
   let genreIds = req.body.genreIds.map(id => +id);

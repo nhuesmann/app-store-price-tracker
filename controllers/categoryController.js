@@ -39,7 +39,6 @@ exports.categoriesSync = async function (req, res, next) {
         }
 
         let id = url.match(/\/id\d+\?/)[0].replace(/\D/g, '');
-        url = url.replace(/\?(.*)/g, '');
 
         categories.push({
           id,
