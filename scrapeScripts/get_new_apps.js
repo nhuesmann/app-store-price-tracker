@@ -123,23 +123,10 @@ const genres = {
  */
 
 /**
- * TODO: on the data model in DB, clean the trackViewUrl property by calling
- * trackViewUrl.split('&uo=')[0]; to get rid of the unique origin.
- */
-
-/**
  * TODO: change above - the media types should be in the script file,
  * it should choose based on what it is scraping - i.e. software, movies, etc
- */
-
-/**
  * const mediaTypes = [movie, podcast, music, musicVideo, audiobook, shortFilm, tvShow, software, ebook]
- * TODO: fix mediaTypes to be entity (or use media??). the entity types are different, there are more, esp music
- */
-
-/**
- * const mediaTypes = [movie, podcast, music, musicVideo, audiobook, shortFilm, tvShow, software, ebook];
- * TODO: fix mediaTypes to be entity (or use media??). the entity types are different, there are more, esp music
+ * fix mediaTypes to be entity (or use media??). the entity types are different, there are more, esp music
  */
 
 /**
