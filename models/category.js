@@ -15,13 +15,24 @@ const CategorySchema = new Schema({
 }, {
   timestamps: true,
   runSettersOnQuery: true,
+  toJSON: {
+    virtuals: true,
+  },
+  toObject: {
+    virtuals: true,
+  },
 });
 
 function cleanUrl(url) {
   return url ? url.replace(/\?(.*)/g, '') : '';
 }
 
-CategorySchema.virtual('endpoint').get(() => `/category/${this._id}`);
+// CategorySchema.virtual('endpoint').get(() => `/category/${this._id}`);
+CategorySchema.virtual('apps', {
+  ref: 'app',
+  localField: '_id',
+  foreignField: 'categories',
+});
 CategorySchema.plugin(uniqueValidator);
 
 const Category = mongoose.model('category', CategorySchema);

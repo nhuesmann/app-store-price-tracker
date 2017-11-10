@@ -1,8 +1,23 @@
 const request = require('request-promise');
 const Nightmare = require('nightmare');
+const { ObjectId } = require('mongodb');
 
 const Category = require('../models/category');
 const randomUserAgent = require('../scrapeScripts/useragent');
+
+exports.categoryDetail = async function (req, res, next) {
+  let id = req.params.id;
+
+  if (!ObjectId.isValid(id)) throw new Error('invalid object id!');
+
+  let category = await Category.findOne({ _id: id })
+    .populate('apps', ['id', 'name']);
+    // .populate('endpoint');
+
+  res.send(category);
+
+  // TODO: is throwing a new error good enough? Need to specify where it came from!
+};
 
 exports.categoriesSync = async function (req, res, next) {
   let genres = await request({

@@ -7,9 +7,11 @@ exports.developerDetail = async function (req, res, next) {
 
   if (!ObjectId.isValid(id)) throw new Error('invalid object id!');
 
-  let app = await Developer.find({ _id: id });;
+  let developer = await Developer.findOne({ _id: id })
+    .populate('apps', ['id', 'name']);
+    // .populate('endpoint');
 
-  res.send(app);
+  res.send(developer);
 
   // TODO: is throwing a new error good enough? Need to specify where it came from!
 };

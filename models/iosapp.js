@@ -68,6 +68,12 @@ const AppSchema = new Schema({
 }, {
   timestamps: true,
   runSettersOnQuery: true,
+  toJSON: {
+    virtuals: true,
+  },
+  toObject: {
+    virtuals: true,
+  },
 });
 
 function cleanUrl(url) {

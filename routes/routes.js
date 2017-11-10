@@ -1,10 +1,11 @@
-var express = require('express');
+const express = require('express');
 var router = express.Router();
 
-var asyncWrapper = require('../middlewares/asyncWrapper');
+const asyncWrapper = require('../middlewares/asyncWrapper');
 
-var appController = require('../controllers/appController');
-var categoryController = require('../controllers/categoryController');
+const appController = require('../controllers/appController');
+const categoryController = require('../controllers/categoryController');
+const developerController = require('../controllers/developerController');
 
 //////////////////////                APP                 //////////////////////
 
@@ -32,7 +33,7 @@ router.get('/apps/new', asyncWrapper(appController.appsNew));
 router.get('/apps/rss', asyncWrapper(appController.appsAppleRss));
 
 /* POST request to create multiple Apps */
-// router.post('/apps', asyncWrapper(appController.appCreateBatch));
+router.post('/apps/batch', asyncWrapper(appController.appCreateBatchTest));
 
 /* PATCH request to batch update multiple Apps */
 router.patch('/apps', asyncWrapper(appController.appUpdateBatch));
@@ -42,6 +43,9 @@ router.get('/app/itunes/:id', asyncWrapper(appController.appGetMetadataById));
 
 //////////////////////             CATEGORIES             //////////////////////
 
+/* GET request for one Category */
+router.get('/category/:id', asyncWrapper(categoryController.categoryDetail));
+
 /* POST request for creating a Category */
 router.post('/category/create', asyncWrapper(categoryController.categoryCreate));
 
@@ -50,5 +54,10 @@ router.get('/categories/sync', asyncWrapper(categoryController.categoriesSync));
 
 /* GET request for syncing all Categories from iTunes using scraper */
 router.get('/categories/sync/scrape', asyncWrapper(categoryController.categoriesSyncScrape));
+
+//////////////////////             DEVELOPERS             //////////////////////
+
+/* GET request for one Developer */
+router.get('/developer/:id', asyncWrapper(developerController.developerDetail));
 
 module.exports = router;

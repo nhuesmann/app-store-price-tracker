@@ -15,7 +15,7 @@ exports.appDetail = async function (req, res, next) {
 
   if (!ObjectId.isValid(id)) throw new Error('invalid object id!');
 
-  let app = await App.find({ _id: id })
+  let app = await App.findOne({ _id: id })
     .populate('developer', ['id', 'name', 'nameFull', 'url'])
     .populate('categories', ['id', 'name', 'url']);
 
@@ -36,19 +36,11 @@ exports.appsList = async function (req, res, next) {
   res.send('function for getting a list of apps');
 };
 
-// exports.appCreateBatch = async function (req, res, next) {
-//   let apps = await request({
-//     uri: `https://itunes.apple.com/lookup?id=${req.body.ids}`,
-//     json: true,
-//   });
-//   let appsSaved = await Promise.all(apps.results.map(app => appCreate(app)));
-//
-//   res.send({
-//     itunesResults: apps.results.length,
-//     numInserted: appsSaved.length,
-//     inserted: appsSaved,
-//   });
-// };
+exports.appCreateBatchTest = async function (req, res, next) {
+  let appsSaved = await appCreateBatch(req.body.ids);
+
+  res.send(appsSaved);
+};
 
 exports.appGetMetadataById = async function (req, res, next) {
   let response = await request({
@@ -124,6 +116,7 @@ async function appCreate(app) {
     nameCensored: app.trackCensoredName,
     url: app.trackViewUrl,
     developer: developer._id,
+    devId: developer.id,
     images: {
       iconUrl60: app.artworkUrl60,
       iconUrl100: app.artworkUrl100,

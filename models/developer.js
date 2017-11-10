@@ -16,13 +16,24 @@ const DeveloperSchema = new Schema({
 }, {
   timestamps: true,
   runSettersOnQuery: true,
+  toJSON: {
+    virtuals: true,
+  },
+  toObject: {
+    virtuals: true,
+  },
 });
 
 function cleanUrl(url) {
   return url ? url.replace(/\?(.*)/g, '') : '';
 }
 
-DeveloperSchema.virtual('endpoint').get(() => `/developer/${this._id}`);
+// DeveloperSchema.virtual('endpoint').get(() => `/developer/${this._id}`);
+DeveloperSchema.virtual('apps', {
+  ref: 'app',
+  localField: '_id',
+  foreignField: 'developer',
+});
 DeveloperSchema.plugin(uniqueValidator);
 
 const Developer = mongoose.model('developer', DeveloperSchema);
