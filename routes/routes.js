@@ -25,7 +25,7 @@ router.get('/apps', appController.appsList);
 router.get('/apps/new', asyncWrapper(appController.appsNew));
 
 /* GET request for top paid Apps from iTunes RSS feed */
-router.get('/apps/top/paid', asyncWrapper(appController.appsTopPaid));
+router.get('/apps/rss', asyncWrapper(appController.appsAppleRss));
 
 /* POST request to create multiple Apps */
 router.post('/apps', asyncWrapper(appController.appCreateBatch));

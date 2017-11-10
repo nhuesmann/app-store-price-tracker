@@ -37,44 +37,50 @@ exports.appsList = async function (req, res, next) {
 };
 
 exports.appCreateBatch = async function (req, res, next) {
-  let itunesLookupUrl = 'https://itunes.apple.com/lookup?id=';
-  let apps = await request(`${itunesLookupUrl}${req.body.ids}`);
-  apps = JSON.parse(apps).results;
-
-  let appsSaved = await Promise.all(apps.map(app => appCreate(app)));
+  let apps = await request({
+    uri: `https://itunes.apple.com/lookup?id=${req.body.ids}`,
+    json: true,
+  });
+  let appsSaved = await Promise.all(apps.results.map(app => appCreate(app)));
 
   res.send({
-    itunesResults: apps.length,
+    itunesResults: apps.results.length,
     numInserted: appsSaved.length,
     inserted: appsSaved,
   });
 };
 
 exports.appGetMetadataById = async function (req, res, next) {
-  let id = req.params.id;
-
   let response = await request({
-    uri: `https://itunes.apple.com/lookup?id=${id}`,
+    uri: `https://itunes.apple.com/lookup?id=${req.params.id}`,
     json: true,
   });
 
   res.json(response.results[0]);
 };
 
+//TODO: probably needs its own function since response is diff format from other RSS
 exports.appsNew = async function (req, res, next) {
-  const homePage = 'https://itunes.apple.com/us/rss/newapplications/json';
-  let newApps = await request(homePage);
-  let ids = JSON.parse(newApps).feed.entry.map(entry => entry.id.attributes['im:id']).join(',');
+  let ids = await request({
+    uri: 'https://itunes.apple.com/us/rss/newapplications/json',
+    json: true,
+  });
+
+  ids = ids.feed.entry.map(entry => entry.id.attributes['im:id']).join(',');
 
   // call the endpoint that takes a list of ids as input to call iTunes then create or update apps
 
   res.send(ids);
 };
 
-exports.appsTopPaid = async function (req, res, next) {
-  const homePage = 'https://rss.itunes.apple.com/api/v1/us/ios-apps/top-paid/all/200/explicit.json';
-  let newApps = await request(homePage);
-  let ids = JSON.parse(newApps).feed.results.map(app => app.id).join(',');
+// TODO: should app take the uri as argument? One app for all the rss ones with same format
+exports.appsAppleRss = async function (req, res, next) {
+  let ids = await request({
+    uri: `https://rss.itunes.apple.com/api/v1/us/ios-apps/${req.query.feed}/all/${req.query.qty}/explicit.json`,
+    json: true,
+  });
+
+  ids = ids.feed.results.map(app => app.id).join(',');
 
   res.send(ids);
 };
@@ -96,6 +102,7 @@ async function appCreate(app) {
   );
 
   // Run the queries. If developer query fails as result of duplicate insert, run it again
+  // TODO: implement recursion here?
   let [developer, categories] = await Promise.all([
     developerQuery.exec()
       .catch(e => {
