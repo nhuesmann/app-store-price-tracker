@@ -18,7 +18,7 @@ const CategorySchema = new Schema({
 });
 
 function cleanUrl(url) {
-  return url.replace(/\?(.*)/g, '');
+  return url ? url.replace(/\?(.*)/g, '') : '';
 }
 
 CategorySchema.plugin(uniqueValidator);

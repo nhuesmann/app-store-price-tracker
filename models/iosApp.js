@@ -71,7 +71,7 @@ const AppSchema = new Schema({
 });
 
 function cleanUrl(url) {
-  return url.replace(/\?(.*)/g, '');
+  return url ? url.replace(/\?(.*)/g, '') : '';
 }
 
 function fileSizeFormatted(bytes) {

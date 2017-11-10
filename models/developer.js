@@ -19,7 +19,7 @@ const DeveloperSchema = new Schema({
 });
 
 function cleanUrl(url) {
-  return url.replace(/\?(.*)/g, '');
+  return url ? url.replace(/\?(.*)/g, '') : '';
 }
 
 DeveloperSchema.plugin(uniqueValidator);
