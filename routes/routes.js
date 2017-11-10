@@ -7,7 +7,7 @@ var appController = require('../controllers/appController');
 var categoryController = require('../controllers/categoryController');
 
 /* POST request for creating an App */
-router.post('/app/create', asyncWrapper(appController.appCreate));
+router.post('/app/create', asyncWrapper(appController.appCreateOne));
 
 /* GET request for one App */
 router.get('/app/:id', asyncWrapper(appController.appDetail));
@@ -24,11 +24,14 @@ router.get('/apps', appController.appsList);
 /* GET request for new Apps from iTunes RSS feed */
 router.get('/apps/new', asyncWrapper(appController.appsNew));
 
+/* GET request for top paid Apps from iTunes RSS feed */
+router.get('/apps/top/paid', asyncWrapper(appController.appsTopPaid));
+
 /* POST request to create multiple Apps */
-router.post('/apps', asyncWrapper(appController.appBatchCreate));
+router.post('/apps', asyncWrapper(appController.appCreateBatch));
 
 /* PATCH request to batch update multiple Apps */
-router.patch('/apps', asyncWrapper(appController.appBatchUpdate));
+router.patch('/apps', asyncWrapper(appController.appUpdateBatch));
 
 /* GET request for getting app metadata (for testing - add to test suite?) */
 router.get('/app/itunes/:id', asyncWrapper(appController.appGetMetadataById));

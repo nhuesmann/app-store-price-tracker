@@ -1,82 +1,12 @@
 const { ObjectId } = require('mongodb');
-const request = require('request-promise'); // TODO: prob wont need this for other than testing
+const request = require('request-promise');
 
 const App = require('../models/iosApp');
 const Developer = require('../models/developer');
 const Category = require('../models/category');
 
-exports.appCreate = async function (req, res, next) {
-  // Load all categories and find or create the developer
-  let categoriesQuery = Category.find({});
-  let developerQuery = Developer.findOneAndUpdate(
-    {
-      id: req.body.artistId,
-    }, {
-      id: req.body.artistId,
-      name: req.body.artistName,
-      nameFull: req.body.sellerName,
-      url: req.body.artistViewUrl,
-    }, {
-      new: true, upsert: true,
-    },
-  );
-  let [developer, categories] = await Promise.all([developerQuery.exec(), categoriesQuery.exec()]);
-
-  // Retrieve the ObjectIds of the current app's categories
-  let genreIds = req.body.genreIds.map(id => +id);
-  categories = categories.filter(cat => genreIds.includes(cat.id)).map(cat => cat._id);
-
-  // Create the App instance
-  let app = new App({
-    id: req.body.trackId,
-    name: req.body.trackName,
-    nameCensored: req.body.trackCensoredName,
-    url: req.body.trackViewUrl,
-    developer: developer._id,
-    images: {
-      iconUrl60: req.body.artworkUrl60,
-      iconUrl100: req.body.artworkUrl100,
-      iconUrl512: req.body.artworkUrl512,
-      iPhoneScreenshotUrls: req.body.screenshotUrls,
-      iPadScreenshotUrls: req.body.ipadScreenshotUrls,
-      appleTvSreenshotUrls: req.body.appletvScreenshotUrls,
-    },
-    price: req.body.price,
-    priceFormatted: req.body.formattedPrice,
-    currency: req.body.currency,
-    fileSizeBytes: req.body.fileSizeBytes,
-    fileSizeFormatted: req.body.fileSizeBytes,
-    version: req.body.version,
-    lastUpdated: Date(),
-    releaseDateCurrentVersion: new Date(req.body.currentVersionReleaseDate),
-    releaseDateOriginal: new Date(req.body.releaseDate),
-    releaseNotes: req.body.releaseNotes,
-    description: req.body.description,
-    rating: {
-      current: {
-        averageUserRating: req.body.averageUserRatingForCurrentVersion,
-        userRatingCount: req.body.userRatingCountForCurrentVersion,
-      },
-      lifetime: {
-        averageUserRating: req.body.averageUserRating,
-        userRatingCount: req.body.userRatingCount,
-      },
-    },
-    bundleId: req.body.bundleId,
-    categories: categories,
-    kind: req.body.kind,
-    minimumOsVersion: req.body.minimumOsVersion,
-    contentRating: req.body.trackContentRating,
-    contentAdvisoryRating: req.body.contentAdvisoryRating,
-    isGameCenterEnabled: req.body.isGameCenterEnabled,
-    languageCodesISO2A: req.body.languageCodesISO2A,
-    advisories: req.body.advisories,
-    supportedDevices: req.body.supportedDevices,
-    features: req.body.features,
-  });
-
-  let appSaved = await app.save();
-
+exports.appCreateOne = async function (req, res, next) {
+  let appSaved = await appCreate(req.body);
   res.send(appSaved);
 };
 
@@ -85,22 +15,20 @@ exports.appDetail = async function (req, res, next) {
 
   if (!ObjectId.isValid(id)) throw new Error('invalid object id!');
 
-  // TODO: check if another way to do this - not wanting the timestamp fields...
   let app = await App.find({ _id: id })
-    .populate('developer', ['id', 'name', 'nameFull', 'urlApple', 'urlDeveloper'])
+    .populate('developer', ['id', 'name', 'nameFull', 'url'])
     .populate('categories', ['id', 'name', 'url']);
 
   res.send(app);
 
-  // TODO: figure out what I really want to send
   // TODO: is throwing a new error good enough? Need to specify where it came from!
 };
 
-exports.appUpdate = function (req, res) {
+exports.appUpdate = async function (req, res) {
   res.send('function for updating an individual app');
 };
 
-exports.appDelete = function (req, res) {
+exports.appDelete = async function (req, res) {
   res.send('function for deleteing an individual app');
 };
 
@@ -108,8 +36,18 @@ exports.appsList = async function (req, res, next) {
   res.send('function for getting a list of apps');
 };
 
-exports.appBatchCreate = async function (req, res, next) {
-  res.send('function for batch creating');
+exports.appCreateBatch = async function (req, res, next) {
+  let itunesLookupUrl = 'https://itunes.apple.com/lookup?id=';
+  let apps = await request(`${itunesLookupUrl}${req.body.ids}`);
+  apps = JSON.parse(apps).results;
+
+  let appsSaved = await Promise.all(apps.map(app => appCreate(app)));
+
+  res.send({
+    itunesResults: apps.length,
+    numInserted: appsSaved.length,
+    inserted: appsSaved,
+  });
 };
 
 exports.appGetMetadataById = async function (req, res, next) {
@@ -125,15 +63,106 @@ exports.appGetMetadataById = async function (req, res, next) {
 
 exports.appsNew = async function (req, res, next) {
   const homePage = 'https://itunes.apple.com/us/rss/newapplications/json';
-
   let newApps = await request(homePage);
-
-  let ids = JSON.parse(newApps).feed.entry.map(entry => entry.id.attributes['im:id']);
+  let ids = JSON.parse(newApps).feed.entry.map(entry => entry.id.attributes['im:id']).join(',');
 
   // call the endpoint that takes a list of ids as input to call iTunes then create or update apps
 
   res.send(ids);
 };
+
+exports.appsTopPaid = async function (req, res, next) {
+  const homePage = 'https://rss.itunes.apple.com/api/v1/us/ios-apps/top-paid/all/200/explicit.json';
+  let newApps = await request(homePage);
+  let ids = JSON.parse(newApps).feed.results.map(app => app.id).join(',');
+
+  res.send(ids);
+};
+
+async function appCreate(app) {
+  // Load all categories and find or create the developer
+  let categoriesQuery = Category.find({});
+  let developerQuery = Developer.findOneAndUpdate(
+    {
+      id: app.artistId,
+    }, {
+      id: app.artistId,
+      name: app.artistName,
+      nameFull: app.sellerName,
+      url: app.artistViewUrl,
+    }, {
+      new: true, upsert: true,
+    },
+  );
+
+  // Run the queries. If developer query fails as result of duplicate insert, run it again
+  let [developer, categories] = await Promise.all([
+    developerQuery.exec()
+      .catch(e => {
+        if (e.code === 11000) {
+          return developerQuery.exec();
+        } else {
+          throw new Error(e);
+        }
+      }),
+    categoriesQuery.exec(),
+  ]);
+
+  // Retrieve the ObjectIds of the current app's categories
+  let genreIds = app.genreIds.map(id => +id);
+  categories = categories.filter(cat => genreIds.includes(cat.id)).map(cat => cat._id);
+
+  // Create the App instance
+  let newApp = new App({
+    id: app.trackId,
+    name: app.trackName,
+    nameCensored: app.trackCensoredName,
+    url: app.trackViewUrl,
+    developer: developer._id,
+    images: {
+      iconUrl60: app.artworkUrl60,
+      iconUrl100: app.artworkUrl100,
+      iconUrl512: app.artworkUrl512,
+      iPhoneScreenshotUrls: app.screenshotUrls,
+      iPadScreenshotUrls: app.ipadScreenshotUrls,
+      appleTvSreenshotUrls: app.appletvScreenshotUrls,
+    },
+    price: app.price,
+    priceFormatted: app.formattedPrice,
+    currency: app.currency,
+    fileSizeBytes: app.fileSizeBytes,
+    fileSizeFormatted: app.fileSizeBytes,
+    version: app.version,
+    lastUpdated: Date(),
+    releaseDateCurrentVersion: new Date(app.currentVersionReleaseDate),
+    releaseDateOriginal: new Date(app.releaseDate),
+    releaseNotes: app.releaseNotes,
+    description: app.description,
+    rating: {
+      current: {
+        averageUserRating: app.averageUserRatingForCurrentVersion,
+        userRatingCount: app.userRatingCountForCurrentVersion,
+      },
+      lifetime: {
+        averageUserRating: app.averageUserRating,
+        userRatingCount: app.userRatingCount,
+      },
+    },
+    bundleId: app.bundleId,
+    categories: categories,
+    kind: app.kind,
+    minimumOsVersion: app.minimumOsVersion,
+    contentRating: app.trackContentRating,
+    contentAdvisoryRating: app.contentAdvisoryRating,
+    isGameCenterEnabled: app.isGameCenterEnabled,
+    languageCodesISO2A: app.languageCodesISO2A,
+    advisories: app.advisories,
+    supportedDevices: app.supportedDevices,
+    features: app.features,
+  });
+
+  return newApp.save();
+}
 
 /* TODO: look into the following tools:
   https://www.npmjs.com/package/helmet
