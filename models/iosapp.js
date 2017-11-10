@@ -95,7 +95,9 @@ function fileSizeFormatted(bytes) {
   }
 }
 
+AppSchema.virtual('endpoint').get(() => `/app/${this._id}`);
 AppSchema.plugin(uniqueValidator);
+
 const App = mongoose.model('app', AppSchema);
 
 module.exports = App;

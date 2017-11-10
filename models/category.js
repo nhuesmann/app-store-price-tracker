@@ -21,7 +21,9 @@ function cleanUrl(url) {
   return url ? url.replace(/\?(.*)/g, '') : '';
 }
 
+CategorySchema.virtual('endpoint').get(() => `/category/${this._id}`);
 CategorySchema.plugin(uniqueValidator);
+
 const Category = mongoose.model('category', CategorySchema);
 
 module.exports = Category;

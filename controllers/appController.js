@@ -1,7 +1,7 @@
-const { ObjectId } = require('mongodb');
 const request = require('request-promise');
+const { ObjectId } = require('mongodb');
 
-const App = require('../models/iosApp');
+const App = require('../models/iosapp');
 const Developer = require('../models/developer');
 const Category = require('../models/category');
 
@@ -29,26 +29,26 @@ exports.appUpdate = async function (req, res) {
 };
 
 exports.appDelete = async function (req, res) {
-  res.send('function for deleteing an individual app');
+  res.send('function for deleting an individual app');
 };
 
 exports.appsList = async function (req, res, next) {
   res.send('function for getting a list of apps');
 };
 
-exports.appCreateBatch = async function (req, res, next) {
-  let apps = await request({
-    uri: `https://itunes.apple.com/lookup?id=${req.body.ids}`,
-    json: true,
-  });
-  let appsSaved = await Promise.all(apps.results.map(app => appCreate(app)));
-
-  res.send({
-    itunesResults: apps.results.length,
-    numInserted: appsSaved.length,
-    inserted: appsSaved,
-  });
-};
+// exports.appCreateBatch = async function (req, res, next) {
+//   let apps = await request({
+//     uri: `https://itunes.apple.com/lookup?id=${req.body.ids}`,
+//     json: true,
+//   });
+//   let appsSaved = await Promise.all(apps.results.map(app => appCreate(app)));
+//
+//   res.send({
+//     itunesResults: apps.results.length,
+//     numInserted: appsSaved.length,
+//     inserted: appsSaved,
+//   });
+// };
 
 exports.appGetMetadataById = async function (req, res, next) {
   let response = await request({
@@ -59,7 +59,6 @@ exports.appGetMetadataById = async function (req, res, next) {
   res.json(response.results[0]);
 };
 
-//TODO: probably needs its own function since response is diff format from other RSS
 exports.appsNew = async function (req, res, next) {
   let ids = await request({
     uri: 'https://itunes.apple.com/us/rss/newapplications/json',
@@ -67,13 +66,11 @@ exports.appsNew = async function (req, res, next) {
   });
 
   ids = ids.feed.entry.map(entry => entry.id.attributes['im:id']).join(',');
+  let appsSaved = await appCreateBatch(ids);
 
-  // call the endpoint that takes a list of ids as input to call iTunes then create or update apps
-
-  res.send(ids);
+  res.send(appsSaved);
 };
 
-// TODO: should app take the uri as argument? One app for all the rss ones with same format
 exports.appsAppleRss = async function (req, res, next) {
   let ids = await request({
     uri: `https://rss.itunes.apple.com/api/v1/us/ios-apps/${req.query.feed}/all/${req.query.qty}/explicit.json`,
@@ -81,8 +78,9 @@ exports.appsAppleRss = async function (req, res, next) {
   });
 
   ids = ids.feed.results.map(app => app.id).join(',');
+  let appsSaved = await appCreateBatch(ids);
 
-  res.send(ids);
+  res.send(appsSaved);
 };
 
 async function appCreate(app) {
@@ -169,6 +167,15 @@ async function appCreate(app) {
   });
 
   return newApp.save();
+}
+
+async function appCreateBatch(ids) {
+  let apps = await request({
+    uri: `https://itunes.apple.com/lookup?id=${ids}`,
+    json: true,
+  });
+
+  return Promise.all(apps.results.map(app => appCreate(app)));
 }
 
 /* TODO: look into the following tools:

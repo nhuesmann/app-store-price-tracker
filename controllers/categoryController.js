@@ -4,17 +4,6 @@ const Nightmare = require('nightmare');
 const Category = require('../models/category');
 const randomUserAgent = require('../scrapeScripts/useragent');
 
-exports.categoryCreate = async function (req, res, next) {
-  var category = new Category({
-    id: req.body.id,
-    name: req.body.name,
-    url: req.body.url,
-  });
-
-  var saved = await category.save();
-  res.send(saved.name);
-};
-
 exports.categoriesSync = async function (req, res, next) {
   let genres = await request({
     uri: 'https://itunes.apple.com/WebObjects/MZStoreServices.woa/ws/genres?id=36',

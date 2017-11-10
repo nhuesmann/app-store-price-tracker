@@ -22,7 +22,9 @@ function cleanUrl(url) {
   return url ? url.replace(/\?(.*)/g, '') : '';
 }
 
+DeveloperSchema.virtual('endpoint').get(() => `/developer/${this._id}`);
 DeveloperSchema.plugin(uniqueValidator);
+
 const Developer = mongoose.model('developer', DeveloperSchema);
 
 module.exports = Developer;

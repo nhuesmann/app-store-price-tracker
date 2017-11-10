@@ -32,7 +32,7 @@ router.get('/apps/new', asyncWrapper(appController.appsNew));
 router.get('/apps/rss', asyncWrapper(appController.appsAppleRss));
 
 /* POST request to create multiple Apps */
-router.post('/apps', asyncWrapper(appController.appCreateBatch));
+// router.post('/apps', asyncWrapper(appController.appCreateBatch));
 
 /* PATCH request to batch update multiple Apps */
 router.patch('/apps', asyncWrapper(appController.appUpdateBatch));
