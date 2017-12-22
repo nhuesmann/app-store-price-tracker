@@ -2,14 +2,13 @@ const { ObjectId } = require('mongodb');
 
 const Developer = require('../models/developer');
 
-exports.developerDetail = async function (req, res, next) {
-  let id = req.params.id;
+exports.developerDetail = async function developerDetail(req, res, next) {
+  const { id } = req.params;
 
   if (!ObjectId.isValid(id)) throw new Error('invalid object id!');
 
-  let developer = await Developer.findOne({ _id: id })
-    .populate('apps', ['id', 'name']);
-    // .populate('endpoint');
+  const developer = await Developer.findOne({ _id: id }).populate('apps', ['id', 'name']);
+  // .populate('endpoint');
 
   res.send(developer);
 

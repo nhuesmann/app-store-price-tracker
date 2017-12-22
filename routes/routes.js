@@ -1,5 +1,6 @@
 const express = require('express');
-var router = express.Router();
+
+const router = express.Router();
 
 const asyncWrapper = require('../middlewares/asyncWrapper');
 
@@ -7,7 +8,7 @@ const appController = require('../controllers/appController');
 const categoryController = require('../controllers/categoryController');
 const developerController = require('../controllers/developerController');
 
-//////////////////////                APP                 //////////////////////
+/* //////////////////                APP                 ////////////////// */
 
 /* POST request for creating an App */
 router.post('/app/create', asyncWrapper(appController.appCreateOne));
@@ -21,7 +22,7 @@ router.put('/app/:id', appController.appUpdate);
 /* DELETE request to delete an App */
 router.delete('/app/:id', appController.appDelete);
 
-//////////////////////                APPS                //////////////////////
+/* //////////////////                APPS                ////////////////// */
 
 /* GET request for all App TODO: decide how to limit this... can't reply with all */
 router.get('/apps', appController.appsList);
@@ -41,7 +42,7 @@ router.patch('/apps', asyncWrapper(appController.appUpdateBatch));
 /* GET request for getting app metadata (for testing - add to test suite?) */
 router.get('/app/itunes/:id', asyncWrapper(appController.appGetMetadataById));
 
-//////////////////////             CATEGORIES             //////////////////////
+/* //////////////////             CATEGORIES             ////////////////// */
 
 /* GET request for one Category */
 router.get('/category/:id', asyncWrapper(categoryController.categoryDetail));
@@ -55,7 +56,7 @@ router.get('/categories/sync', asyncWrapper(categoryController.categoriesSync));
 /* GET request for syncing all Categories from iTunes using scraper */
 router.get('/categories/sync/scrape', asyncWrapper(categoryController.categoriesSyncScrape));
 
-//////////////////////             DEVELOPERS             //////////////////////
+/* //////////////////             DEVELOPERS             ////////////////// */
 
 /* GET request for one Developer */
 router.get('/developer/:id', asyncWrapper(developerController.developerDetail));
