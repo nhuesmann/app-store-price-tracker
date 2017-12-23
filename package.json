@@ -8,8 +8,10 @@
   },
   "scripts": {
     "start": "node index.js",
-    "testReal": "export NODE_ENV=test || SET \"NODE_ENV=test\" && mocha **/*.test.js",
-    "test": "mocha **/*.test.js",
+    "testAndrew": "export NODE_ENV=test || SET \"NODE_ENV=test\" && mocha **/*.test.js",
+    "testStephen": "mocha -R min",
+    "testGood": "mocha **/*.test.js",
+    "test": "NODE_ENV=test mocha \"./test/**/*.test.js\" -R min",
     "test-watch": "nodemon --exec \"npm test\""
   },
   "keywords": [],

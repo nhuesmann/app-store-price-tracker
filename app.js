@@ -10,7 +10,7 @@ const app = express();
 const mongoose = require('mongoose');
 
 mongoose.Promise = global.Promise;
-const mongoDB = 'mongodb://localhost/ios_app_webscraper';
+const mongoDB = 'mongodb://localhost/apptracker';
 if (process.env.NODE_ENV !== 'test') {
   mongoose.connect(mongoDB, { useMongoClient: true });
 }
@@ -22,7 +22,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use('/', routes);
+app.use('/v1/', routes);
 
 // routes(app);
 

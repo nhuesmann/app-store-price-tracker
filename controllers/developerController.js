@@ -14,3 +14,7 @@ exports.GetDeveloper = async function GetDeveloper(req, res, next) {
 
   // TODO: is throwing a new error good enough? Need to specify where it came from!
 };
+
+exports.UpdateDeveloper = async function UpdateDeveloper(req, res, next) {
+  res.send('function for updating an individual developer');
+};

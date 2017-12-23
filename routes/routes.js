@@ -1,6 +1,4 @@
-const express = require('express');
-
-const router = express.Router();
+const router = require('express').Router();
 
 const asyncWrapper = require('../middlewares/asyncWrapper');
 
@@ -30,6 +28,13 @@ router.put('/apps/:id', asyncWrapper(appController.UpdateApp));
 router.delete('/apps/:id', asyncWrapper(appController.DeleteApp));
 
 /* //////////////////             TESTING             ////////////////// */
+
+const rootTest = async function rootTest(req, res, next) {
+  res.status(200).json({ message: 'Connected successfully' });
+};
+
+/* GET base request for API */
+router.get('/', asyncWrapper(rootTest));
 
 /* GET request for new Apps from iTunes RSS feed */
 router.get('/apps:getNew', asyncWrapper(appController.appsNew));
@@ -63,11 +68,10 @@ router.get('/categories:syncScrape', asyncWrapper(categoryController.syncScrape)
 
 /* //////////////////             DEVELOPERS             ////////////////// */
 
-/* GET request for all Developers TODO: decide how to limit this... can't reply with all */
-/* use pagination and query params for filter: https://cloud.google.com/apis/design/standard_methods#list  */
-// router.get('/developers', asyncWrapper(developerController.ListDevelopers));
-
 /* GET request for one Developer */
 router.get('/developers/:id', asyncWrapper(developerController.GetDeveloper));
+
+/* PUT request to update a Developer */
+router.put('/developers/:id', asyncWrapper(developerController.UpdateDeveloper));
 
 module.exports = router;
