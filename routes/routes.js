@@ -8,33 +8,34 @@ const appController = require('../controllers/appController');
 const categoryController = require('../controllers/categoryController');
 const developerController = require('../controllers/developerController');
 
-/* //////////////////                APP                 ////////////////// */
-
-/* POST request for creating an App */
-router.post('/app/create', asyncWrapper(appController.appCreateOne));
-
-/* GET request for one App */
-router.get('/app/:id', asyncWrapper(appController.appDetail));
-
-/* PUT request to update an App */
-router.put('/app/:id', appController.appUpdate);
-
-/* DELETE request to delete an App */
-router.delete('/app/:id', appController.appDelete);
-
-/* //////////////////                APPS                ////////////////// */
+/* //////////////////                APPS                 ////////////////// */
 
 /* GET request for all App TODO: decide how to limit this... can't reply with all */
-router.get('/apps', appController.appsList);
+/* use pagination and query params for filter: https://cloud.google.com/apis/design/standard_methods#list  */
+router.get('/apps', asyncWrapper(appController.ListApps));
+
+/* GET request for one App */
+router.get('/apps/:id', asyncWrapper(appController.GetApp));
+
+/* POST request for creating an App */
+router.post('/apps', asyncWrapper(appController.CreateApp));
+
+/* POST request for creating multiple Apps */
+router.post('/apps:batchCreate', asyncWrapper(appController.batchCreate));
+
+/* PUT request to update an App */
+router.put('/apps/:id', asyncWrapper(appController.UpdateApp));
+
+/* DELETE request to delete an App */
+router.delete('/app/:id', asyncWrapper(appController.DeleteApp));
+
+/* //////////////////             TESTING             ////////////////// */
 
 /* GET request for new Apps from iTunes RSS feed */
-router.get('/apps/new', asyncWrapper(appController.appsNew));
+router.get('/apps:getNew', asyncWrapper(appController.appsNew));
 
 /* GET request for any curated iTunes RSS feed */
 router.get('/apps/rss', asyncWrapper(appController.appsAppleRss));
-
-/* POST request to create multiple Apps */
-router.post('/apps/batch', asyncWrapper(appController.appCreateBatchTest));
 
 /* PATCH request to batch update multiple Apps */
 router.patch('/apps', asyncWrapper(appController.appUpdateBatch));

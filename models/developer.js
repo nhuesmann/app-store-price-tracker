@@ -14,7 +14,7 @@ const DeveloperSchema = new Schema(
       index: { unique: true },
     },
     name: String,
-    nameFull: String,
+    sellerName: String,
     url: {
       type: String,
       set: cleanUrl,

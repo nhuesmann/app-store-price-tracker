@@ -5,6 +5,19 @@ const App = require('../models/iosapp');
 const Developer = require('../models/developer');
 const Category = require('../models/category');
 
+// Accepts an id string or comma separated string of ids, returns iTunes app data
+const getAppData = async function getAppData(ids) {
+  // add function in here that splits up into batches of 200 and joins them?
+  // OR, should that be delegated beforehand?
+  // PROB THE LATTER
+
+  return request({
+    uri: `https://itunes.apple.com/lookup?id=${ids}`,
+    json: true,
+  });
+};
+
+// Function for submitting a single app to the db. Receives a JSON body as param.
 const appCreate = async function appCreate(app) {
   // Load all categories and find or create the developer
   const categoriesQuery = Category.find({});
@@ -15,7 +28,7 @@ const appCreate = async function appCreate(app) {
     {
       id: app.artistId,
       name: app.artistName,
-      nameFull: app.sellerName,
+      sellerName: app.sellerName,
       url: app.artistViewUrl,
     },
     {
@@ -25,7 +38,6 @@ const appCreate = async function appCreate(app) {
   );
 
   // Run the queries. If developer query fails as result of duplicate insert, run it again
-  // TODO: implement recursion here?
   const [developer, categoriesAll] = await Promise.all([
     developerQuery.exec().catch((e) => {
       if (e.code === 11000) {
@@ -47,7 +59,6 @@ const appCreate = async function appCreate(app) {
     nameCensored: app.trackCensoredName,
     url: app.trackViewUrl,
     developer: developer._id,
-    devId: developer.id,
     images: {
       iconUrl60: app.artworkUrl60,
       iconUrl100: app.artworkUrl100,
@@ -94,20 +105,20 @@ const appCreate = async function appCreate(app) {
 };
 
 const appCreateBatch = async function appCreateBatch(ids) {
-  const apps = await request({
-    uri: `https://itunes.apple.com/lookup?id=${ids}`,
-    json: true,
-  });
-
-  return Promise.all(apps.results.map(app => appCreate(app)));
+  const response = await getAppData(ids.join(','));
+  return Promise.all(response.results.map(app => appCreate(app)));
 };
 
-exports.appCreateOne = async function appCreateOne(req, res, next) {
-  const appSaved = await appCreate(req.body);
-  res.send(appSaved);
+/* ////////////////////////////////         EXPORTS         //////////////////////////////// */
+
+// NEED TO WRITE, retrieve a list of apps
+exports.ListApps = async function ListApps(req, res, next) {
+  res.send('function for getting a list of apps');
 };
 
-exports.appDetail = async function appDetail(req, res, next) {
+// GET: /apps/:id
+// Retrieves app detail from db for a single app. Receives object id and queries db.
+exports.GetApp = async function GetApp(req, res, next) {
   const { id } = req.params;
 
   if (!ObjectId.isValid(id)) throw new Error('invalid object id!');
@@ -121,23 +132,32 @@ exports.appDetail = async function appDetail(req, res, next) {
   // TODO: is throwing a new error good enough? Need to specify where it came from!
 };
 
-exports.appUpdate = async function appUpdate(req, res) {
+// POST: /apps
+// Creates a single app. Receives a JSON body of the app and calls appCreate.
+exports.CreateApp = async function CreateApp(req, res, next) {
+  const appSaved = await appCreate(req.body);
+  res.send(appSaved);
+};
+
+/*
+ * POST: /apps:BatchCreate
+ * Creates a batch of apps. Receives a comma separated string of trackids and
+ * calls iTunes then appCreate.
+ */
+exports.batchCreate = async function batchCreate(req, res, next) {
+  const appsSaved = await appCreateBatch(req.body.ids);
+  res.send(appsSaved);
+};
+
+exports.UpdateApp = async function UpdateApp(req, res, next) {
   res.send('function for updating an individual app');
 };
 
-exports.appDelete = async function appDelete(req, res) {
+exports.DeleteApp = async function DeleteApp(req, res) {
   res.send('function for deleting an individual app');
 };
 
-exports.appsList = async function appsList(req, res, next) {
-  res.send('function for getting a list of apps');
-};
-
-exports.appCreateBatchTest = async function appCreateBatchTest(req, res, next) {
-  const appsSaved = await appCreateBatch(req.body.ids);
-
-  res.send(appsSaved);
-};
+/* ////////////////////////////////         TESTING         //////////////////////////////// */
 
 exports.appGetMetadataById = async function appGetMetadataById(req, res, next) {
   const response = await request({
@@ -154,7 +174,7 @@ exports.appsNew = async function appsNew(req, res, next) {
     json: true,
   });
 
-  ids = ids.feed.entry.map(entry => entry.id.attributes['im:id']).join(',');
+  ids = ids.feed.entry.map(entry => entry.id.attributes['im:id']);
   const appsSaved = await appCreateBatch(ids);
 
   res.send(appsSaved);

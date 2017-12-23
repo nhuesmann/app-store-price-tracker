@@ -13,9 +13,11 @@ const fileSizeFormatted = function fileSizeFormatted(bytes) {
   };
 
   const toGigabytes = function toGigabytes(byte) {
-    byte = +byte / 1000000000;
+    const byteNum = +byte / 1000000000;
     const byteString =
-      byte.toFixed(2) === Math.floor(byte) ? `${Math.floor(byte)} GB` : `${byte.toFixed(2)} GB`;
+      byteNum.toFixed(2) === Math.floor(byteNum)
+        ? `${Math.floor(byteNum)} GB`
+        : `${byteNum.toFixed(2)} GB`;
 
     return byteString;
   };
