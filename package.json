@@ -3,8 +3,14 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js",
+    "testReal": "export NODE_ENV=test || SET \"NODE_ENV=test\" && mocha **/*.test.js",
+    "test": "mocha **/*.test.js",
+    "test-watch": "nodemon --exec \"npm test\""
   },
   "keywords": [],
   "author": "",
@@ -23,10 +29,13 @@
   },
   "devDependencies": {
     "babel-eslint": "^8.0.3",
+    "chai": "^4.1.2",
     "eslint": "^4.13.1",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-import": "^2.8.0",
+    "mocha": "^4.0.1",
     "nodemon": "^1.12.1",
-    "prettier-eslint": "^8.6.0"
+    "prettier-eslint": "^8.6.0",
+    "supertest": "^3.0.0"
   }
 }

@@ -5,7 +5,7 @@ const { ObjectId } = require('mongodb');
 const Category = require('../models/category');
 const randomUserAgent = require('../scrapeScripts/useragent');
 
-exports.categoryDetail = async function categoryDetail(req, res, next) {
+exports.GetCategory = async function GetCategory(req, res, next) {
   const { id } = req.params;
 
   if (!ObjectId.isValid(id)) throw new Error('invalid object id!');
@@ -18,7 +18,7 @@ exports.categoryDetail = async function categoryDetail(req, res, next) {
   // TODO: is throwing a new error good enough? Need to specify where it came from!
 };
 
-exports.categoriesSync = async function categoriesSync(req, res, next) {
+exports.sync = async function sync(req, res, next) {
   function buildCategoriesReduce(genres, parentGenre, reduceArray) {
     return Object.keys(genres).reduce((prev, curr) => {
       prev = reduceArray || prev;
@@ -55,7 +55,7 @@ exports.categoriesSync = async function categoriesSync(req, res, next) {
   res.send(categoriesSaved);
 };
 
-exports.categoriesSyncScrape = async function categoriesSyncScrape(req, res, next) {
+exports.syncScrape = async function syncScrape(req, res, next) {
   const homePage = 'https://itunes.apple.com/us/genre/ios/id36';
   const nightmare = new Nightmare();
   const userAgent = randomUserAgent();

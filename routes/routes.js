@@ -27,7 +27,7 @@ router.post('/apps:batchCreate', asyncWrapper(appController.batchCreate));
 router.put('/apps/:id', asyncWrapper(appController.UpdateApp));
 
 /* DELETE request to delete an App */
-router.delete('/app/:id', asyncWrapper(appController.DeleteApp));
+router.delete('/apps/:id', asyncWrapper(appController.DeleteApp));
 
 /* //////////////////             TESTING             ////////////////// */
 
@@ -45,21 +45,29 @@ router.get('/app/itunes/:id', asyncWrapper(appController.appGetMetadataById));
 
 /* //////////////////             CATEGORIES             ////////////////// */
 
+/* GET request for all Categories TODO: decide how to limit this... can't reply with all */
+/* use pagination and query params for filter: https://cloud.google.com/apis/design/standard_methods#list  */
+// router.get('/categories', asyncWrapper(categoryController.ListCategories));
+
 /* GET request for one Category */
-router.get('/category/:id', asyncWrapper(categoryController.categoryDetail));
+router.get('/categories/:id', asyncWrapper(categoryController.GetCategory));
 
 /* POST request for creating a Category */
-router.post('/category/create', asyncWrapper(categoryController.categoryCreate));
+// router.post('/categories', asyncWrapper(categoryController.CreateCategory));
 
 /* GET request for syncing all Categories from iTunes using RSS */
-router.get('/categories/sync', asyncWrapper(categoryController.categoriesSync));
+router.get('/categories:sync', asyncWrapper(categoryController.sync));
 
 /* GET request for syncing all Categories from iTunes using scraper */
-router.get('/categories/sync/scrape', asyncWrapper(categoryController.categoriesSyncScrape));
+router.get('/categories:syncScrape', asyncWrapper(categoryController.syncScrape));
 
 /* //////////////////             DEVELOPERS             ////////////////// */
 
+/* GET request for all Developers TODO: decide how to limit this... can't reply with all */
+/* use pagination and query params for filter: https://cloud.google.com/apis/design/standard_methods#list  */
+// router.get('/developers', asyncWrapper(developerController.ListDevelopers));
+
 /* GET request for one Developer */
-router.get('/developer/:id', asyncWrapper(developerController.developerDetail));
+router.get('/developers/:id', asyncWrapper(developerController.GetDeveloper));
 
 module.exports = router;

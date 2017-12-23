@@ -2,7 +2,7 @@ const { ObjectId } = require('mongodb');
 
 const Developer = require('../models/developer');
 
-exports.developerDetail = async function developerDetail(req, res, next) {
+exports.GetDeveloper = async function GetDeveloper(req, res, next) {
   const { id } = req.params;
 
   if (!ObjectId.isValid(id)) throw new Error('invalid object id!');

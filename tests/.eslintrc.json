@@ -1,0 +1,8 @@
+{
+  "rules": {
+    "handle-callback-err": 0
+  },
+  "env": {
+    "mocha": true
+  }
+}
