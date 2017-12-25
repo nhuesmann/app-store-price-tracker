@@ -1,5 +1,6 @@
+require('./config/config');
+
 const express = require('express');
-// const path = require('path');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
 
@@ -7,24 +8,13 @@ const routes = require('./routes/routes');
 
 const app = express();
 
-const mongoose = require('mongoose');
-
-mongoose.Promise = global.Promise;
-const mongoDB = 'mongodb://localhost/apptracker';
-if (process.env.NODE_ENV !== 'test') {
-  mongoose.connect(mongoDB, { useMongoClient: true });
-}
-
-const db = mongoose.connection;
-db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+const mongoose = require('./mongoose');
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use('/v1/', routes);
-
-// routes(app);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

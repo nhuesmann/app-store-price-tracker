@@ -1,3 +1,6 @@
+// COMMENTING OUT UNTIL I REDO THE MOCHA TEST STRUCTURE
+
+/*
 const { expect } = require('chai');
 const request = require('supertest');
 const app = require('../../app');
@@ -35,3 +38,4 @@ describe('PUT /developers/:id', () => {
       });
   });
 });
+*/

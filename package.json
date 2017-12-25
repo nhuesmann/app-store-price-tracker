@@ -10,8 +10,9 @@
     "start": "node index.js",
     "testAndrew": "export NODE_ENV=test || SET \"NODE_ENV=test\" && mocha **/*.test.js",
     "testStephen": "mocha -R min",
-    "testGood": "mocha **/*.test.js",
-    "test": "NODE_ENV=test mocha \"./test/**/*.test.js\" -R min",
+    "testUSE": "NODE_ENV=test mocha \"./test/**/*.test.js\" -R min",
+    "testRealLatest": "export NODE_ENV=test || SET \"NODE_ENV=test\" && mocha \"./test/**/*.test.js\" -R min",
+    "test": "export NODE_ENV=test || SET \"NODE_ENV=test\" && mocha",
     "test-watch": "nodemon --exec \"npm test\""
   },
   "keywords": [],

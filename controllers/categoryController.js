@@ -13,6 +13,11 @@ exports.GetCategory = async function GetCategory(req, res, next) {
   const category = await Category.findOne({ _id: id }).populate('apps', ['id', 'name']);
   // .populate('endpoint');
 
+  // TODO: Need to work this out with the async wrapper to be able to specify status codes
+  // Is the async wrapper ideal or should I just use try/catch?? I like this version
+  // without try/catch, it is cleaner
+  if (!category) throw new Error('category not found');
+
   res.send(category);
 
   // TODO: is throwing a new error good enough? Need to specify where it came from!
