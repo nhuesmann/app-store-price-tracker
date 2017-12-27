@@ -1,32 +1,36 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+
+const { Schema } = mongoose;
 const uniqueValidator = require('mongoose-unique-validator');
 
-const DeveloperSchema = new Schema({
-  id: {
-    type: Number,
-    index: { unique: true },
-  },
-  name: String,
-  nameFull: String,
-  url: {
-    type: String,
-    set: cleanUrl,
-  },
-}, {
-  timestamps: true,
-  runSettersOnQuery: true,
-  toJSON: {
-    virtuals: true,
-  },
-  toObject: {
-    virtuals: true,
-  },
-});
+const cleanUrl = function cleanUrl(url) {
+  return url ? url.replace(/\?(.*)/g, '') : null;
+};
 
-function cleanUrl(url) {
-  return url ? url.replace(/\?(.*)/g, '') : '';
-}
+const DeveloperSchema = new Schema(
+  {
+    id: {
+      type: Number,
+      index: { unique: true },
+    },
+    name: String,
+    sellerName: String,
+    url: {
+      type: String,
+      set: cleanUrl,
+    },
+  },
+  {
+    timestamps: true,
+    runSettersOnQuery: true,
+    toJSON: {
+      virtuals: true,
+    },
+    toObject: {
+      virtuals: true,
+    },
+  },
+);
 
 // DeveloperSchema.virtual('endpoint').get(() => `/developer/${this._id}`);
 DeveloperSchema.virtual('apps', {

@@ -1,46 +1,44 @@
+require('./config/config');
+
 const express = require('express');
-const path = require('path');
-var logger = require('morgan');
+const logger = require('morgan');
 const bodyParser = require('body-parser');
 
-const routes = require('./routes/routes');
+const app = express();
+const routes = require('./routes');
+const mongoose = require('./mongoose');
 
-var app = express();
-
-var mongoose = require('mongoose');
-mongoose.Promise = global.Promise;
-var mongoDB = 'mongodb://localhost/ios_app_webscraper';
+// Do not need logger when running test suite
 if (process.env.NODE_ENV !== 'test') {
-  mongoose.connect(mongoDB, { useMongoClient: true });
+  app.use(logger('dev'));
 }
 
-var db = mongoose.connection;
-db.on('error', console.error.bind(console, 'MongoDB connection error:'));
-
-app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use('/', routes);
-
-// routes(app);
+app.use('/v1/', routes);
 
 // catch 404 and forward to error handler
-app.use(function (req, res, next) {
-  var err = new Error('Not Found');
+app.use((req, res, next) => {
+  const err = new Error('Not Found');
   err.status = 404;
   next(err);
 });
 
-app.use(function (err, req, res, next) {
+// TODO: what should the endpoint response be? Need a unified format. I.E. figure
+// out what to reply with when resource is created vs when retrieved. Also need to
+// figure out how to send specific codes back (201 created vs 200);
+// TODO: research error handling in express app
+// TODO: reexamine async wrapper file
+// TODO: restructure app (server, api, whatever. use andrew's)
+
+app.use((err, req, res, next) => {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   console.error(err.stack);
-  res
-    .status(err.status || 422)
-    .send({ error: err.message });
+  res.status(err.status || 422).send({ error: err.message });
 
   // .send(err);
   // TODO: decide which format to use! just message? full error is prob better
