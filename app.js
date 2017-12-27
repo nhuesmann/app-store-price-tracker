@@ -27,6 +27,9 @@ app.use((req, res, next) => {
   next(err);
 });
 
+// TODO: what should the endpoint response be? Need a unified format. I.E. figure
+// out what to reply with when resource is created vs when retrieved. Also need to
+// figure out how to send specific codes back (201 created vs 200);
 // TODO: research error handling in express app
 // TODO: reexamine async wrapper file
 // TODO: restructure app (server, api, whatever. use andrew's)

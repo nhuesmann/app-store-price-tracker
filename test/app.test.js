@@ -8,7 +8,12 @@ const App = require('../models/iosapp');
 const Developer = require('../models/developer');
 const Category = require('../models/category');
 
-const { category, dropCategories, populateCategory } = require('./seed/seed');
+const {
+  category,
+  developer,
+  dropCategories,
+  populateCategory,
+  populateDeveloper, } = require('./seed/seed');
 
 describe('THE SERVER', () => {
   it('should handle a GET request to /', async () => {
@@ -84,5 +89,32 @@ describe('CATEGORIES', () => {
       expect(initialCategoryCreatedAt).to.equal(updatedCategoryCreatedAt);
       expect(updatedCategoryUpdatedAt).to.not.equal(updatedCategoryCreatedAt);
     });
+  });
+});
+
+describe('DEVELOPERS', () => {
+  describe('GET /developers/:id', () => {
+    before(populateDeveloper);
+
+    it('should return a developer with the given id', async () => {
+      const response = (
+        await request(app)
+        .get(`/v1/developers/${developer._id.toHexString()}`)
+        .expect(200)
+      ).body;
+
+      expect(response.name).to.equal(developer.name);
+    });
+  });
+});
+
+describe('APPS', () => {
+  describe('GET /apps/:id', () => {
+
+  });
+
+  describe('POST /apps', () => {
+    // TODO: need to make sure to do a test with multiple apps with same
+    // developer to test the endpoint's ability to avoid collisions
   });
 });
