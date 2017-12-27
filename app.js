@@ -4,10 +4,8 @@ const express = require('express');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
 
-const routes = require('./routes/routes');
-
 const app = express();
-
+const routes = require('./routes');
 const mongoose = require('./mongoose');
 
 // Do not need logger when running test suite

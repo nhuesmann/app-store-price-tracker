@@ -149,6 +149,14 @@ exports.batchCreate = async function batchCreate(req, res, next) {
   res.send(appsSaved);
 };
 
+// TODO BATCH UPDATE!
+// should there even be a batch create? should it always check if present and
+// never assume it doesn't exist??
+exports.batchUpdate = async function batchUpdate(req, res, next) {
+  // const appsSaved = await appCreateBatch(req.body.ids);
+  // res.send(appsSaved);
+};
+
 exports.UpdateApp = async function UpdateApp(req, res, next) {
   res.send('function for updating an individual app');
 };
@@ -168,6 +176,11 @@ exports.appGetMetadataById = async function appGetMetadataById(req, res, next) {
   res.json(response.results[0]);
 };
 
+// TODO: THIS SHOULD ALSO NOT ASSUME THAT THE APPS DON'T EXIST ALREADY
+// Maybe the batch function should just be a create or update function?
+// There should only be batch update, not batch create
+// TODO: SO, should it be a PUT request instead? Or what? Do I separate out the
+// POST batchCreate from a PUT batchUpdate??
 exports.appsNew = async function appsNew(req, res, next) {
   let ids = await request({
     uri: 'https://itunes.apple.com/us/rss/newapplications/json',

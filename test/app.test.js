@@ -15,17 +15,21 @@ const {
   populateCategory,
   populateDeveloper, } = require('./seed/seed');
 
-describe('THE SERVER', () => {
-  it('should handle a GET request to /', async () => {
-    const response = (
-      await request(app)
-      .get('/v1')
-      .expect(200)
-    ).body;
+// TODO: Temporarily disabling this until I revisit routing...
+// will there be a home route?
+// SEE THIS: https://www.caffeinecoding.com/better-express-routing-for-nodejs/
 
-    expect(response.message).to.equal('Connected successfully');
-  });
-});
+// describe('THE SERVER', () => {
+//   it('should handle a GET request to /', async () => {
+//     const response = (
+//       await request(app)
+//       .get('/v1')
+//       .expect(200)
+//     ).body;
+//
+//     expect(response.message).to.equal('Connected successfully');
+//   });
+// });
 
 /////////////////////////////// CATEGORIES ///////////////////////////////
 
@@ -47,7 +51,7 @@ describe('CATEGORIES', () => {
     // it should return error for id not found (SPECIFY THE ERROR)
   });
 
-  describe('GET /categories:sync', () => {
+  describe('GET /services/categoriesSync', () => {
     beforeEach(dropCategories);
 
     it('should create categories when the collection is empty', async () => {
@@ -57,7 +61,7 @@ describe('CATEGORIES', () => {
 
       const response = (
         await request(app)
-        .get('/v1/categories:sync')
+        .get('/v1/services/categoriesSync')
         .expect(200)
       ).body;
 
@@ -74,7 +78,7 @@ describe('CATEGORIES', () => {
 
       const response = (
         await request(app)
-          .get('/v1/categories:sync')
+          .get('/v1/services/categoriesSync')
           .expect(200)
       ).body;
 
