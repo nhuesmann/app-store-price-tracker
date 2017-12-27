@@ -10,18 +10,17 @@ const Category = require('../models/category');
 
 const { category, dropCategories, populateCategory } = require('./seed/seed');
 
-// describe('The express app', () => {
-//   it('handles a GET request to /', async () => {
-//     request(app)
-//       .get('/v1')
-//       .expect(200)
-//       .end((err, res) => {
-//         expect(res).to.be({
-//           message: 'Connected!',
-//         });
-//       });
-//   });
-// });
+describe('THE SERVER', () => {
+  it('should handle a GET request to /', async () => {
+    const response = (
+      await request(app)
+      .get('/v1')
+      .expect(200)
+    ).body;
+
+    expect(response.message).to.equal('Connected successfully');
+  });
+});
 
 /////////////////////////////// CATEGORIES ///////////////////////////////
 
@@ -61,24 +60,29 @@ describe('CATEGORIES', () => {
 
       expect(categories).to.be.an('array');
       expect(categories).to.not.be.empty;
-      // to have keys (all the required keys)...
+      // TODO: expect it to have keys (all the required keys)?...
     });
 
-    // it('should update categories when the collection is not empty', async () => {
-    //   const response = (
-    //     await request(app)
-    //       .get('/v1/categories:sync')
-    //       .expect(200)
-    //   ).body;
-    // })
+    it('should update and not replace existing categories', async () => {
+      const initialCategory = new Category(category);
+      await initialCategory.save();
+
+      const response = (
+        await request(app)
+          .get('/v1/categories:sync')
+          .expect(200)
+      ).body;
+
+
+      // Expecting the original category to still exist (not overwritten by sync)
+      const updatedCategory = await Category.findOne({ _id: initialCategory._id });
+
+      const initialCategoryCreatedAt = initialCategory.createdAt.getTime();
+      const updatedCategoryCreatedAt = updatedCategory.createdAt.getTime();
+      const updatedCategoryUpdatedAt = updatedCategory.updatedAt.getTime();
+
+      expect(initialCategoryCreatedAt).to.equal(updatedCategoryCreatedAt);
+      expect(updatedCategoryUpdatedAt).to.not.equal(updatedCategoryCreatedAt);
+    });
   });
 });
-
-
-
-
-// WITH EMPTYING BEFORE
-// count the length of response, expect the db categories to be that many
-
-// do one and call populate categories first
-// expect that the categories were updated, not replaced

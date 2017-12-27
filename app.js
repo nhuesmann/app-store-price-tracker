@@ -10,7 +10,11 @@ const app = express();
 
 const mongoose = require('./mongoose');
 
-app.use(logger('dev'));
+// Do not need logger when running test suite
+if (process.env.NODE_ENV !== 'test') {
+  app.use(logger('dev'));
+}
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -22,6 +26,10 @@ app.use((req, res, next) => {
   err.status = 404;
   next(err);
 });
+
+// TODO: research error handling in express app
+// TODO: reexamine async wrapper file
+// TODO: restructure app (server, api, whatever. use andrew's)
 
 app.use((err, req, res, next) => {
   // set locals, only providing error in development
