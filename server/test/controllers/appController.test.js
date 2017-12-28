@@ -5,7 +5,7 @@ const { expect } = require('chai');
 const request = require('supertest');
 const app = require('../../app');
 
-const App = require('../../models/iosapp');
+const App = require('../../models/app');
 
 beforeEach((done) => {
   App.remove({}).then(() => done());

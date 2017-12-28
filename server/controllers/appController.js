@@ -1,7 +1,7 @@
 const request = require('request-promise');
 const { ObjectId } = require('mongodb');
 
-const App = require('../models/iosapp');
+const App = require('../models/app');
 const Developer = require('../models/developer');
 const Category = require('../models/category');
 

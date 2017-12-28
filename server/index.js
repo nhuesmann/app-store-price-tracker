@@ -1,7 +1,7 @@
 // #!/usr/bin/env node
 
 // Module dependencies.
-const app = require('./app');
+const app = require('./server');
 const debug = require('debug')('app-store-price-tracker:server');
 const http = require('http');
 
