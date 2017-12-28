@@ -2,9 +2,9 @@ const { expect } = require('chai');
 const request = require('supertest');
 const { ObjectID } = require('mongodb');
 
-const app = require('../app');
+const app = require('../server');
 
-const App = require('../models/iosapp');
+const App = require('../models/app');
 const Developer = require('../models/developer');
 const Category = require('../models/category');
 
@@ -13,7 +13,8 @@ const {
   developer,
   dropCategories,
   populateCategory,
-  populateDeveloper, } = require('./seed/seed');
+  populateDeveloper,
+} = require('./seed/seed');
 
 // TODO: Temporarily disabling this until I revisit routing...
 // will there be a home route?
@@ -31,18 +32,16 @@ const {
 //   });
 // });
 
-/////////////////////////////// CATEGORIES ///////////////////////////////
+// ///////////////////////////// CATEGORIES ///////////////////////////////
 
 describe('CATEGORIES', () => {
   describe('GET /categories/:id', () => {
     before(populateCategory);
 
     it('should return a category with the given id', async () => {
-      const response = (
-        await request(app)
+      const response = (await request(app)
         .get(`/v1/categories/${category._id.toHexString()}`)
-        .expect(200)
-      ).body;
+        .expect(200)).body;
 
       expect(response.name).to.equal(category.name);
     });
@@ -51,7 +50,7 @@ describe('CATEGORIES', () => {
     // it should return error for id not found (SPECIFY THE ERROR)
   });
 
-  describe('GET /services/categoriesSync', () => {
+  describe('GET /services/categories-sync', () => {
     beforeEach(dropCategories);
 
     it('should create categories when the collection is empty', async () => {
@@ -59,11 +58,9 @@ describe('CATEGORIES', () => {
 
       expect(categories).to.be.empty;
 
-      const response = (
-        await request(app)
-        .get('/v1/services/categoriesSync')
-        .expect(200)
-      ).body;
+      const response = (await request(app)
+        .get('/v1/services/categories-sync')
+        .expect(200)).body;
 
       categories = await Category.find({});
 
@@ -76,12 +73,9 @@ describe('CATEGORIES', () => {
       const initialCategory = new Category(category);
       await initialCategory.save();
 
-      const response = (
-        await request(app)
-          .get('/v1/services/categoriesSync')
-          .expect(200)
-      ).body;
-
+      const response = (await request(app)
+        .get('/v1/services/categories-sync')
+        .expect(200)).body;
 
       // Expecting the original category to still exist (not overwritten by sync)
       const updatedCategory = await Category.findOne({ _id: initialCategory._id });
@@ -101,11 +95,9 @@ describe('DEVELOPERS', () => {
     before(populateDeveloper);
 
     it('should return a developer with the given id', async () => {
-      const response = (
-        await request(app)
+      const response = (await request(app)
         .get(`/v1/developers/${developer._id.toHexString()}`)
-        .expect(200)
-      ).body;
+        .expect(200)).body;
 
       expect(response.name).to.equal(developer.name);
     });
@@ -113,9 +105,7 @@ describe('DEVELOPERS', () => {
 });
 
 describe('APPS', () => {
-  describe('GET /apps/:id', () => {
-
-  });
+  describe('GET /apps/:id', () => {});
 
   describe('POST /apps', () => {
     // TODO: need to make sure to do a test with multiple apps with same

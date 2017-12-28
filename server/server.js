@@ -6,7 +6,7 @@ const bodyParser = require('body-parser');
 
 const app = express();
 const routes = require('./routes');
-const mongoose = require('./mongoose');
+const mongoose = require('./config/mongoose');
 
 // Do not need logger when running test suite
 if (process.env.NODE_ENV !== 'test') {

@@ -1,6 +1,6 @@
 const { ObjectID } = require('mongodb');
 
-const App = require('../../models/iosapp');
+const App = require('../../models/app');
 const Developer = require('../../models/developer');
 const Category = require('../../models/category');
 
@@ -11,7 +11,7 @@ const category = {
   _id: new ObjectID(),
   id: 6001,
   name: 'Weather',
-  url: 'https://itunes.apple.com/us/genre/ios-weather/id6001'
+  url: 'https://itunes.apple.com/us/genre/ios-weather/id6001',
 };
 
 const developer = {
@@ -19,12 +19,10 @@ const developer = {
   id: 300186801,
   name: 'SQUARE ENIX INC',
   sellerName: 'SQUARE ENIX INC',
-  url: 'https://itunes.apple.com/us/developer/square-enix-inc/id300186801'
+  url: 'https://itunes.apple.com/us/developer/square-enix-inc/id300186801',
 };
 
-const dropCategories = async () => {
-  return await Category.remove({});
-};
+const dropCategories = async () => await Category.remove({});
 
 const populateCategory = async () => {
   await Category.remove({});

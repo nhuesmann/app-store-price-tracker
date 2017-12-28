@@ -1,3 +1,25 @@
+# Numerous always-ignore extensions
+*.diff
+*.err
+*.orig
+*.log
+*.rej
+*.swo
+*.swp
+*.vi
+*~
+*.sass-cache
 node_modules/
+.tmp/
+
+# OS or Editor folders
+.vscode
+.DS_Store
+Thumbs.db
+.cache
+.eslintrc*
+.prettierrc
+
+# Other
 jquery.min.js
 config.json
