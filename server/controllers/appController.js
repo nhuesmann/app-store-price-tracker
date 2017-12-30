@@ -1,5 +1,6 @@
 const request = require('request-promise');
 const { ObjectId } = require('mongodb');
+const apiError = require('../helpers/error');
 
 const App = require('../models/app');
 const Developer = require('../models/developer');
@@ -113,6 +114,12 @@ const appCreateBatch = async function appCreateBatch(ids) {
 
 // NEED TO WRITE, retrieve a list of apps
 exports.ListApps = async function ListApps(req, res, next) {
+  const { test } = req.query;
+
+  if (!test) {
+    return res.status(404).json(apiError.zeroResults('app'));
+  }
+
   res.send('function for getting a list of apps');
 };
 
@@ -121,11 +128,17 @@ exports.ListApps = async function ListApps(req, res, next) {
 exports.GetApp = async function GetApp(req, res, next) {
   const { id } = req.params;
 
-  if (!ObjectId.isValid(id)) throw new Error('invalid object id!');
+  if (!ObjectId.isValid(id)) {
+    return res.status(400).json(apiError.nonObjectID());
+  }
 
   const app = await App.findOne({ _id: id })
     .populate('developer', ['id', 'name', 'nameFull', 'url'])
     .populate('categories', ['id', 'name', 'url']);
+
+  if (!app) {
+    return res.status(400).json(apiError.zeroResults('app'));
+  }
 
   res.send(app);
 

@@ -1,11 +1,9 @@
 const router = require('express').Router();
 
-const asyncWrapper = require('../../middlewares/asyncWrapper');
+const asyncWrapper = require('../../helpers/asyncWrapper');
 const appController = require('../../controllers/appController');
 
-/* //////////////////                APPS                 ////////////////// */
-
-/* GET request for all App TODO: decide how to limit this... can't reply with all */
+/* GET request for all App TODO: implement default limit, use pagination */
 /* use pagination and query params for filter: https://cloud.google.com/apis/design/standard_methods#list  */
 router.get('/', asyncWrapper(appController.ListApps));
 

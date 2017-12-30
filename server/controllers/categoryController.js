@@ -1,6 +1,7 @@
 const request = require('request-promise');
 const Nightmare = require('nightmare');
 const { ObjectId } = require('mongodb');
+const apiError = require('../helpers/error');
 
 const Category = require('../models/category');
 const randomUserAgent = require('../scrapeScripts/useragent');
@@ -8,19 +9,22 @@ const randomUserAgent = require('../scrapeScripts/useragent');
 exports.GetCategory = async function GetCategory(req, res, next) {
   const { id } = req.params;
 
-  if (!ObjectId.isValid(id)) throw new Error('invalid object id!');
+  if (!ObjectId.isValid(id)) {
+    return res.status(400).json(apiError.nonObjectID());
+  }
+
+  //  TODO: rethink the "apps" component of the category. Not scalable,
+  //  not a good idea bc no upward bound. Instead, to get that info, should
+  //  query all apps with that category and sort by popularity, whatever
 
   const category = await Category.findOne({ _id: id }).populate('apps', ['id', 'name']);
   // .populate('endpoint');
 
-  // TODO: Need to work this out with the async wrapper to be able to specify status codes
-  // Is the async wrapper ideal or should I just use try/catch?? I like this version
-  // without try/catch, it is cleaner
-  if (!category) throw new Error('category not found');
+  if (!category) {
+    return res.status(400).json(apiError.zeroResults('category'));
+  }
 
   res.send(category);
-
-  // TODO: is throwing a new error good enough? Need to specify where it came from!
 };
 
 exports.sync = async function sync(req, res, next) {
