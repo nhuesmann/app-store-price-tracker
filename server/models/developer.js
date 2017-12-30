@@ -7,7 +7,7 @@ const cleanUrl = function cleanUrl(url) {
   return url ? url.replace(/\?(.*)/g, '') : null;
 };
 
-const DeveloperSchema = new Schema(
+let DeveloperSchema = new Schema(
   {
     id: {
       type: Number,
@@ -32,7 +32,7 @@ const DeveloperSchema = new Schema(
   },
 );
 
-// DeveloperSchema.virtual('endpoint').get(() => `/developer/${this._id}`);
+DeveloperSchema.virtual('endpoint').get(function() { return `/developers/${this._id}`; });
 DeveloperSchema.virtual('apps', {
   ref: 'app',
   localField: '_id',

@@ -74,7 +74,6 @@ const appCreate = async function appCreate(app) {
     fileSizeBytes: app.fileSizeBytes,
     fileSizeFormatted: app.fileSizeBytes,
     version: app.version,
-    lastUpdated: Date(),
     releaseDateCurrentVersion: new Date(app.currentVersionReleaseDate),
     releaseDateOriginal: new Date(app.releaseDate),
     releaseNotes: app.releaseNotes,
@@ -110,6 +109,25 @@ const appCreateBatch = async function appCreateBatch(ids) {
   return Promise.all(response.results.map(app => appCreate(app)));
 };
 
+const appUpdateBatch = async function appUpdateBatch(ids) {
+  const response = await getAppData(ids.join(','));
+
+  // TODO: need to think about this. how can i upsert if the dev has not been
+  // made? I would need to follow the app create function's logic still with
+  // find one and update. I just need to think about flow:
+  // - we KNOW the app exists because it is triggering the update
+  // - call iTunes with the ids
+  // - NEED NEW PROPS: alertPriceChange: Boolean, alertUpdated: Boolean
+  //    - these should be getters/setters? running on an update? or what?
+  //    - if either happened, fill that field
+  // - update the app with the whole response from iTunes
+  // - update the dev too?? bc what if they changed info
+  // - it is basically the exact createApp function but with update...
+  // - need to figure out how to implement
+
+  // return Promise.all(response.results.map(app => appCreate(app)));
+}
+
 /* ////////////////////////////////         EXPORTS         //////////////////////////////// */
 
 // NEED TO WRITE, retrieve a list of apps
@@ -120,7 +138,7 @@ exports.ListApps = async function ListApps(req, res, next) {
     return res.status(404).json(apiError.zeroResults('app'));
   }
 
-  res.send('function for getting a list of apps');
+  res.json('function for getting a list of apps');
 };
 
 // GET: /apps/:id
@@ -140,7 +158,7 @@ exports.GetApp = async function GetApp(req, res, next) {
     return res.status(400).json(apiError.zeroResults('app'));
   }
 
-  res.send(app);
+  res.json(app);
 
   // TODO: is throwing a new error good enough? Need to specify where it came from!
 };
@@ -149,7 +167,7 @@ exports.GetApp = async function GetApp(req, res, next) {
 // Creates a single app. Receives a JSON body of the app and calls appCreate.
 exports.CreateApp = async function CreateApp(req, res, next) {
   const appSaved = await appCreate(req.body);
-  res.send(appSaved);
+  res.json(appSaved);
 };
 
 /*
@@ -159,7 +177,7 @@ exports.CreateApp = async function CreateApp(req, res, next) {
  */
 exports.batchCreate = async function batchCreate(req, res, next) {
   const appsSaved = await appCreateBatch(req.body.ids);
-  res.send(appsSaved);
+  res.json(appsSaved);
 };
 
 // TODO BATCH UPDATE!
@@ -167,15 +185,15 @@ exports.batchCreate = async function batchCreate(req, res, next) {
 // never assume it doesn't exist??
 exports.batchUpdate = async function batchUpdate(req, res, next) {
   // const appsSaved = await appCreateBatch(req.body.ids);
-  // res.send(appsSaved);
+  // res.json(appsSaved);
 };
 
 exports.UpdateApp = async function UpdateApp(req, res, next) {
-  res.send('function for updating an individual app');
+  res.json('function for updating an individual app');
 };
 
 exports.DeleteApp = async function DeleteApp(req, res) {
-  res.send('function for deleting an individual app');
+  res.json('function for deleting an individual app');
 };
 
 /* ////////////////////////////////         TESTING         //////////////////////////////// */
@@ -203,7 +221,7 @@ exports.appsNew = async function appsNew(req, res, next) {
   ids = ids.feed.entry.map(entry => entry.id.attributes['im:id']);
   const appsSaved = await appCreateBatch(ids);
 
-  res.send(appsSaved);
+  res.json(appsSaved);
 };
 
 exports.appsAppleRss = async function appsAppleRss(req, res, next) {
@@ -217,7 +235,7 @@ exports.appsAppleRss = async function appsAppleRss(req, res, next) {
   ids = ids.feed.results.map(app => app.id).join(',');
   const appsSaved = await appCreateBatch(ids);
 
-  res.send(appsSaved);
+  res.json(appsSaved);
 };
 
 /* TODO: look into the following tools:

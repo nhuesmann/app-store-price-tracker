@@ -63,7 +63,7 @@ const UserSchema = new Schema(
 );
 */
 
-// UserSchema.virtual('endpoint').get(() => `/user/${this._id}`);
+// UserSchema.virtual('endpoint').get(function() { return `/users/${this._id}`; });
 // UserSchema.virtual('apps', {
 //   ref: 'app',
 //   localField: '_id',

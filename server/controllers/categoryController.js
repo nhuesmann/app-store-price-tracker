@@ -13,10 +13,6 @@ exports.GetCategory = async function GetCategory(req, res, next) {
     return res.status(400).json(apiError.nonObjectID());
   }
 
-  //  TODO: rethink the "apps" component of the category. Not scalable,
-  //  not a good idea bc no upward bound. Instead, to get that info, should
-  //  query all apps with that category and sort by popularity, whatever
-
   const category = await Category.findOne({ _id: id }).populate('apps', ['id', 'name']);
   // .populate('endpoint');
 
@@ -24,7 +20,7 @@ exports.GetCategory = async function GetCategory(req, res, next) {
     return res.status(400).json(apiError.zeroResults('category'));
   }
 
-  res.send(category);
+  res.json(category);
 };
 
 exports.sync = async function sync(req, res, next) {
@@ -61,7 +57,24 @@ exports.sync = async function sync(req, res, next) {
       { new: true, upsert: true },
     )));
 
-  res.send(categoriesSaved);
+  // was testing this solution for batch upsert. Not stable
+  // const catObjs = categories.map(cat => ({
+  //   updateOne: {
+  //     filter: {
+  //       id: cat.id
+  //     },
+  //     update: {
+  //       id: cat.id,
+  //       name: cat.name,
+  //       url: cat.url,
+  //     },
+  //     upsert: true
+  //   }
+  // }));
+  //
+  // const categoriesSaved = await Category.collection.bulkWrite(catObjs);
+
+  res.json(categoriesSaved);
 };
 
 exports.syncScrape = async function syncScrape(req, res, next) {
@@ -109,5 +122,5 @@ exports.syncScrape = async function syncScrape(req, res, next) {
       { new: true, upsert: true },
     )));
 
-  res.send(categoriesSaved);
+  res.json(categoriesSaved);
 };

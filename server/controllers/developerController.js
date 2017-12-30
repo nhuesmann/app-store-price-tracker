@@ -17,9 +17,9 @@ exports.GetDeveloper = async function GetDeveloper(req, res, next) {
     return res.status(400).json(apiError.zeroResults('developer'));
   }
 
-  res.send(developer);
+  res.json(developer);
 };
 
 exports.UpdateDeveloper = async function UpdateDeveloper(req, res, next) {
-  res.send('function for updating an individual developer');
+  res.json('function for updating an individual developer');
 };
