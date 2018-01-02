@@ -54,7 +54,7 @@ exports.sync = async function sync(req, res, next) {
     Category.findOneAndUpdate(
       { id: cat.id },
       { id: cat.id, name: cat.name, url: cat.url },
-      { new: true, upsert: true },
+      { new: true, upsert: true, runValidators: true, context: 'query' }, // TODO: check this like dev on appController
     )));
 
   // was testing this solution for batch upsert. Not stable

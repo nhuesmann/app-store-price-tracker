@@ -1,12 +1,14 @@
 const mongoose = require('mongoose');
+const validator = require('validator');
 
 const { Schema } = mongoose;
 const uniqueValidator = require('mongoose-unique-validator');
 
-/* THIS IS ANDREW'S VERSION, edit this and work on AUTH
+// Edit this and work on auth, validation, doublecheck setters (run setters option) and virtuals
 const UserSchema = new Schema({
   email: {
     type: String,
+    index: { unique: true }, // double check that this is correct
     required: true,
     trim: true,
     minlength: 1,
@@ -20,7 +22,8 @@ const UserSchema = new Schema({
   password: {
     type: String,
     required: true,
-    minlength: 6,
+    minlength: 8,
+    maxlength: 20,
   },
   tokens: [
     {
@@ -34,23 +37,8 @@ const UserSchema = new Schema({
       },
     },
   ],
-});
-*/
-
-/*
-const UserSchema = new Schema(
   {
-    id: {
-      type: Number,
-      index: { unique: true },
-    },
-    name: String,
-    url: {
-      type: String,
-      set: cleanUrl,
-    },
-  },
-  {
+    // TODO: double check all below
     timestamps: true,
     runSettersOnQuery: true,
     toJSON: {
@@ -60,8 +48,7 @@ const UserSchema = new Schema(
       virtuals: true,
     },
   },
-);
-*/
+});
 
 // UserSchema.virtual('endpoint').get(function() { return `/users/${this._id}`; });
 // UserSchema.virtual('apps', {

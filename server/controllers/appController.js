@@ -35,6 +35,8 @@ const appCreate = async function appCreate(app) {
     {
       new: true,
       upsert: true,
+      runValidators: true, // for 'mongoose-unique-validator', to ensure unique. test with same dev
+      context: 'query',
     },
   );
 
