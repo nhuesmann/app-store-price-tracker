@@ -28,7 +28,7 @@ const fileSizeFormatted = function fileSizeFormatted(bytes) {
   return toGigabytes(bytes);
 };
 
-const AppSchema = new Schema(
+let AppSchema = new Schema(
   {
     id: {
       type: Number,
@@ -61,7 +61,6 @@ const AppSchema = new Schema(
       set: fileSizeFormatted,
     },
     version: String,
-    lastUpdated: Date, // TODO: dbl check- use for keeping track of when last query was run?
     releaseDateCurrentVersion: Date,
     releaseDateOriginal: Date,
     releaseNotes: String,
@@ -105,7 +104,7 @@ const AppSchema = new Schema(
   },
 );
 
-AppSchema.virtual('endpoint').get(() => `/app/${this._id}`);
+AppSchema.virtual('endpoint').get(function() { return `/apps/${this._id}`; });
 AppSchema.plugin(uniqueValidator);
 
 const App = mongoose.model('app', AppSchema);

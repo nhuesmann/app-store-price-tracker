@@ -1,9 +1,7 @@
 const router = require('express').Router();
 
-const asyncWrapper = require('../../middlewares/asyncWrapper');
+const asyncWrapper = require('../../helpers/asyncWrapper');
 const categoryController = require('../../controllers/categoryController');
-
-/* //////////////////             CATEGORIES             ////////////////// */
 
 /* GET request for all Categories TODO: decide how to limit this... can't reply with all */
 /* use pagination and query params for filter: https://cloud.google.com/apis/design/standard_methods#list  */

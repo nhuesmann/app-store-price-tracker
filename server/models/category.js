@@ -7,7 +7,7 @@ const cleanUrl = function cleanUrl(url) {
   return url ? url.replace(/\?(.*)/g, '') : '';
 };
 
-const CategorySchema = new Schema(
+let CategorySchema = new Schema(
   {
     id: {
       type: Number,
@@ -31,7 +31,7 @@ const CategorySchema = new Schema(
   },
 );
 
-// CategorySchema.virtual('endpoint').get(() => `/category/${this._id}`);
+CategorySchema.virtual('endpoint').get(function() { return `/categories/${this._id}`; });
 CategorySchema.virtual('apps', {
   ref: 'app',
   localField: '_id',

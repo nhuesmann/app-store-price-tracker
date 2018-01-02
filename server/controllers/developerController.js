@@ -1,25 +1,25 @@
 const { ObjectId } = require('mongodb');
+const apiError = require('../helpers/error');
 
 const Developer = require('../models/developer');
 
 exports.GetDeveloper = async function GetDeveloper(req, res, next) {
   const { id } = req.params;
 
-  if (!ObjectId.isValid(id)) throw new Error('invalid object id!');
+  if (!ObjectId.isValid(id)) {
+    return res.status(400).json(apiError.nonObjectID());
+  }
 
   const developer = await Developer.findOne({ _id: id }).populate('apps', ['id', 'name']);
   // .populate('endpoint');
 
-  // TODO: Need to work this out with the async wrapper to be able to specify status codes
-  // Is the async wrapper ideal or should I just use try/catch?? I like this version
-  // without try/catch, it is cleaner
-  if (!developer) throw new Error('developer not found');
+  if (!developer) {
+    return res.status(400).json(apiError.zeroResults('developer'));
+  }
 
-  res.send(developer);
-
-  // TODO: is throwing a new error good enough? Need to specify where it came from!
+  res.json(developer);
 };
 
 exports.UpdateDeveloper = async function UpdateDeveloper(req, res, next) {
-  res.send('function for updating an individual developer');
+  res.json('function for updating an individual developer');
 };
