@@ -21,6 +21,8 @@ const {
   populateUser,
 } = require('./seed/seed');
 
+// TODO: figure out how to split the tests up...
+
 // TODO: Temporarily disabling this until I revisit routing...
 // will there be a home route?
 // SEE THIS: https://www.caffeinecoding.com/better-express-routing-for-nodejs/
@@ -190,6 +192,7 @@ describe('APPS', () => {
   });
 
   describe('POST /apps', () => {
+    // TODO: make sure to expect 201 created!
     // TODO: need to make sure to do a test with multiple apps with same
     // developer to test the endpoint's ability to avoid collisions
   });
@@ -230,6 +233,6 @@ describe('USERS', () => {
   });
 
   describe('POST /users', () => {
-
+    // TODO: make sure to expect 201 created!
   });
 });
