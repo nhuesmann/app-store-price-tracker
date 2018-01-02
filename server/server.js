@@ -53,9 +53,7 @@ app.use(function handleDatabaseError(error, req, res, next) {
 });
 */
 
-
 app.use((err, req, res, next) => {
-
   // TODO: edit the error to include the error object in development, but not in prod
   // find out what "locals" is, and what "req.app.get('env')" is
 

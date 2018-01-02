@@ -1,5 +1,5 @@
 {
   "parser": "babel-eslint",
   "extends": "airbnb",
-  "plugins": ["jsx-ally", "import"]
+  "plugins": ["jsx-ally", "import", "chai-friendly"]
 }

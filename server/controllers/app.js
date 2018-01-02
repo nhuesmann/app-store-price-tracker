@@ -128,7 +128,7 @@ const appUpdateBatch = async function appUpdateBatch(ids) {
   // - need to figure out how to implement
 
   // return Promise.all(response.results.map(app => appCreate(app)));
-}
+};
 
 /* ////////////////////////////////         EXPORTS         //////////////////////////////// */
 

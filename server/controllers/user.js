@@ -13,8 +13,8 @@ exports.GetUser = async function GetUser(req, res, next) {
   }
 
   const user = await User.findOne({ _id: id });
-    // .populate('apps', ['id', 'name']);
-    // .populate('endpoint');
+  // .populate('apps', ['id', 'name']);
+  // .populate('endpoint');
 
   if (!user) {
     return res.status(400).json(apiError.zeroResults('user'));

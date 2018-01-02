@@ -48,8 +48,7 @@ describe('CATEGORIES', () => {
     it('should return a category with the given id', async () => {
       const response = (await request(server)
         .get(`/v1/categories/${category._id.toHexString()}`)
-        .expect(200)
-      ).body;
+        .expect(200)).body;
 
       expect(response.name).to.equal(category.name);
     });
@@ -58,8 +57,7 @@ describe('CATEGORIES', () => {
       const nonObjectID = '12345';
       const response = (await request(server)
         .get(`/v1/categories/${nonObjectID}`)
-        .expect(400)
-      ).body;
+        .expect(400)).body;
 
       expect(response).to.have.property('error', 'Non ObjectID');
     });
@@ -68,8 +66,7 @@ describe('CATEGORIES', () => {
       const nonExistentObjectID = new ObjectID();
       const response = (await request(server)
         .get(`/v1/categories/${nonExistentObjectID}`)
-        .expect(400)
-      ).body;
+        .expect(400)).body;
 
       expect(response).to.have.property('error', 'Zero Results');
     });
@@ -85,8 +82,7 @@ describe('CATEGORIES', () => {
 
       const response = (await request(server)
         .get('/v1/services/categories-sync')
-        .expect(200)
-      ).body;
+        .expect(200)).body;
 
       categories = await Category.find({});
 
@@ -101,8 +97,7 @@ describe('CATEGORIES', () => {
 
       const response = (await request(server)
         .get('/v1/services/categories-sync')
-        .expect(200)
-      ).body;
+        .expect(200)).body;
 
       // Expecting the original category to still exist (not overwritten by sync)
       const updatedCategory = await Category.findOne({ _id: initialCategory._id });
@@ -124,8 +119,7 @@ describe('DEVELOPERS', () => {
     it('should return a developer with the given id', async () => {
       const response = (await request(server)
         .get(`/v1/developers/${developer._id.toHexString()}`)
-        .expect(200)
-      ).body;
+        .expect(200)).body;
 
       expect(response.name).to.equal(developer.name);
     });
@@ -134,8 +128,7 @@ describe('DEVELOPERS', () => {
       const nonObjectID = '12345';
       const response = (await request(server)
         .get(`/v1/developers/${nonObjectID}`)
-        .expect(400)
-      ).body;
+        .expect(400)).body;
 
       expect(response).to.have.property('error', 'Non ObjectID');
     });
@@ -144,8 +137,7 @@ describe('DEVELOPERS', () => {
       const nonExistentObjectID = new ObjectID();
       const response = (await request(server)
         .get(`/v1/developers/${nonExistentObjectID}`)
-        .expect(400)
-      ).body;
+        .expect(400)).body;
 
       expect(response).to.have.property('error', 'Zero Results');
     });
@@ -159,8 +151,7 @@ describe('APPS', () => {
     it('should return an app with the given id and contain developer and category information', async () => {
       const response = (await request(server)
         .get(`/v1/apps/${app._id.toHexString()}`)
-        .expect(200)
-      ).body;
+        .expect(200)).body;
 
       const appDeveloperObjectID = response.developer._id;
       const appCategoryObjectID = response.categories[0]._id;
@@ -174,8 +165,7 @@ describe('APPS', () => {
       const nonObjectID = '12345';
       const response = (await request(server)
         .get(`/v1/apps/${nonObjectID}`)
-        .expect(400)
-      ).body;
+        .expect(400)).body;
 
       expect(response).to.have.property('error', 'Non ObjectID');
     });
@@ -184,8 +174,7 @@ describe('APPS', () => {
       const nonExistentObjectID = new ObjectID();
       const response = (await request(server)
         .get(`/v1/apps/${nonExistentObjectID}`)
-        .expect(400)
-      ).body;
+        .expect(400)).body;
 
       expect(response).to.have.property('error', 'Zero Results');
     });
@@ -205,8 +194,7 @@ describe('USERS', () => {
     it('should return a user with the given id', async () => {
       const response = (await request(server)
         .get(`/v1/users/${user._id.toHexString()}`)
-        .expect(200)
-      ).body;
+        .expect(200)).body;
 
       expect(response.email).to.equal(user.email);
     });
@@ -215,8 +203,7 @@ describe('USERS', () => {
       const nonObjectID = '12345';
       const response = (await request(server)
         .get(`/v1/users/${nonObjectID}`)
-        .expect(400)
-      ).body;
+        .expect(400)).body;
 
       expect(response).to.have.property('error', 'Non ObjectID');
     });
@@ -225,8 +212,7 @@ describe('USERS', () => {
       const nonExistentObjectID = new ObjectID();
       const response = (await request(server)
         .get(`/v1/users/${nonExistentObjectID}`)
-        .expect(400)
-      ).body;
+        .expect(400)).body;
 
       expect(response).to.have.property('error', 'Zero Results');
     });

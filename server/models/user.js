@@ -37,7 +37,7 @@ const UserSchema = new Schema(
           required: true,
         },
       },
-    ]
+    ],
   },
   {
     // TODO: double check all below
@@ -52,7 +52,9 @@ const UserSchema = new Schema(
   },
 );
 
-// UserSchema.virtual('endpoint').get(function() { return `/users/${this._id}`; });
+// UserSchema.virtual('endpoint').get(function endpoint() {
+//   return `/users/${this._id}`;
+// });
 // UserSchema.virtual('apps', {
 //   ref: 'app',
 //   localField: '_id',
