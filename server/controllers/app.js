@@ -169,7 +169,7 @@ exports.GetApp = async function GetApp(req, res, next) {
 // Creates a single app. Receives a JSON body of the app and calls appCreate.
 exports.CreateApp = async function CreateApp(req, res, next) {
   const appSaved = await appCreate(req.body);
-  res.json(appSaved);
+  res.status(201).json(appSaved);
 };
 
 /*

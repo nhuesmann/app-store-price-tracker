@@ -3,6 +3,7 @@ const { ObjectID } = require('mongodb');
 const App = require('../../models/app');
 const Developer = require('../../models/developer');
 const Category = require('../../models/category');
+const User = require('../../models/user');
 
 // const appOneId = new ObjectID();
 // const appTwoId = new ObjectID();
@@ -88,6 +89,12 @@ const app = {
   features: ['iosUniversal']
 };
 
+const user = {
+  _id: new ObjectID(),
+  email: 'drstevebrule@whocares.com',
+  password: '4YourHealth',
+};
+
 const dropCategories = async () => await Category.remove({});
 
 const populateCategory = async () => {
@@ -108,12 +115,20 @@ const populateApp = async () => {
   return await new App(app).save();
 };
 
+const populateUser = async () => {
+  await User.remove({});
+
+  return await new User(user).save();
+};
+
 module.exports = {
   category,
   developer,
   app,
+  user,
   dropCategories,
   populateCategory,
   populateDeveloper,
   populateApp,
+  populateUser,
 };

@@ -7,15 +7,18 @@ const server = require('../server');
 const App = require('../models/app');
 const Developer = require('../models/developer');
 const Category = require('../models/category');
+const User = require('../models/user');
 
 const {
   category,
   developer,
   app,
+  user,
   dropCategories,
   populateCategory,
   populateDeveloper,
   populateApp,
+  populateUser,
 } = require('./seed/seed');
 
 // TODO: Temporarily disabling this until I revisit routing...
@@ -189,5 +192,44 @@ describe('APPS', () => {
   describe('POST /apps', () => {
     // TODO: need to make sure to do a test with multiple apps with same
     // developer to test the endpoint's ability to avoid collisions
+  });
+});
+
+describe('USERS', () => {
+  describe('GET /users/:id', () => {
+    before(populateUser);
+
+    it('should return a user with the given id', async () => {
+      const response = (await request(server)
+        .get(`/v1/users/${user._id.toHexString()}`)
+        .expect(200)
+      ).body;
+
+      expect(response.email).to.equal(user.email);
+    });
+
+    it('should return 400 error if an invalid ObjectID is passed', async () => {
+      const nonObjectID = '12345';
+      const response = (await request(server)
+        .get(`/v1/users/${nonObjectID}`)
+        .expect(400)
+      ).body;
+
+      expect(response).to.have.property('error', 'Non ObjectID');
+    });
+
+    it('should return 400 error if the user was not found', async () => {
+      const nonExistentObjectID = new ObjectID();
+      const response = (await request(server)
+        .get(`/v1/users/${nonExistentObjectID}`)
+        .expect(400)
+      ).body;
+
+      expect(response).to.have.property('error', 'Zero Results');
+    });
+  });
+
+  describe('POST /users', () => {
+
   });
 });
