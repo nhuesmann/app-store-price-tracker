@@ -2,7 +2,7 @@ const { expect } = require('chai');
 const request = require('supertest');
 const { ObjectID } = require('mongodb');
 
-const app = require('../server');
+const server = require('../server');
 
 const App = require('../models/app');
 const Developer = require('../models/developer');
@@ -11,9 +11,11 @@ const Category = require('../models/category');
 const {
   category,
   developer,
+  app,
   dropCategories,
   populateCategory,
   populateDeveloper,
+  populateApp,
 } = require('./seed/seed');
 
 // TODO: Temporarily disabling this until I revisit routing...
@@ -23,7 +25,7 @@ const {
 // describe('THE SERVER', () => {
 //   it('should handle a GET request to /', async () => {
 //     const response = (
-//       await request(app)
+//       await request(server)
 //       .get('/v1')
 //       .expect(200)
 //     ).body;
@@ -39,15 +41,33 @@ describe('CATEGORIES', () => {
     before(populateCategory);
 
     it('should return a category with the given id', async () => {
-      const response = (await request(app)
+      const response = (await request(server)
         .get(`/v1/categories/${category._id.toHexString()}`)
-        .expect(200)).body;
+        .expect(200)
+      ).body;
 
       expect(response.name).to.equal(category.name);
     });
 
-    // it should return error for invalid object id (SPECIFY THE ERROR)
-    // it should return error for id not found (SPECIFY THE ERROR)
+    it('should return 400 error if an invalid ObjectID is passed', async () => {
+      const nonObjectID = '12345';
+      const response = (await request(server)
+        .get(`/v1/categories/${nonObjectID}`)
+        .expect(400)
+      ).body;
+
+      expect(response).to.have.property('error', 'Non ObjectID');
+    });
+
+    it('should return 400 error if the category was not found', async () => {
+      const nonExistentObjectID = new ObjectID();
+      const response = (await request(server)
+        .get(`/v1/categories/${nonExistentObjectID}`)
+        .expect(400)
+      ).body;
+
+      expect(response).to.have.property('error', 'Zero Results');
+    });
   });
 
   describe('GET /services/categories-sync', () => {
@@ -58,9 +78,10 @@ describe('CATEGORIES', () => {
 
       expect(categories).to.be.empty;
 
-      const response = (await request(app)
+      const response = (await request(server)
         .get('/v1/services/categories-sync')
-        .expect(200)).body;
+        .expect(200)
+      ).body;
 
       categories = await Category.find({});
 
@@ -73,9 +94,10 @@ describe('CATEGORIES', () => {
       const initialCategory = new Category(category);
       await initialCategory.save();
 
-      const response = (await request(app)
+      const response = (await request(server)
         .get('/v1/services/categories-sync')
-        .expect(200)).body;
+        .expect(200)
+      ).body;
 
       // Expecting the original category to still exist (not overwritten by sync)
       const updatedCategory = await Category.findOne({ _id: initialCategory._id });
@@ -95,17 +117,74 @@ describe('DEVELOPERS', () => {
     before(populateDeveloper);
 
     it('should return a developer with the given id', async () => {
-      const response = (await request(app)
+      const response = (await request(server)
         .get(`/v1/developers/${developer._id.toHexString()}`)
-        .expect(200)).body;
+        .expect(200)
+      ).body;
 
       expect(response.name).to.equal(developer.name);
+    });
+
+    it('should return 400 error if an invalid ObjectID is passed', async () => {
+      const nonObjectID = '12345';
+      const response = (await request(server)
+        .get(`/v1/developers/${nonObjectID}`)
+        .expect(400)
+      ).body;
+
+      expect(response).to.have.property('error', 'Non ObjectID');
+    });
+
+    it('should return 400 error if the developer was not found', async () => {
+      const nonExistentObjectID = new ObjectID();
+      const response = (await request(server)
+        .get(`/v1/developers/${nonExistentObjectID}`)
+        .expect(400)
+      ).body;
+
+      expect(response).to.have.property('error', 'Zero Results');
     });
   });
 });
 
 describe('APPS', () => {
-  describe('GET /apps/:id', () => {});
+  describe('GET /apps/:id', () => {
+    before(populateApp);
+
+    it('should return an app with the given id and contain developer and category information', async () => {
+      const response = (await request(server)
+        .get(`/v1/apps/${app._id.toHexString()}`)
+        .expect(200)
+      ).body;
+
+      const appDeveloperObjectID = response.developer._id;
+      const appCategoryObjectID = response.categories[0]._id;
+
+      expect(response.name).to.equal(app.name);
+      expect(appDeveloperObjectID).to.equal(developer._id.toHexString());
+      expect(appCategoryObjectID).to.equal(category._id.toHexString());
+    });
+
+    it('should return 400 error if an invalid ObjectID is passed', async () => {
+      const nonObjectID = '12345';
+      const response = (await request(server)
+        .get(`/v1/apps/${nonObjectID}`)
+        .expect(400)
+      ).body;
+
+      expect(response).to.have.property('error', 'Non ObjectID');
+    });
+
+    it('should return 400 error if the app was not found', async () => {
+      const nonExistentObjectID = new ObjectID();
+      const response = (await request(server)
+        .get(`/v1/apps/${nonExistentObjectID}`)
+        .expect(400)
+      ).body;
+
+      expect(response).to.have.property('error', 'Zero Results');
+    });
+  });
 
   describe('POST /apps', () => {
     // TODO: need to make sure to do a test with multiple apps with same
