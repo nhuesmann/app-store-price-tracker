@@ -1,56 +1,46 @@
 const mongoose = require('mongoose');
+const validator = require('validator');
 
 const { Schema } = mongoose;
 const uniqueValidator = require('mongoose-unique-validator');
 
-/* THIS IS ANDREW'S VERSION, edit this and work on AUTH
-const UserSchema = new Schema({
-  email: {
-    type: String,
-    required: true,
-    trim: true,
-    minlength: 1,
-    unique: true,
-    validate: {
-      isAsync: false,
-      validator: validator.isEmail,
-      message: '{VALUE} is not a valid email',
-    },
-  },
-  password: {
-    type: String,
-    required: true,
-    minlength: 6,
-  },
-  tokens: [
-    {
-      access: {
-        type: String,
-        required: true,
-      },
-      token: {
-        type: String,
-        required: true,
-      },
-    },
-  ],
-});
-*/
-
-/*
+// Edit this and work on auth, validation, doublecheck setters (run setters option) and virtuals
 const UserSchema = new Schema(
   {
-    id: {
-      type: Number,
-      index: { unique: true },
-    },
-    name: String,
-    url: {
+    email: {
       type: String,
-      set: cleanUrl,
+      index: { unique: true }, // double check that this is correct
+      required: true,
+      trim: true,
+      minlength: 1,
+      unique: true,
+      validate: {
+        isAsync: false,
+        validator: validator.isEmail,
+        message: '{VALUE} is not a valid email',
+      },
     },
+    password: {
+      type: String,
+      required: true,
+      minlength: 8,
+      maxlength: 20,
+    },
+    tokens: [
+      {
+        access: {
+          type: String,
+          required: true,
+        },
+        token: {
+          type: String,
+          required: true,
+        },
+      },
+    ],
   },
   {
+    // TODO: double check all below
     timestamps: true,
     runSettersOnQuery: true,
     toJSON: {
@@ -61,9 +51,10 @@ const UserSchema = new Schema(
     },
   },
 );
-*/
 
-// UserSchema.virtual('endpoint').get(function() { return `/users/${this._id}`; });
+// UserSchema.virtual('endpoint').get(function endpoint() {
+//   return `/users/${this._id}`;
+// });
 // UserSchema.virtual('apps', {
 //   ref: 'app',
 //   localField: '_id',

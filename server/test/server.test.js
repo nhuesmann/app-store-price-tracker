@@ -7,16 +7,21 @@ const server = require('../server');
 const App = require('../models/app');
 const Developer = require('../models/developer');
 const Category = require('../models/category');
+const User = require('../models/user');
 
 const {
   category,
   developer,
   app,
+  user,
   dropCategories,
   populateCategory,
   populateDeveloper,
   populateApp,
+  populateUser,
 } = require('./seed/seed');
+
+// TODO: figure out how to split the tests up...
 
 // TODO: Temporarily disabling this until I revisit routing...
 // will there be a home route?
@@ -43,8 +48,7 @@ describe('CATEGORIES', () => {
     it('should return a category with the given id', async () => {
       const response = (await request(server)
         .get(`/v1/categories/${category._id.toHexString()}`)
-        .expect(200)
-      ).body;
+        .expect(200)).body;
 
       expect(response.name).to.equal(category.name);
     });
@@ -53,8 +57,7 @@ describe('CATEGORIES', () => {
       const nonObjectID = '12345';
       const response = (await request(server)
         .get(`/v1/categories/${nonObjectID}`)
-        .expect(400)
-      ).body;
+        .expect(400)).body;
 
       expect(response).to.have.property('error', 'Non ObjectID');
     });
@@ -63,8 +66,7 @@ describe('CATEGORIES', () => {
       const nonExistentObjectID = new ObjectID();
       const response = (await request(server)
         .get(`/v1/categories/${nonExistentObjectID}`)
-        .expect(400)
-      ).body;
+        .expect(400)).body;
 
       expect(response).to.have.property('error', 'Zero Results');
     });
@@ -80,8 +82,7 @@ describe('CATEGORIES', () => {
 
       const response = (await request(server)
         .get('/v1/services/categories-sync')
-        .expect(200)
-      ).body;
+        .expect(200)).body;
 
       categories = await Category.find({});
 
@@ -96,8 +97,7 @@ describe('CATEGORIES', () => {
 
       const response = (await request(server)
         .get('/v1/services/categories-sync')
-        .expect(200)
-      ).body;
+        .expect(200)).body;
 
       // Expecting the original category to still exist (not overwritten by sync)
       const updatedCategory = await Category.findOne({ _id: initialCategory._id });
@@ -119,8 +119,7 @@ describe('DEVELOPERS', () => {
     it('should return a developer with the given id', async () => {
       const response = (await request(server)
         .get(`/v1/developers/${developer._id.toHexString()}`)
-        .expect(200)
-      ).body;
+        .expect(200)).body;
 
       expect(response.name).to.equal(developer.name);
     });
@@ -129,8 +128,7 @@ describe('DEVELOPERS', () => {
       const nonObjectID = '12345';
       const response = (await request(server)
         .get(`/v1/developers/${nonObjectID}`)
-        .expect(400)
-      ).body;
+        .expect(400)).body;
 
       expect(response).to.have.property('error', 'Non ObjectID');
     });
@@ -139,8 +137,7 @@ describe('DEVELOPERS', () => {
       const nonExistentObjectID = new ObjectID();
       const response = (await request(server)
         .get(`/v1/developers/${nonExistentObjectID}`)
-        .expect(400)
-      ).body;
+        .expect(400)).body;
 
       expect(response).to.have.property('error', 'Zero Results');
     });
@@ -154,8 +151,7 @@ describe('APPS', () => {
     it('should return an app with the given id and contain developer and category information', async () => {
       const response = (await request(server)
         .get(`/v1/apps/${app._id.toHexString()}`)
-        .expect(200)
-      ).body;
+        .expect(200)).body;
 
       const appDeveloperObjectID = response.developer._id;
       const appCategoryObjectID = response.categories[0]._id;
@@ -169,8 +165,7 @@ describe('APPS', () => {
       const nonObjectID = '12345';
       const response = (await request(server)
         .get(`/v1/apps/${nonObjectID}`)
-        .expect(400)
-      ).body;
+        .expect(400)).body;
 
       expect(response).to.have.property('error', 'Non ObjectID');
     });
@@ -179,15 +174,51 @@ describe('APPS', () => {
       const nonExistentObjectID = new ObjectID();
       const response = (await request(server)
         .get(`/v1/apps/${nonExistentObjectID}`)
-        .expect(400)
-      ).body;
+        .expect(400)).body;
 
       expect(response).to.have.property('error', 'Zero Results');
     });
   });
 
   describe('POST /apps', () => {
+    // TODO: make sure to expect 201 created!
     // TODO: need to make sure to do a test with multiple apps with same
     // developer to test the endpoint's ability to avoid collisions
+  });
+});
+
+describe('USERS', () => {
+  describe('GET /users/:id', () => {
+    before(populateUser);
+
+    it('should return a user with the given id', async () => {
+      const response = (await request(server)
+        .get(`/v1/users/${user._id.toHexString()}`)
+        .expect(200)).body;
+
+      expect(response.email).to.equal(user.email);
+    });
+
+    it('should return 400 error if an invalid ObjectID is passed', async () => {
+      const nonObjectID = '12345';
+      const response = (await request(server)
+        .get(`/v1/users/${nonObjectID}`)
+        .expect(400)).body;
+
+      expect(response).to.have.property('error', 'Non ObjectID');
+    });
+
+    it('should return 400 error if the user was not found', async () => {
+      const nonExistentObjectID = new ObjectID();
+      const response = (await request(server)
+        .get(`/v1/users/${nonExistentObjectID}`)
+        .expect(400)).body;
+
+      expect(response).to.have.property('error', 'Zero Results');
+    });
+  });
+
+  describe('POST /users', () => {
+    // TODO: make sure to expect 201 created!
   });
 });

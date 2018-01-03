@@ -35,6 +35,8 @@ const appCreate = async function appCreate(app) {
     {
       new: true,
       upsert: true,
+      runValidators: true, // for 'mongoose-unique-validator', to ensure unique. test with same dev
+      context: 'query',
     },
   );
 
@@ -126,7 +128,7 @@ const appUpdateBatch = async function appUpdateBatch(ids) {
   // - need to figure out how to implement
 
   // return Promise.all(response.results.map(app => appCreate(app)));
-}
+};
 
 /* ////////////////////////////////         EXPORTS         //////////////////////////////// */
 
@@ -167,7 +169,7 @@ exports.GetApp = async function GetApp(req, res, next) {
 // Creates a single app. Receives a JSON body of the app and calls appCreate.
 exports.CreateApp = async function CreateApp(req, res, next) {
   const appSaved = await appCreate(req.body);
-  res.json(appSaved);
+  res.status(201).json(appSaved);
 };
 
 /*

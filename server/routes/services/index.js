@@ -1,8 +1,8 @@
 const router = require('express').Router();
 
 const asyncWrapper = require('../../helpers/asyncWrapper');
-const appController = require('../../controllers/appController');
-const categoryController = require('../../controllers/categoryController');
+const appController = require('../../controllers/app');
+const categoryController = require('../../controllers/category');
 
 /* GET request for new Apps from iTunes RSS feed */
 router.get('/apps-get-new', asyncWrapper(appController.appsNew));

@@ -1,7 +1,7 @@
 const router = require('express').Router();
 
 const asyncWrapper = require('../../helpers/asyncWrapper');
-const appController = require('../../controllers/appController');
+const appController = require('../../controllers/app');
 
 /* GET request for all App TODO: implement default limit, use pagination */
 /* use pagination and query params for filter: https://cloud.google.com/apis/design/standard_methods#list  */

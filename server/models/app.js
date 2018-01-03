@@ -28,7 +28,7 @@ const fileSizeFormatted = function fileSizeFormatted(bytes) {
   return toGigabytes(bytes);
 };
 
-let AppSchema = new Schema(
+const AppSchema = new Schema(
   {
     id: {
       type: Number,
@@ -104,7 +104,9 @@ let AppSchema = new Schema(
   },
 );
 
-AppSchema.virtual('endpoint').get(function() { return `/apps/${this._id}`; });
+AppSchema.virtual('endpoint').get(function endpoint() {
+  return `/apps/${this._id}`;
+});
 AppSchema.plugin(uniqueValidator);
 
 const App = mongoose.model('app', AppSchema);

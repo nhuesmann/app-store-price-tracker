@@ -11,7 +11,8 @@
     "testAndrew": "export NODE_ENV=test || SET \"NODE_ENV=test\" && mocha **/*.test.js",
     "testStephen": "mocha -R min",
     "testUSE": "NODE_ENV=test mocha \"./test/**/*.test.js\" -R min",
-    "testRealLatest": "export NODE_ENV=test || SET \"NODE_ENV=test\" && mocha \"./test/**/*.test.js\" -R min",
+    "testRealLatest":
+      "export NODE_ENV=test || SET \"NODE_ENV=test\" && mocha \"./test/**/*.test.js\" -R min",
     "test": "export NODE_ENV=test || SET \"NODE_ENV=test\" && mocha \"./server/test/**/*.test.js\"",
     "test-watch": "nodemon --exec \"npm test\""
   },
@@ -19,6 +20,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "ajv": "^5.5.2",
     "body-parser": "^1.18.2",
     "d3-dsv": "^1.0.5",
     "debug": "^3.1.0",
@@ -28,13 +30,15 @@
     "mongoose-unique-validator": "^1.0.6",
     "morgan": "^1.9.0",
     "nightmare": "^2.10.0",
-    "request-promise": "^4.2.2"
+    "request-promise": "^4.2.2",
+    "validator": "^9.2.0"
   },
   "devDependencies": {
     "babel-eslint": "^8.0.3",
     "chai": "^4.1.2",
     "eslint": "^4.13.1",
     "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-chai-friendly": "^0.4.1",
     "eslint-plugin-import": "^2.8.0",
     "mocha": "^4.0.1",
     "nodemon": "^1.12.1",

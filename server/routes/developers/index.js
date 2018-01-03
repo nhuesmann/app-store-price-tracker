@@ -1,7 +1,7 @@
 const router = require('express').Router();
 
 const asyncWrapper = require('../../helpers/asyncWrapper');
-const developerController = require('../../controllers/developerController');
+const developerController = require('../../controllers/developer');
 
 /* GET request for one Developer */
 router.get('/:id', asyncWrapper(developerController.GetDeveloper));
