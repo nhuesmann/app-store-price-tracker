@@ -9,11 +9,12 @@ const UserSchema = new Schema(
   {
     email: {
       type: String,
-      index: { unique: true }, // double check that this is correct
+      index: { unique: true },
       required: true,
       trim: true,
       minlength: 1,
       unique: true,
+      lowercase: true,
       validate: {
         isAsync: false,
         validator: validator.isEmail,
@@ -26,23 +27,25 @@ const UserSchema = new Schema(
       minlength: 8,
       maxlength: 20,
     },
-    tokens: [
-      {
-        access: {
-          type: String,
-          required: true,
-        },
-        token: {
-          type: String,
-          required: true,
-        },
-      },
-    ],
+    // TODO: figure out how to use JWT in browser for stateless auth
+    // tokens: [
+    //   {
+    //     access: {
+    //       type: String,
+    //       required: true,
+    //     },
+    //     token: {
+    //       type: String,
+    //       required: true,
+    //     },
+    //   },
+    // ],
   },
   {
-    // TODO: double check all below
-    timestamps: true,
-    runSettersOnQuery: true,
+    timestamps: {
+      createdAt: 'created_at',
+      updatedAt: 'updated_at',
+    },
     toJSON: {
       virtuals: true,
     },
@@ -52,14 +55,16 @@ const UserSchema = new Schema(
   },
 );
 
-// UserSchema.virtual('endpoint').get(function endpoint() {
-//   return `/users/${this._id}`;
-// });
-// UserSchema.virtual('apps', {
-//   ref: 'app',
-//   localField: '_id',
-//   foreignField: 'categories',
-// });
+UserSchema.virtual('endpoint').get(function endpoint() {
+  return `/users/${this._id}`;
+});
+
+UserSchema.virtual('wishlist', {
+  ref: 'tracker',
+  localField: '_id',
+  foreignField: 'creator',
+});
+
 UserSchema.plugin(uniqueValidator);
 
 const User = mongoose.model('user', UserSchema);

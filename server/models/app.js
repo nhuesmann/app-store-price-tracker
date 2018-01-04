@@ -93,7 +93,10 @@ const AppSchema = new Schema(
     features: Array,
   },
   {
-    timestamps: true,
+    timestamps: {
+      createdAt: 'created_at',
+      updatedAt: 'updated_at',
+    },
     runSettersOnQuery: true,
     toJSON: {
       virtuals: true,
@@ -107,6 +110,7 @@ const AppSchema = new Schema(
 AppSchema.virtual('endpoint').get(function endpoint() {
   return `/apps/${this._id}`;
 });
+
 AppSchema.plugin(uniqueValidator);
 
 const App = mongoose.model('app', AppSchema);

@@ -20,7 +20,10 @@ const CategorySchema = new Schema(
     },
   },
   {
-    timestamps: true,
+    timestamps: {
+      createdAt: 'created_at',
+      updatedAt: 'updated_at',
+    },
     runSettersOnQuery: true,
     toJSON: {
       virtuals: true,
@@ -34,11 +37,13 @@ const CategorySchema = new Schema(
 CategorySchema.virtual('endpoint').get(function endpoint() {
   return `/categories/${this._id}`;
 });
+
 CategorySchema.virtual('apps', {
   ref: 'app',
   localField: '_id',
   foreignField: 'categories',
 });
+
 CategorySchema.plugin(uniqueValidator);
 
 const Category = mongoose.model('category', CategorySchema);

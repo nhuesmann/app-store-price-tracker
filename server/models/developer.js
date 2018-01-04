@@ -21,7 +21,10 @@ const DeveloperSchema = new Schema(
     },
   },
   {
-    timestamps: true,
+    timestamps: {
+      createdAt: 'created_at',
+      updatedAt: 'updated_at',
+    },
     runSettersOnQuery: true,
     toJSON: {
       virtuals: true,
@@ -35,11 +38,13 @@ const DeveloperSchema = new Schema(
 DeveloperSchema.virtual('endpoint').get(function endpoint() {
   return `/developers/${this._id}`;
 });
+
 DeveloperSchema.virtual('apps', {
   ref: 'app',
   localField: '_id',
   foreignField: 'developer',
 });
+
 DeveloperSchema.plugin(uniqueValidator);
 
 const Developer = mongoose.model('developer', DeveloperSchema);

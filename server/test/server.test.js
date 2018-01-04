@@ -102,9 +102,9 @@ describe('CATEGORIES', () => {
       // Expecting the original category to still exist (not overwritten by sync)
       const updatedCategory = await Category.findOne({ _id: initialCategory._id });
 
-      const initialCategoryCreatedAt = initialCategory.createdAt.getTime();
-      const updatedCategoryCreatedAt = updatedCategory.createdAt.getTime();
-      const updatedCategoryUpdatedAt = updatedCategory.updatedAt.getTime();
+      const initialCategoryCreatedAt = initialCategory.created_at.getTime();
+      const updatedCategoryCreatedAt = updatedCategory.created_at.getTime();
+      const updatedCategoryUpdatedAt = updatedCategory.updated_at.getTime();
 
       expect(initialCategoryCreatedAt).to.equal(updatedCategoryCreatedAt);
       expect(updatedCategoryUpdatedAt).to.not.equal(updatedCategoryCreatedAt);
